@@ -1,0 +1,22 @@
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: bold;
+}
+
+* {
+  border: 1 dashed black;
+}
+
+.icon-25 {
+  width: 25px;
+  height: auto;
+}
