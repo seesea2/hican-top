@@ -6,10 +6,10 @@ const bus_arrival_1 = require("./lta/bus-arrival");
 const bus_stops_1 = require("./lta/bus-stops");
 const apiRouter = (0, express_1.Router)();
 apiRouter.get("/dictionary/oxford/lemmas/:word", (req, res) => {
-    (0, dictionary_1.CheckOxfordLemmas)(req.params.word, res);
+    (0, dictionary_1.CheckLemmas)(req.params.word, res);
 });
 apiRouter.get("/dictionary/oxford/:word", (req, res) => {
-    (0, dictionary_1.CheckOxfordEntries)(req.params.word, res);
+    (0, dictionary_1.CheckWord)(req.params.word, res);
 });
 apiRouter.get("/lta/bus/busArrival/:busStopCode", (req, res) => {
     (0, bus_arrival_1.default)(req.params.busStopCode, res);

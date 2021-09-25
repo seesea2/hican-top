@@ -9,13 +9,7 @@ if (!existsSync(join(assetsDir, "/oxford/json"))) {
   mkdirSync(join(assetsDir, "/oxford/json"), { recursive: true });
 }
 
-import {
-  CheckEntriesResult,
-  OxfordEntries,
-  OxfordLemmas,
-  IdText,
-  YcLexicalEntry,
-} from "./oxford-interface";
+import { OxfordEntries, OxfordLemmas } from "./oxford-interface";
 
 import { oxford_app_id, oxford_app_key } from "../account-keys";
 
@@ -26,85 +20,103 @@ const config = {
   },
 };
 
-async function CheckOxfordEntries(word: string, res: Response) {
+async function CheckWord(word: string, res: Response) {
   if (!word || !word.trim()) {
     return res.status(400).send({ message: "Invalid word." });
   }
   word = word.trim().toLowerCase();
-  if (process.env.DEBUG) {
-    console.log(word);
-  }
+  console.log("CheckOxfordEntries", word);
 
   try {
-    // get the word from cached data
-    const file = join(assetsDir, "/oxford/json/" + word + ".json");
-    if (existsSync(file)) {
-      let rawData = readFileSync(file, "utf8");
+    // get the word from cached word json
+    const wordFile = join(assetsDir, "/oxford/json/" + word + ".json");
+    if (existsSync(wordFile)) {
+      let rawData = readFileSync(wordFile, "utf8");
       let fileData = JSON.parse(rawData);
-      if (process.env.DEBUG) {
-        console.log("cache:", fileData);
-      }
+      console.log("word is from cache");
       return res.status(200).send(fileData);
     }
 
-    // get the word from Oxford Dictionary API
+    // get the word from Oxford API
+    const rslt = await OxfordApiWord(word);
+    if (rslt) {
+      console.log("word is from API");
+      return res.status(200).send(rslt);
+    }
+
+    let lemmas = undefined;
+    // get word origin from  cached Lemmas data
+    const file = join(assetsDir, "/oxford/json/lemmas-" + word + ".json");
+    if (existsSync(file)) {
+      const rawData = readFileSync(file, "utf8");
+      lemmas = JSON.parse(rawData);
+      console.log("lemmas are from cache");
+    } else {
+      // get word origin from Oxford Lemmas API
+      lemmas = await OxfordApiLemmas(word);
+      console.log("lemmas are from API");
+    }
+    const word_origin =
+      lemmas.results[0].lexicalEntries[0].inflectionOf[0].text;
+    if (word_origin && word_origin != word) {
+      const rslt = await OxfordApiWord(word_origin);
+      if (rslt) {
+        return res.status(200).send(rslt);
+      }
+    }
+    return res.status(400).send({ message: "The word is not found." });
+  } catch (e) {
+    return res.status(400).send({ message: "The word is not found." });
+  }
+}
+
+async function OxfordApiWord(word: string) {
+  try {
     const url =
       "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/" +
       word +
       "?fields=definitions%2Cpronunciations%2Cexamples&strictMatch=false";
     let resp = await Axios(url, config);
+    const entries: OxfordEntries = resp.data;
+    console.log(entries);
     writeFileSync(
       join(assetsDir, "/oxford/json/" + word + ".json"),
-      JSON.stringify(resp.data)
+      JSON.stringify(entries)
     );
-    let entries: OxfordEntries = resp.data;
-    if (process.env.DEBUG) {
-      console.log("remote:", entries);
-    }
-    return res.status(200).send(entries);
-  } catch (e) {
-    try {
-      // get word origin from Oxford Lemmas
-      const url =
-        "https://od-api.oxforddictionaries.com/api/v2/lemmas/en-gb/" + word;
-      let resp = await Axios(url, config);
-      const lemmas: OxfordLemmas = resp.data;
-      if (process.env.DEBUG) {
-        console.log(lemmas);
-      }
-      if (lemmas && lemmas.results[0].lexicalEntries[0].inflectionOf[0].text) {
-        CheckOxfordEntries(
-          lemmas.results[0].lexicalEntries[0].inflectionOf[0].text,
-          res
-        );
-      }
-    } catch {
-      return res.status(400).send({ message: "The word is not found." });
-    }
+    return entries;
+  } catch {
+    return;
   }
 }
 
-async function CheckOxfordLemmas(word: string, res: Response) {
+async function OxfordApiLemmas(word: string) {
+  try {
+    const url =
+      "https://od-api.oxforddictionaries.com/api/v2/lemmas/en-gb/" + word;
+    const resp = await Axios(url, config);
+    const lemmas: OxfordLemmas = resp.data;
+    console.log(lemmas);
+    writeFileSync(
+      join(assetsDir, "/oxford/json/lemmas-" + word + ".json"),
+      JSON.stringify(lemmas)
+    );
+    return lemmas;
+  } catch {
+    return;
+  }
+}
+
+async function CheckLemmas(word: string, res: Response) {
   if (!word || !word.trim()) {
     return "Invalid word.";
   }
-  const url =
-    "https://od-api.oxforddictionaries.com/api/v2/lemmas/en-gb/" + word;
 
   try {
-    let resp = await Axios(url, config);
-    const lemmas: OxfordLemmas = resp.data;
-    if (process.env.DEBUG) {
-      console.log(lemmas);
-    }
-    res.status(200).send(lemmas);
-    return;
+    let rslt = await OxfordApiLemmas(word);
+    return res.status(200).send(rslt);
   } catch (e) {
-    if (process.env.DEBUG) {
-      console.log(e);
-    }
-    return e.message;
+    return res.status(400).send({ message: "The word is not found." });
   }
 }
 
-export { CheckOxfordEntries, CheckOxfordLemmas };
+export { CheckWord, CheckLemmas };

@@ -1,16 +1,16 @@
 import { Router } from "express";
 
-import { CheckOxfordEntries, CheckOxfordLemmas } from "./dictionary/dictionary";
+import { CheckWord, CheckLemmas } from "./dictionary/dictionary";
 import getBusArrival from "./lta/bus-arrival";
 import { getBusStop, getNearbyBusStops } from "./lta/bus-stops";
 
 const apiRouter = Router();
 
 apiRouter.get("/dictionary/oxford/lemmas/:word", (req, res) => {
-  CheckOxfordLemmas(req.params.word, res);
+  CheckLemmas(req.params.word, res);
 });
 apiRouter.get("/dictionary/oxford/:word", (req, res) => {
-  CheckOxfordEntries(req.params.word, res);
+  CheckWord(req.params.word, res);
 });
 apiRouter.get("/lta/bus/busArrival/:busStopCode", (req, res) => {
   getBusArrival(req.params.busStopCode, res);
