@@ -5,6 +5,8 @@
       &#9775;
       <!-- <router-link to="/busArrival">BusArrival</router-link> | -->
       <router-link to="/dictionary">Dictionary</router-link>
+      &#9775;
+      <router-link to="/podcast">Podcast</router-link>
     </div>
     <router-view />
 

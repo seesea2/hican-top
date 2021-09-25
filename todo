@@ -1,1 +1,2 @@
 1. separate client components.
+2. use gitsqlite3 for cache.

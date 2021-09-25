@@ -17,6 +17,11 @@ const routes = [
     name: "Dictionary",
     component: () => import("../views/Dictionary.vue"),
   },
+  {
+    path: "/podcast",
+    name: "Podcast",
+    component: () => import("../views/Podcast.vue"),
+  },
 ];
 
 const router = createRouter({
