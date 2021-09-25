@@ -139,12 +139,11 @@ export default {
           if (resp.data && resp.data.results) {
             this.results = resp.data.results;
           }
-        })
-        .catch(() => {
-          // console.log(err);
-        })
-        .then(() => {
           this.note = null;
+        })
+        .catch((err) => {
+          // console.log(err.response.data);
+          this.note = err.response.data.message;
         });
     },
     playAudio(file) {

@@ -35,12 +35,8 @@ async function CheckOxfordEntries(word: string, res: Response) {
     console.log(word);
   }
 
-  const url =
-    "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/" +
-    word +
-    "?fields=definitions%2Cpronunciations%2Cexamples&strictMatch=false";
-
   try {
+    // get the word from cached data
     const file = join(assetsDir, "/oxford/json/" + word + ".json");
     if (existsSync(file)) {
       let rawData = readFileSync(file, "utf8");
@@ -51,6 +47,11 @@ async function CheckOxfordEntries(word: string, res: Response) {
       return res.status(200).send(fileData);
     }
 
+    // get the word from Oxford Dictionary API
+    const url =
+      "https://od-api.oxforddictionaries.com/api/v2/entries/en-gb/" +
+      word +
+      "?fields=definitions%2Cpronunciations%2Cexamples&strictMatch=false";
     let resp = await Axios(url, config);
     writeFileSync(
       join(assetsDir, "/oxford/json/" + word + ".json"),
@@ -62,7 +63,24 @@ async function CheckOxfordEntries(word: string, res: Response) {
     }
     return res.status(200).send(entries);
   } catch (e) {
-    return res.status(400).send(e);
+    try {
+      // get word origin from Oxford Lemmas
+      const url =
+        "https://od-api.oxforddictionaries.com/api/v2/lemmas/en-gb/" + word;
+      let resp = await Axios(url, config);
+      const lemmas: OxfordLemmas = resp.data;
+      if (process.env.DEBUG) {
+        console.log(lemmas);
+      }
+      if (lemmas && lemmas.results[0].lexicalEntries[0].inflectionOf[0].text) {
+        CheckOxfordEntries(
+          lemmas.results[0].lexicalEntries[0].inflectionOf[0].text,
+          res
+        );
+      }
+    } catch {
+      return res.status(400).send({ message: "The word is not found." });
+    }
   }
 }
 
@@ -79,7 +97,7 @@ async function CheckOxfordLemmas(word: string, res: Response) {
     if (process.env.DEBUG) {
       console.log(lemmas);
     }
-    res.status(400).send(lemmas);
+    res.status(200).send(lemmas);
     return;
   } catch (e) {
     if (process.env.DEBUG) {

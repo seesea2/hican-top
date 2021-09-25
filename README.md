@@ -4,7 +4,7 @@ It is set up using @vue/cli in folder 'client'.
 
 # server
 
-It is set up using nodejs + typescript in folder 'server'.
+It is set up using NodeJS + typescript in folder 'server'.
 
 ## Production Deployment
 

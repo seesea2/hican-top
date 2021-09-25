@@ -22,7 +22,9 @@ app.all("/*", (req, res) => {
 });
 // error handling - 2
 app.use((req, res, next) => {
-  return res.status(500).send("Issue happened. Please retry later!");
+  return res
+    .status(500)
+    .send({ message: "Issue happened. Please retry later!" });
 });
 
 app.listen(8080, () => {
