@@ -5,20 +5,7 @@
     </div>
 
     <div v-for="channel in channels" :key="channel.title">
-      <ChannelVue :channel="channel" @play-item="onPlayItem"></ChannelVue>
-    </div>
-
-    <div>
-      <audio
-        v-show="audio"
-        id="player"
-        ref="player"
-        controls
-        style="position: fixed; top: 20px; right: 50px; width: 20%"
-      >
-        <source v-if="audio" :src="audio.url" type="audio/ogg" />
-        <source v-if="audio" :src="audio.url" type="audio/mpeg" />
-      </audio>
+      <ChannelVue :channel="channel"></ChannelVue>
     </div>
   </div>
 </template>
@@ -34,7 +21,6 @@ export default {
   data() {
     return {
       channels: [],
-      audio: null,
     };
   },
   created() {
@@ -51,17 +37,6 @@ export default {
           console.log(err);
           this.channels = [];
         });
-    },
-    onPlayItem(item) {
-      try {
-        console.log("in onPlayItem", item);
-        this.audio = JSON.parse(item);
-        var aa = this.$refs.player;
-        aa.load();
-        aa.play();
-      } catch (err) {
-        console.log("Play audio failed.");
-      }
     },
   },
 };

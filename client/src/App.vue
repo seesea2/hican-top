@@ -16,8 +16,18 @@
         We <span style="font-size: 150%; color: red"> &#10084; </span> SG
       </h6>
     </footer>
+
+    <!-- audio player globally available, e.g. for podcaset -->
+    <audioplayer />
   </div>
 </template>
+
+<script>
+import audioplayer from "./components/audioplayer.vue";
+export default {
+  components: { audioplayer },
+};
+</script>
 
 <style>
 /* html,
