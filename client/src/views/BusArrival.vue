@@ -3,7 +3,7 @@
     <div class="text-center">
       <h2>Bus Arrival Time</h2>
       <h6>Get bus arrival time by bus stop code.</h6>
-      <div class="row justify-content-center mt-4">
+      <div class="row justify-content-center mx-0 mt-4">
         <div class="col-12 col-md-6 col-lg-4">
           <div class="input-group">
             <input
@@ -96,7 +96,9 @@
                 @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
                 class="btn"
               >
-                {{ nearbyBusStop.busStop.Description }}@{{ nearbyBusStop.busStop.RoadName }}
+                {{ nearbyBusStop.busStop.Description }}@{{
+                  nearbyBusStop.busStop.RoadName
+                }}
               </a>
             </td>
           </tr>

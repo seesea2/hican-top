@@ -34,20 +34,21 @@
           >
             <div class="card-body">
               <h5 class="card-title">
-                <label>{{ lexicalEntry.lexicalCategory.text }}</label>
-                <label
-                  class="px-2"
+                <span>{{ lexicalEntry.lexicalCategory.text }} | </span>
+                <span
+                  class="px-2 small"
                   v-if="entry.pronunciations && entry.pronunciations.length"
                 >
-                  | Pronunciation:
+                  Pronunciation:
                   <i>[ {{ entry.pronunciations[0].phoneticSpelling }} ]</i>
                   <a
                     class="btn btn-small"
                     @click="playAudio(entry.pronunciations[0].audioFile)"
+                    style="font-size: 120%"
                   >
-                    <span style="font-size: 150%"> &#9836; </span>
+                    &#9836;
                   </a>
-                </label>
+                </span>
               </h5>
               <ol class="list-group list-group-numbered">
                 <li

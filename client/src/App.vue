@@ -10,31 +10,33 @@
     </div>
     <router-view />
 
-    <footer class="container-fluid text-center pt-4">
-      <br class="w-100" style="width: 100" />
-      <h6 class="font-weight-bold">
-        We <span style="font-size: 150%; color: red"> &#10084; </span> SG
-      </h6>
-    </footer>
+    <AppFooter />
 
     <!-- audio player globally available, e.g. for podcaset -->
-    <audioplayer />
+    <AudioPlayer />
   </div>
 </template>
 
 <script>
-import audioplayer from "./components/audioplayer.vue";
+import AudioPlayer from "./components/AudioPlayer.vue";
+import AppFooter from "./components/AppFooter.vue";
 export default {
-  components: { audioplayer },
+  components: { AudioPlayer, AppFooter },
 };
 </script>
 
 <style>
-/* html,
+html,
 body {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* * {
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
 } */
 
 #app {

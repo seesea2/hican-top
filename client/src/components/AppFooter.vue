@@ -1,4 +1,11 @@
 <template>
+  <footer class="container-fluid text-center pt-4 pb-2">
+    <h6>
+      We
+      <span style="font-size: 150%; color: red"> &#10084; </span>
+      SG
+    </h6>
+  </footer>
 </template>
 
 <script>

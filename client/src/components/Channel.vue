@@ -4,7 +4,7 @@
       <img
         :src="channel.image"
         style="height: 250px; width: 250px; overflow: hidden"
-        class="col-auto"
+        class="col-auto p-0"
       />
       <div class="col">
         <h4>{{ channel.title }}</h4>
@@ -12,13 +12,20 @@
           {{ channel.description }}
         </div>
         <div class="row">
-          <div v-for="item in channel.item" :key="item.title" class="col my-1">
-            <div class="card btn btn-info btn-sm" @click="play(item)">
+          <div
+            v-for="item in channel.item"
+            :key="item.title"
+            class="col px-1 my-2 text-center"
+          >
+            <a
+              class="border btn btn-outline-info btn-sm text-dark"
+              @click="play(item)"
+            >
               <p>
                 <b>{{ new Date(item.pubDate).toLocaleDateString() }}</b>
               </p>
-              <p>{{ item.title }}</p>
-            </div>
+              <p class="small">{{ item.title }}</p>
+            </a>
           </div>
         </div>
       </div>
@@ -42,7 +49,8 @@ export default {
           audioPlayer.play();
           audioPlayer.controls = true;
           let audioarea = document.getElementById("audioarea");
-          audioarea.removeAttribute("class", "d-none");
+          // audioarea.removeAttribute("class", "d-none");
+          audioarea.setAttribute("class", "w-100");
         }
       } catch (err) {
         console.log("Play audio failed.");
@@ -53,4 +61,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+/* * {
+  border-style: solid;
+  border-width: 1px;
+} */
+</style>

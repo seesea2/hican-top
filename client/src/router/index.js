@@ -22,6 +22,11 @@ const routes = [
     name: "Podcast",
     component: () => import("../views/Podcast.vue"),
   },
+  {
+    path: "/video",
+    name: "VideoVue",
+    component: () => import("../views/Video.vue"),
+  },
 ];
 
 const router = createRouter({
