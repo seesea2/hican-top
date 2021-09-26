@@ -1,11 +1,12 @@
 <template>
   <div class="container py-3">
     <div class="row">
-      <img
-        :src="channel.image"
-        style="height: 250px; width: 250px; overflow: hidden"
-        class="col-auto p-0"
-      />
+      <div class="col-sm-12 col-md-auto p-0">
+        <img
+          :src="channel.image"
+          style="height: 250px; width: 250px; overflow: hidden"
+        />
+      </div>
       <div class="col">
         <h4>{{ channel.title }}</h4>
         <div class="small">

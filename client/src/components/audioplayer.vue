@@ -1,7 +1,7 @@
 <template>
   <div
     id="audioarea"
-    style="position: fixed; bottom: 10px; right: 10px"
+    style="position: fixed; bottom: 0px; right: 10px"
     class="w-100 d-none"
   >
     <div class="container-fluid">

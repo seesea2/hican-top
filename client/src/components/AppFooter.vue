@@ -1,5 +1,5 @@
 <template>
-  <footer class="container-fluid text-center pt-4 pb-2">
+  <footer class="container-fluid text-center py-4">
     <h6>
       We
       <span style="font-size: 150%; color: red"> &#10084; </span>
