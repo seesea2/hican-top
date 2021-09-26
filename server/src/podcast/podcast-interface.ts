@@ -10,4 +10,5 @@ export interface Item {
   description: string;
   pubDate: string;
   url: string;
+  type: string;
 }

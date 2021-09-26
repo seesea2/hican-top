@@ -13,10 +13,7 @@
         </div>
         <div class="row">
           <div v-for="item in channel.item" :key="item.title" class="col my-1">
-            <div
-              class="card btn btn-info btn-sm"
-              @click="$emit('playItem', JSON.stringify(item))"
-            >
+            <div class="card btn btn-info btn-sm" @click="play(item)">
               <p>
                 <b>{{ new Date(item.pubDate).toLocaleDateString() }}</b>
               </p>
@@ -34,6 +31,24 @@ export default {
   name: "ChannelVue",
   props: ["channel"],
   emits: ["playItem"],
+  methods: {
+    play(item) {
+      try {
+        // console.log("in onPlayItem", item);
+        let audioPlayer = document.getElementById("audioplayer");
+        audioPlayer.src = item.url;
+        if (audioPlayer.canPlayType(item.type)) {
+          audioPlayer.load();
+          audioPlayer.play();
+          audioPlayer.controls = true;
+          let audioarea = document.getElementById("audioarea");
+          audioarea.removeAttribute("class", "d-none");
+        }
+      } catch (err) {
+        console.log("Play audio failed.");
+      }
+    },
+  },
 };
 </script>
 

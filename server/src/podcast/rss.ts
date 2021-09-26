@@ -20,6 +20,7 @@ const podcastRss = [
   "https://www.theguardian.com/news/series/todayinfocus/podcast.xml",
   "https://www.wired.co.uk/rss/podcast",
   "https://rss.art19.com/apology-line",
+  "https://www.omnycontent.com/d/playlist/acc8cc57-ff7c-44c5-9bd6-ab0900fbdc43/95a0ba2f-2810-459a-a106-ab09010e1229/89b076fd-9b08-4f8b-95b2-ab09010e123c/podcast.rss",
 ];
 
 function getPodcastList(res: any) {
@@ -57,6 +58,7 @@ function AllChannels() {
             description: "", //item.description[0],
             pubDate: item.pubDate[0],
             url: item.enclosure[0]["$"].url,
+            type: item.enclosure[0]["$"].type,
           });
         }
         channels.push(newChannel);
@@ -89,5 +91,8 @@ function RefreshServerPodcast() {
     console.log(err);
   }
 }
+
+// refresh all during server startup
+// RefreshServerPodcast();
 
 export { getPodcastList, RefreshServerPodcast };
