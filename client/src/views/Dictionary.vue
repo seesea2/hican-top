@@ -125,6 +125,9 @@ export default {
       results: [],
     };
   },
+  mounted() {
+    document.title = "Dictionary";
+  },
   methods: {
     search() {
       if (!this.word || !this.word.trim()) {

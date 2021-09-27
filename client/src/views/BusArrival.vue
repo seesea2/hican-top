@@ -130,6 +130,9 @@ export default {
   created() {
     this.refreshBookmarks();
   },
+  mounted() {
+    document.title = "Bus Arrival";
+  },
   methods: {
     getBusArrival(inputCode) {
       if (inputCode) {

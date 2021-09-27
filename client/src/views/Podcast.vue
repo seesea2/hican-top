@@ -26,6 +26,9 @@ export default {
   created() {
     this.getChannels();
   },
+  mounted() {
+    document.title = "Podcast";
+  },
   methods: {
     getChannels() {
       axios

@@ -91,7 +91,9 @@ export default {
     this.inputCode = route.params.inputCode;
     this.refresh();
   },
-
+  mounted() {
+    document.title = "Bus Arrival";
+  },
   methods: {
     refresh() {
       this.loading = true;

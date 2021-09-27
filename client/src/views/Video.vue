@@ -15,5 +15,8 @@
 <script>
 export default {
   name: "VideoVue",
+  mounted() {
+    document.title = "Video";
+  },
 };
 </script>
