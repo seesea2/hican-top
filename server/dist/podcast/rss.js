@@ -15,6 +15,7 @@ const podcastRss = [
     "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
     "https://podcastfeeds.nbcnews.com/l7jK75d0",
     "http://dailyboost.motivationtomove.com/rss",
+    "https://softwareengineeringdaily.com/category/podcast/feed",
     "https://feeds.publicradio.org/public_feeds/in-the-dark/itunes/rss",
     "https://www.theguardian.com/news/series/todayinfocus/podcast.xml",
     "https://www.wired.co.uk/rss/podcast",
