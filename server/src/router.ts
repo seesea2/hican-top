@@ -4,6 +4,8 @@ import { CheckWord, CheckLemmas } from "./dictionary/dictionary";
 import getBusArrival from "./lta/bus-arrival";
 import { getBusStop, getNearbyBusStops } from "./lta/bus-stops";
 import { getPodcastList } from "./podcast/rss";
+import { createUser, learnWords, addWord } from "./learn-english/learn";
+
 import ConJobs from "./cron-jobs";
 
 const apiRouter = Router();
@@ -37,6 +39,23 @@ if (!process.env.DEBUG) {
 }
 apiRouter.get("/podcast", (req, res) => {
   getPodcastList(res);
+});
+
+// API for learn English
+apiRouter.get("/user/:user", (req, res) => {
+  createUser(req.params.user, res);
+});
+// for non-signin user
+apiRouter.get("/learn", (req, res) => {
+  learnWords("", res);
+});
+apiRouter.get("/learn/:user", (req, res) => {
+  if (!req.query.word) {
+    learnWords(req.params.user, res);
+  } else {
+    // for user hide word.
+    addWord(req.params.user, String(req.query.word), res);
+  }
 });
 
 export default apiRouter;

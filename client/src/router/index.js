@@ -27,6 +27,11 @@ const routes = [
     name: "VideoVue",
     component: () => import("../views/Video.vue"),
   },
+  {
+    path: "/learn/:user?",
+    name: "Learn",
+    component: () => import("../views/Learn.vue"),
+  },
 ];
 
 const router = createRouter({
