@@ -11,7 +11,7 @@ if (!(0, fs_1.existsSync)((0, path_1.join)(dir_1.assetsDir, "/english"))) {
 function createUser(name, res) {
     try {
         let file = (0, path_1.join)(dir_1.assetsDir, `/english/${name}.usr`);
-        (0, fs_1.closeSync)((0, fs_1.openSync)(file, "w"));
+        (0, fs_1.closeSync)((0, fs_1.openSync)(file, "a"));
         res.status(200).send({ message: "Done" });
     }
     catch (e) {

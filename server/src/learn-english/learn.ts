@@ -11,7 +11,7 @@ if (!existsSync(join(assetsDir, "/english"))) {
 function createUser(name: string, res: Response) {
   try {
     let file = join(assetsDir, `/english/${name}.usr`);
-    closeSync(openSync(file, "w"));
+    closeSync(openSync(file, "a"));
     res.status(200).send({ message: "Done" });
   } catch (e) {
     res.status(500).send({ message: "Server Error." });
