@@ -144,10 +144,10 @@ export default {
       }
     },
     addBookmark() {
-      console.log("to add", this.busStop);
+      // console.log("to add", this.busStop);
       if (add(this.busStop)) {
         this.bookmark = get(this.inputCode);
-        console.log("this.bookmark after add", this.bookmark);
+        // console.log("this.bookmark after add", this.bookmark);
       }
     },
   },

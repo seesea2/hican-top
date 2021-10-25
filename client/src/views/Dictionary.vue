@@ -115,6 +115,8 @@
 
 <script>
 import axios from "axios";
+import { useRoute } from "vue-router";
+// import router from "../router";
 
 export default {
   name: "Dictionary",
@@ -124,6 +126,14 @@ export default {
       note: null,
       results: [],
     };
+  },
+  created() {
+    // optional word params in url to search directly.
+    const route = useRoute();
+    if (route.params.word) {
+      this.word = route.params.word;
+      this.search();
+    }
   },
   mounted() {
     document.title = "Dictionary";

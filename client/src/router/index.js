@@ -13,7 +13,7 @@ const routes = [
     component: () => import("../views/BusArrivalTime.vue"),
   },
   {
-    path: "/dictionary",
+    path: "/dictionary/:word?",
     name: "Dictionary",
     component: () => import("../views/Dictionary.vue"),
   },

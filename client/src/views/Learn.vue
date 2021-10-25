@@ -33,14 +33,19 @@
     </div>
 
     <div class="w-100" center>
-      <div v-if="bLogin" class="text-primary small">
-        Note:click x to hide the word for your user account.
+      <div v-if="bLogin" class="small">
+        <div>Note:</div>
+        <ul>
+          <li>click word to see dictionary;</li>
+          <li>click x to hide the word for your account.</li>
+        </ul>
       </div>
       <div v-for="(word, ind) in words" :key="word">
-        {{ ind + 1 }}: {{ word }}
+        {{ ind + 1 }}:
+        <a target="_blank" :href="'/dictionary/' + word">{{ word }}</a>
         <button
           v-if="bLogin"
-          class="btn btn-outline-info border-0"
+          class="btn btn-outline-info border-0 mx-3"
           @click="hideWord(word)"
         >
           x
@@ -72,6 +77,8 @@ export default {
   },
   created() {
     const route = useRoute();
+    // console.log("in create():");
+    // console.log(route);
     this.user = route.params.user;
     if (this.user) {
       let user = getParam(localStorageName, "user");

@@ -138,7 +138,7 @@ export default {
       if (inputCode) {
         this.inputCode = inputCode;
       }
-      console.log("inputCode:", this.inputCode);
+      // console.log("inputCode:", this.inputCode);
       if (!this.inputCode || !this.inputCode.trim()) {
         this.inputNote = "Please input bus stop code.";
         return;
@@ -174,7 +174,7 @@ export default {
         this.watchId = navigator.geolocation.watchPosition(
           (pos) => {
             if (pos && pos.coords) {
-              console.log(pos.coords);
+              // console.log(pos.coords);
               axios
                 .get("/api/lta/bus/nearbyBusStops", {
                   params: {
@@ -183,7 +183,7 @@ export default {
                   },
                 })
                 .then((resp) => {
-                  console.log("resp.data", resp.data);
+                  // console.log("resp.data", resp.data);
                   this.nearbyBusStops = resp.data;
                   this.showNearbyBusStops = true;
                 })

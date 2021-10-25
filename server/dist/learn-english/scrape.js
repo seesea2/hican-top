@@ -90,7 +90,6 @@ function Scraper() {
                         });
                     });
                 });
-                console.log(wordSet);
                 return;
             });
             break;

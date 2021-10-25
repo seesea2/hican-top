@@ -96,7 +96,7 @@ function Scraper() {
             });
           });
         });
-        console.log(wordSet);
+        // console.log(wordSet);
         return;
       });
       break;
