@@ -36,16 +36,39 @@
       <div v-if="bLogin" class="small">
         <div>Note:</div>
         <ul>
-          <li>click word to see dictionary;</li>
+          <li>click word or dictionary to see definitions;</li>
           <li>click x to hide the word for your account.</li>
         </ul>
       </div>
       <div v-for="(word, ind) in words" :key="word">
         {{ ind + 1 }}:
-        <a target="_blank" :href="'/dictionary/' + word">{{ word }}</a>
+        <a target="_blank" :href="'/dictionary/' + word"> {{ word }} </a>
+        <span class="ms-2"> [ </span>
+        <a
+          class="btn p-0 btn-small"
+          target="_blank"
+          :href="'https://dictionary.cambridge.org/dictionary/english/' + word"
+        >
+          Cambridge
+        </a>
+        <a
+          class="btn p-0 ms-1 btn-small"
+          target="_blank"
+          :href="'https://www.collinsdictionary.com/dictionary/english/' + word"
+        >
+          Collins
+        </a>
+        <a
+          class="btn p-0 ms-1 btn-small"
+          target="_blank"
+          :href="'https://www.lexico.com/en/definition/' + word"
+        >
+          Oxford
+        </a>
+        <span> ] </span>
         <button
           v-if="bLogin"
-          class="btn btn-outline-info border-0 mx-3"
+          class="btn btn-outline-info border-0 ms-2"
           @click="hideWord(word)"
         >
           x

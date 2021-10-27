@@ -34,15 +34,17 @@
           >
             <div class="card-body">
               <h5 class="card-title">
-                <span>{{ lexicalEntry.lexicalCategory.text }} | </span>
+                <span> {{ lexicalEntry.text }} | </span>
+                <span class="small">
+                  {{ lexicalEntry.lexicalCategory.text }}
+                </span>
                 <span
-                  class="px-2 small"
+                  class="mx-2 small"
                   v-if="entry.pronunciations && entry.pronunciations.length"
                 >
-                  Pronunciation:
                   <i>[ {{ entry.pronunciations[0].phoneticSpelling }} ]</i>
                   <a
-                    class="btn btn-small"
+                    class="btn p-1 btn-small"
                     @click="playAudio(entry.pronunciations[0].audioFile)"
                     style="font-size: 120%"
                   >
