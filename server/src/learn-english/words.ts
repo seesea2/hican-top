@@ -13,14 +13,9 @@ function readWords(file: string) {
         .replace(/\r\n/g, " ")
         .replace(/\n/g, " ")
         .split(" ")
-        .map((w) => w.toLowerCase())
+        // .map((w) => w.toLowerCase())
         .filter((item) => {
-          return (
-            !item.includes("'") &&
-            !item.includes(":") &&
-            item[0] >= "a" &&
-            item[0] <= "z"
-          );
+          return item.match(/^[a-zA-Z]+$/);
         });
     }
   } catch (e) {

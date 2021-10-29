@@ -32,6 +32,18 @@
       </div>
     </div>
 
+    <div class="text-center">
+      <span
+        v-if="loading"
+        class="spinner-border text-primary"
+        role="status"
+        style="width: 5rem; height: 5rem"
+        aria-hidden="true"
+        center
+      >
+      </span>
+    </div>
+
     <div class="w-100" center>
       <div v-if="bLogin" class="small">
         <div>Note:</div>
@@ -40,39 +52,47 @@
           <li>click x to hide the word for your account.</li>
         </ul>
       </div>
-      <div v-for="(word, ind) in words" :key="word">
-        {{ ind + 1 }}:
-        <a target="_blank" :href="'/dictionary/' + word"> {{ word }} </a>
-        <span class="ms-2"> [ </span>
-        <a
-          class="btn p-0 btn-small"
-          target="_blank"
-          :href="'https://dictionary.cambridge.org/dictionary/english/' + word"
-        >
-          Cambridge
-        </a>
-        <a
-          class="btn p-0 ms-1 btn-small"
-          target="_blank"
-          :href="'https://www.collinsdictionary.com/dictionary/english/' + word"
-        >
-          Collins
-        </a>
-        <a
-          class="btn p-0 ms-1 btn-small"
-          target="_blank"
-          :href="'https://www.lexico.com/en/definition/' + word"
-        >
-          Oxford
-        </a>
-        <span> ] </span>
-        <button
-          v-if="bLogin"
-          class="btn btn-outline-info border-0 ms-2"
-          @click="hideWord(word)"
-        >
-          x
-        </button>
+      <div class="row" v-for="(word, ind) in words" :key="word">
+        <div class="col-auto">
+          {{ ind + 1 }}:
+          <a target="_blank" :href="'/dictionary/' + word"> {{ word }} </a>
+        </div>
+        <div class="col-auto align-self-end ml-auto">
+          <span class="ms-2"> [ </span>
+          <a
+            class="btn p-0 btn-small"
+            target="_blank"
+            :href="
+              'https://dictionary.cambridge.org/dictionary/english/' + word
+            "
+          >
+            Cambridge
+          </a>
+          <a
+            class="btn p-0 ms-1 btn-small"
+            target="_blank"
+            :href="
+              'https://www.collinsdictionary.com/dictionary/english/' + word
+            "
+          >
+            Collins
+          </a>
+          <a
+            class="btn p-0 ms-1 btn-small"
+            target="_blank"
+            :href="'https://www.lexico.com/en/definition/' + word"
+          >
+            Oxford
+          </a>
+          <span> ] </span>
+          <button
+            v-if="bLogin"
+            class="btn btn-outline-info border-0 ms-2"
+            @click="hideWord(word)"
+          >
+            x
+          </button>
+        </div>
       </div>
       <button class="btn btn-primary w-100 my-2" @click="getWords">
         Refresh
@@ -96,29 +116,47 @@ export default {
       bLogin: false,
       user: "",
       words: [],
+      loading: true,
     };
   },
   created() {
+    // check if need to re-route
+    this.bLogin = getParam(localStorageName, "bLogin");
+    if (!this.bLogin) {
+      return;
+    }
+
     const route = useRoute();
-    // console.log("in create():");
-    // console.log(route);
     this.user = route.params.user;
     if (this.user) {
-      let user = getParam(localStorageName, "user");
-      if (user != this.user) {
-        this.bLogin = false;
-        addParam(localStorageName, "user", this.user);
-        addParam(localStorageName, "bLogin", false);
-      } else {
-        this.bLogin = getParam(localStorageName, "bLogin");
-      }
-    } else {
-      this.bLogin = false;
+      this.user = this.user.trim().toLowerCase();
     }
-    this.getWords();
+
+    // exception: login but no user.
+    let user = getParam(localStorageName, "user");
+    if (!this.user && !user) {
+      this.bLogin = false;
+      addParam(localStorageName, "bLogin", false);
+      return;
+    }
+
+    // route for last login user
+    if (!this.user) {
+      router.push({ name: "Learn", params: { user: user } });
+      return;
+    }
+    // route for different user
+    if (user != this.user) {
+      addParam(localStorageName, "user", this.user);
+      router.push({ name: "Learn", params: { user: this.user } });
+      return;
+    }
+
+    // url same as last login user.
   },
   mounted() {
     document.title = "Learn Words";
+    this.getWords();
   },
   methods: {
     logout() {
@@ -131,7 +169,7 @@ export default {
         return;
       }
 
-      this.user = this.user.trim();
+      this.user = this.user.trim().toLowerCase();
       this.bLogin = true;
       addParam(localStorageName, "user", this.user);
       addParam(localStorageName, "bLogin", true);
@@ -143,14 +181,17 @@ export default {
       if (this.user) {
         url += this.user;
       }
+      this.loading = true;
       axios
         .get(url)
         .then((resp) => {
           this.words = resp.data;
+          this.loading = false;
         })
         .catch((err) => {
           console.log(err);
           this.words = [];
+          this.loading = false;
         });
     },
     hideWord(word) {
