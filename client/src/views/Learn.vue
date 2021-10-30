@@ -85,6 +85,13 @@
           >
             Oxford
           </a>
+          <a
+            class="btn p-0 ms-1 btn-small"
+            target="_blank"
+            :href="'https://dict.eudic.net/dicts/en/' + word"
+          >
+            Eudic
+          </a>
           <span> ] </span>
           <button
             v-if="bLogin"
