@@ -121,6 +121,7 @@ export default {
   },
   created() {
     // check if need to re-route
+    // console.log("in created");
     this.bLogin = getParam(localStorageName, "bLogin");
     if (!this.bLogin) {
       return;
@@ -142,6 +143,7 @@ export default {
 
     // route for last login user
     if (!this.user) {
+      this.user = user;
       router.push({ name: "Learn", params: { user: user } });
       return;
     }
@@ -155,7 +157,9 @@ export default {
     // url same as last login user.
   },
   mounted() {
+    // console.log("in mounted");
     document.title = "Learn Words";
+    // console.log(this.user, this.bLogin);
     this.getWords();
   },
   methods: {
@@ -195,6 +199,7 @@ export default {
         });
     },
     hideWord(word) {
+      // console.log(word, this.user);
       if (!this.user) {
         return;
       }
