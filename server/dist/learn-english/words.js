@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addUserWord = exports.getUserNewWords = void 0;
+exports.addUserWord = exports.getUserWords = exports.getUserNewWords = void 0;
 const fs_1 = require("fs");
 const dir_1 = require("../dir");
 const path_1 = require("path");
@@ -47,6 +47,7 @@ function getUserWords(name) {
     }
     return words;
 }
+exports.getUserWords = getUserWords;
 function addUserWord(name, word) {
     try {
         if (!word) {

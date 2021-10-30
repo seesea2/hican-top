@@ -2,7 +2,7 @@ import { Response } from "express";
 import { existsSync, mkdirSync, openSync, closeSync } from "fs";
 import { join } from "path";
 import { assetsDir } from "../dir";
-import { getUserNewWords, addUserWord } from "./words";
+import { getUserNewWords, getUserWords, addUserWord } from "./words";
 
 if (!existsSync(join(assetsDir, "/english"))) {
   mkdirSync(join(assetsDir, "/english"), { recursive: true });
@@ -29,6 +29,15 @@ function learnWords(name: string, res: Response) {
   }
 }
 
+function learntWordsCount(name: string, res: Response) {
+  try {
+    let words = getUserWords(name);
+    res.status(200).send(JSON.stringify({ count: words.length }));
+  } catch (e) {
+    res.status(500).send({ message: "Server Error." });
+  }
+}
+
 function addWord(name: string, word: string, res: Response) {
   try {
     let rslt = addUserWord(name, word);
@@ -42,4 +51,4 @@ function addWord(name: string, word: string, res: Response) {
   }
 }
 
-export { createUser, learnWords, addWord };
+export { createUser, learnWords, learntWordsCount, addWord };

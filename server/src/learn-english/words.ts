@@ -88,4 +88,4 @@ function getUserNewWords(name: string) {
 
 getMasterWords();
 
-export { getUserNewWords, addUserWord };
+export { getUserNewWords, getUserWords, addUserWord };

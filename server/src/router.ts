@@ -4,7 +4,12 @@ import { CheckWord, CheckLemmas } from "./dictionary/dictionary";
 import getBusArrival from "./lta/bus-arrival";
 import { getBusStop, getNearbyBusStops } from "./lta/bus-stops";
 import { getPodcastList } from "./podcast/rss";
-import { createUser, learnWords, addWord } from "./learn-english/learn";
+import {
+  createUser,
+  learnWords,
+  learntWordsCount,
+  addWord,
+} from "./learn-english/learn";
 
 import ConJobs from "./cron-jobs";
 
@@ -47,15 +52,21 @@ apiRouter.get("/user/:user", (req, res) => {
 });
 // for non-signin user
 apiRouter.get("/learn", (req, res) => {
+  // console.log("in /learn");
   learnWords("", res);
 });
 apiRouter.get("/learn/:user", (req, res) => {
+  // console.log("in /learn/:user");
   if (!req.query.word) {
     learnWords(req.params.user, res);
   } else {
     // for user hide word.
     addWord(req.params.user, String(req.query.word), res);
   }
+});
+apiRouter.get("/learn/:user/count", (req, res) => {
+  // console.log("in /learn/:user/count");
+  learntWordsCount(req.params.user, res);
 });
 
 export default apiRouter;

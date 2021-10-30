@@ -22,9 +22,10 @@
           </div>
         </div>
         <div v-if="bLogin">
+          <span class="small"> Learnt:{{ learntCount }} </span>
           <button
             @click="logout"
-            class="col-auto btn btn-outline-primary btn-small"
+            class="col-auto p-1 ms-2 btn btn-outline-primary btn-small small"
           >
             Sign out
           </button>
@@ -114,6 +115,7 @@ export default {
   data() {
     return {
       bLogin: false,
+      learntCount: 0,
       user: "",
       words: [],
       loading: true,
@@ -161,6 +163,11 @@ export default {
     document.title = "Learn Words";
     // console.log(this.user, this.bLogin);
     this.getWords();
+    if (this.bLogin) {
+      axios.get("/api/learn/" + this.user + "/count").then((resp) => {
+        this.learntCount = resp.data.count;
+      });
+    }
   },
   methods: {
     logout() {
@@ -208,6 +215,7 @@ export default {
         .get(`/api/learn/${this.user}?word=${word}`)
         .then(() => {
           this.words = this.words.filter((w) => w != word);
+          this.learntCount += 1;
         })
         .catch((err) => {
           console.log(err);

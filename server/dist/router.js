@@ -43,4 +43,7 @@ apiRouter.get("/learn/:user", (req, res) => {
         (0, learn_1.addWord)(req.params.user, String(req.query.word), res);
     }
 });
+apiRouter.get("/learn/:user/count", (req, res) => {
+    (0, learn_1.learntWordsCount)(req.params.user, res);
+});
 exports.default = apiRouter;

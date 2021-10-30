@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addWord = exports.learnWords = exports.createUser = void 0;
+exports.addWord = exports.learntWordsCount = exports.learnWords = exports.createUser = void 0;
 const fs_1 = require("fs");
 const path_1 = require("path");
 const dir_1 = require("../dir");
@@ -31,6 +31,16 @@ function learnWords(name, res) {
     }
 }
 exports.learnWords = learnWords;
+function learntWordsCount(name, res) {
+    try {
+        let words = (0, words_1.getUserWords)(name);
+        res.status(200).send(JSON.stringify({ count: words.length }));
+    }
+    catch (e) {
+        res.status(500).send({ message: "Server Error." });
+    }
+}
+exports.learntWordsCount = learntWordsCount;
 function addWord(name, word, res) {
     try {
         let rslt = (0, words_1.addUserWord)(name, word);
