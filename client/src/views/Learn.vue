@@ -88,9 +88,9 @@
           <a
             class="btn p-0 ms-1 btn-small"
             target="_blank"
-            :href="'https://dict.eudic.net/dicts/en/' + word"
+            :href="'https://dict.cn/' + word"
           >
-            Eudic
+            Dict
           </a>
           <span> ] </span>
           <button
@@ -170,11 +170,11 @@ export default {
     document.title = "Learn Words";
     // console.log(this.user, this.bLogin);
     this.getWords();
-    if (this.bLogin) {
-      axios.get("/api/learn/" + this.user + "/count").then((resp) => {
-        this.learntCount = resp.data.count;
-      });
-    }
+    // if (this.bLogin) {
+    //   axios.get("/api/learn/" + this.user + "/count").then((resp) => {
+    //     this.learntCount = resp.data.count;
+    //   });
+    // }
   },
   methods: {
     logout() {
@@ -187,14 +187,19 @@ export default {
         return;
       }
 
+      // console.log("in login");
       this.user = this.user.trim().toLowerCase();
       this.bLogin = true;
       addParam(localStorageName, "user", this.user);
       addParam(localStorageName, "bLogin", true);
       axios.get("/api/user/" + this.user); //create account if not
       router.push({ name: "Learn", params: { user: this.user } });
+      axios.get("/api/learn/" + this.user + "/count").then((resp) => {
+        this.learntCount = resp.data.count;
+      });
     },
     getWords() {
+      // console.log("in getWords");
       let url = "/api/learn/";
       if (this.user) {
         url += this.user;
@@ -211,6 +216,13 @@ export default {
           this.words = [];
           this.loading = false;
         });
+
+      // console.log(this.bLogin);
+      if (this.bLogin) {
+        axios.get(url + "/count").then((resp) => {
+          this.learntCount = resp.data.count;
+        });
+      }
     },
     hideWord(word) {
       // console.log(word, this.user);
