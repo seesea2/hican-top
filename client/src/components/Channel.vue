@@ -9,9 +9,8 @@
       </div>
       <div class="col">
         <h4>{{ channel.title }}</h4>
-        <div class="small">
-          {{ channel.description }}
-        </div>
+        <div v-html="channel.description" class="small"></div>
+        <!-- {{ channel.description }} -->
         <div class="row">
           <div
             v-for="item in channel.item"
