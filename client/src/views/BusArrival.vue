@@ -1,109 +1,113 @@
 <template>
-  <div class="container py-3">
-    <div class="text-center">
-      <h2>Bus Arrival Time</h2>
-      <h6>Get bus arrival time by bus stop code.</h6>
-      <div class="row justify-content-center mx-0 mt-4">
-        <div class="col-12 col-md-6 col-lg-4">
-          <div class="input-group">
-            <input
-              v-model="inputCode"
-              placeholder="Bus stop code"
-              class="form-control"
-              v-on:keyup.enter="getBusArrival()"
-            />
-            <div class="input-group-append">
-              <button class="btn btn-primary" @click="getBusArrival()">
-                Get
-              </button>
+  <div>
+    <NavbarVue></NavbarVue>
+
+    <div class="container py-3">
+      <div class="text-center">
+        <h2>Bus Arrival Time</h2>
+        <h6>Get bus arrival time by bus stop code.</h6>
+        <div class="row justify-content-center mx-0 mt-4">
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="input-group">
+              <input
+                v-model="inputCode"
+                placeholder="Bus stop code"
+                class="form-control"
+                v-on:keyup.enter="getBusArrival()"
+              />
+              <div class="input-group-append">
+                <button class="btn btn-primary" @click="getBusArrival()">
+                  Get
+                </button>
+              </div>
+            </div>
+            <div v-if="inputNote">
+              {{ inputNote }}
             </div>
           </div>
-          <div v-if="inputNote">
-            {{ inputNote }}
-          </div>
         </div>
-      </div>
 
-      <div v-if="bookmarkBusStops && bookmarkBusStops.length" class="mt-4">
-        <h3>Bus Stop Bookmark</h3>
-        <table class="table table-sm mt-2">
+        <div v-if="bookmarkBusStops && bookmarkBusStops.length" class="mt-4">
+          <h3>Bus Stop Bookmark</h3>
+          <table class="table table-sm mt-2">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">BusStop</th>
+                <th scope="col">Name</th>
+                <th scope="col">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="bookmark in bookmarkBusStops"
+                :key="bookmark.BusStopCode"
+              >
+                <td>
+                  <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">
+                    {{ bookmark.BusStopCode }}
+                  </a>
+                </td>
+                <td>
+                  <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">
+                    {{ bookmark.Description }}@{{ bookmark.RoadName }}
+                  </a>
+                </td>
+                <td>
+                  <a @click="removeBookmark(bookmark.BusStopCode)" class="btn">
+                    X
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-4">
+          <button @click="toggleNearbyBusStops" class="btn btn-primary">
+            Toggle Nearby Bus Stops
+            <span
+              v-if="lodingNearbyBusStops"
+              class="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <div>{{ getNearbyNote }}</div>
+        </div>
+        <table v-if="showNearbyBusStops" class="table table-sm mt-2">
           <thead class="thead-dark">
             <tr>
               <th scope="col">BusStop</th>
               <th scope="col">Name</th>
-              <th scope="col">Remove</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="bookmark in bookmarkBusStops"
-              :key="bookmark.BusStopCode"
+              v-for="nearbyBusStop in nearbyBusStops"
+              :key="nearbyBusStop.busStop.BusStopCode"
             >
               <td>
-                <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">
-                  {{ bookmark.BusStopCode }}
+                <a
+                  @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
+                  class="btn"
+                >
+                  {{ nearbyBusStop.busStop.BusStopCode }}
                 </a>
               </td>
               <td>
-                <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">
-                  {{ bookmark.Description }}@{{ bookmark.RoadName }}
-                </a>
-              </td>
-              <td>
-                <a @click="removeBookmark(bookmark.BusStopCode)" class="btn">
-                  X
+                <a
+                  @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
+                  class="btn"
+                >
+                  {{ nearbyBusStop.busStop.Description }}@{{
+                    nearbyBusStop.busStop.RoadName
+                  }}
                 </a>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      <div class="mt-4">
-        <button @click="toggleNearbyBusStops" class="btn btn-primary">
-          Toggle Nearby Bus Stops
-          <span
-            v-if="lodingNearbyBusStops"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-        </button>
-        <div>{{ getNearbyNote }}</div>
-      </div>
-      <table v-if="showNearbyBusStops" class="table table-sm mt-2">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">BusStop</th>
-            <th scope="col">Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="nearbyBusStop in nearbyBusStops"
-            :key="nearbyBusStop.busStop.BusStopCode"
-          >
-            <td>
-              <a
-                @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
-                class="btn"
-              >
-                {{ nearbyBusStop.busStop.BusStopCode }}
-              </a>
-            </td>
-            <td>
-              <a
-                @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
-                class="btn"
-              >
-                {{ nearbyBusStop.busStop.Description }}@{{
-                  nearbyBusStop.busStop.RoadName
-                }}
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
@@ -111,10 +115,12 @@
 <script>
 import axios from "axios";
 import { getAll, remove } from "../common/busBookmarks";
+import NavbarVue from "../components/Navbar.vue";
 import router from "../router";
 
 export default {
   name: "BusArrival",
+  components: { NavbarVue },
   data() {
     return {
       inputCode: null,

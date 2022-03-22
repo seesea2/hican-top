@@ -1,110 +1,113 @@
 <template>
-  <div class="container py-2">
-    <div class="text-center">
-      <h2>Learn Words</h2>
-    </div>
-    <div class="row justify-content-end">
-      <div class="col-auto">
-        <div v-if="!bLogin" class="input-group">
-          <input
-            v-model="user"
-            placeholder="user"
-            class="form-control"
-            v-on:keyup.enter="login"
-          />
-          <div class="input-group-append">
+  <div>
+    <NavbarVue></NavbarVue>
+    <div class="container py-2">
+      <div class="text-center">
+        <h2>Learn Words</h2>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-auto">
+          <div v-if="!bLogin" class="input-group">
+            <input
+              v-model="user"
+              placeholder="user"
+              class="form-control"
+              v-on:keyup.enter="login"
+            />
+            <div class="input-group-append">
+              <button
+                @click="login"
+                class="col-auto btn btn-outline-primary btn-small"
+              >
+                Sign in
+              </button>
+            </div>
+          </div>
+          <div v-if="bLogin">
+            <span class="small"> Learnt:{{ learntCount }} </span>
             <button
-              @click="login"
-              class="col-auto btn btn-outline-primary btn-small"
+              @click="logout"
+              class="col-auto p-1 ms-2 btn btn-outline-primary btn-small small"
             >
-              Sign in
+              Sign out
             </button>
           </div>
         </div>
-        <div v-if="bLogin">
-          <span class="small"> Learnt:{{ learntCount }} </span>
-          <button
-            @click="logout"
-            class="col-auto p-1 ms-2 btn btn-outline-primary btn-small small"
-          >
-            Sign out
-          </button>
-        </div>
       </div>
-    </div>
 
-    <div class="text-center">
-      <span
-        v-if="loading"
-        class="spinner-border text-primary"
-        role="status"
-        style="width: 5rem; height: 5rem"
-        aria-hidden="true"
-        center
-      >
-      </span>
-    </div>
+      <div class="text-center">
+        <span
+          v-if="loading"
+          class="spinner-border text-primary"
+          role="status"
+          style="width: 5rem; height: 5rem"
+          aria-hidden="true"
+          center
+        >
+        </span>
+      </div>
 
-    <div class="w-100" center>
-      <div v-if="bLogin" class="small">
-        <div>Note:</div>
-        <ul>
-          <li>click word or dictionary to see definitions;</li>
-          <li>click x to hide the word for your account.</li>
-        </ul>
-      </div>
-      <div class="row" v-for="(word, ind) in words" :key="word">
-        <div class="col-auto">
-          {{ ind + 1 }}:
-          <a target="_blank" :href="'/dictionary/' + word"> {{ word }} </a>
+      <div class="w-100" center>
+        <div v-if="bLogin" class="small">
+          <div>Note:</div>
+          <ul>
+            <li>click word or dictionary to see definitions;</li>
+            <li>click x to hide the word for your account.</li>
+          </ul>
         </div>
-        <div class="col-auto align-self-end ml-auto">
-          <span class="ms-2"> [ </span>
-          <a
-            class="btn p-0 btn-small"
-            target="_blank"
-            :href="
-              'https://dictionary.cambridge.org/dictionary/english/' + word
-            "
-          >
-            Cambridge
-          </a>
-          <a
-            class="btn p-0 ms-1 btn-small"
-            target="_blank"
-            :href="
-              'https://www.collinsdictionary.com/dictionary/english/' + word
-            "
-          >
-            Collins
-          </a>
-          <a
-            class="btn p-0 ms-1 btn-small"
-            target="_blank"
-            :href="'https://www.lexico.com/en/definition/' + word"
-          >
-            Oxford
-          </a>
-          <a
-            class="btn p-0 ms-1 btn-small"
-            target="_blank"
-            :href="'https://dict.cn/' + word"
-          >
-            Dict
-          </a>
-          <span> ] </span>
-          <button
-            v-if="bLogin"
-            class="btn btn-outline-info border-0 ms-2"
-            @click="hideWord(word)"
-          >
-            x
-          </button>
+        <div class="row" v-for="(word, ind) in words" :key="word">
+          <div class="col-auto">
+            {{ ind + 1 }}:
+            <a target="_blank" :href="'/dictionary/' + word"> {{ word }} </a>
+          </div>
+          <div class="col-auto align-self-end ml-auto">
+            <span class="ms-2"> [ </span>
+            <a
+              class="btn p-0 btn-small"
+              target="_blank"
+              :href="
+                'https://dictionary.cambridge.org/dictionary/english/' + word
+              "
+            >
+              Cambridge
+            </a>
+            <a
+              class="btn p-0 ms-1 btn-small"
+              target="_blank"
+              :href="
+                'https://www.collinsdictionary.com/dictionary/english/' + word
+              "
+            >
+              Collins
+            </a>
+            <a
+              class="btn p-0 ms-1 btn-small"
+              target="_blank"
+              :href="'https://www.lexico.com/en/definition/' + word"
+            >
+              Oxford
+            </a>
+            <a
+              class="btn p-0 ms-1 btn-small"
+              target="_blank"
+              :href="'https://dict.cn/' + word"
+            >
+              Dict
+            </a>
+            <span> ] </span>
+            <button
+              v-if="bLogin"
+              class="btn btn-outline-info border-0 ms-2"
+              @click="hideWord(word)"
+            >
+              x
+            </button>
+          </div>
         </div>
+        <button class="btn btn-primary w-100 my-2" @click="getWords">
+          Refresh
+        </button>
       </div>
-      <button class="btn btn-primary w-100 my-2" @click="getWords">
-        Refresh
-      </button>
     </div>
   </div>
 </template>
@@ -114,11 +117,13 @@ import { useRoute } from "vue-router";
 import axios from "axios";
 import router from "../router";
 import { addParam, getParam } from "../common/localStorage";
+import NavbarVue from "../components/Navbar.vue";
 
 const localStorageName = "LearnEn";
 
 export default {
   name: "Learn",
+  components: { NavbarVue },
   data() {
     return {
       bLogin: false,

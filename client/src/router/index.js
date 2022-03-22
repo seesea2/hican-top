@@ -4,7 +4,7 @@ import BusArrival from "../views/BusArrival.vue";
 const routes = [
   {
     path: "/",
-    name: "BusArrival",
+    name: "Root",
     component: BusArrival,
   },
   {
@@ -23,14 +23,24 @@ const routes = [
     component: () => import("../views/Podcast.vue"),
   },
   {
-    path: "/video",
-    name: "VideoVue",
-    component: () => import("../views/Video.vue"),
-  },
-  {
     path: "/learn/:user?",
     name: "Learn",
     component: () => import("../views/Learn.vue"),
+  },
+  {
+    path: "/activities",
+    name: "Activities",
+    component: () => import("../views/Activities.vue"),
+  },
+  {
+    path: "/act-cal",
+    name: "ActivitieCalendar",
+    component: () => import("../views/ActivitiesCalendar.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/Login.vue"),
   },
 ];
 

@@ -1,0 +1,28 @@
+GET http://localhost:8080/api/msi/activities
+
+#####
+
+PUT http://localhost:8080/api/msi/activities HTTP/1.1
+content-type: application/json
+
+{
+    "title": "TLTA Patch deployment to fix manual pass deferred refund approval defect",
+    "affectedSystems": "CBT TLTA application",
+    "status": "ongoing",
+    "datetimeStart":"17th Mar 2022 10:00pm ",
+    "datetimeEnd":"17th Mar 2022 11:00pm ",
+    "impact": "TLTA GUI is not accessible\nTLTA Reports (generation, schedule, view and download)\n Concession card refund is not available \n No data upload for any Tier 3 System to upstream (EZLCM and NETSCM data upload also impacted) \n No parameter download to and from TLTA, TLCM to lower tiers",
+    "noImpact": "Frontend",
+    "contactPersons": "Meiyalagan & Quek",
+    "remarks":"MSI Infra and SMT will be on stand by"
+}
+
+########
+
+
+DELETE  http://localhost:8080/api/msi/activities/24ce113d-0a1b-47f4-bc26-844cca39a82d HTTP/1.1
+content-type: application/json
+
+{
+    "id": "3d7f7eb4-c1ea-4d91-8904-69e3e906f15a"
+}

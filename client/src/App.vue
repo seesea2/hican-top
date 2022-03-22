@@ -1,18 +1,17 @@
 <template>
   <div>
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">BusArrival</router-link>
       &#9775;
-      <!-- <router-link to="/busArrival">BusArrival</router-link> | -->
       <router-link to="/dictionary">Dictionary</router-link>
       &#9775;
       <router-link to="/podcast">Podcast</router-link>
       &#9775;
       <router-link to="/learn">LearnWords</router-link>
-    </div>
+    </div> -->
     <router-view />
 
-    <AppFooter />
+    <!-- <AppFooter /> -->
 
     <!-- audio player globally available, e.g. for podcaset -->
     <AudioPlayer />
@@ -21,9 +20,10 @@
 
 <script>
 import AudioPlayer from "./components/AudioPlayer.vue";
-import AppFooter from "./components/AppFooter.vue";
+// import AppFooter from "./components/AppFooter.vue";
 export default {
-  components: { AudioPlayer, AppFooter },
+  // components: { AudioPlayer, AppFooter },
+  components: { AudioPlayer },
 };
 </script>
 

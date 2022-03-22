@@ -22,7 +22,7 @@ function learnWords(name: string, res: Response) {
   try {
     let words = getUserNewWords(name);
     words.sort(() => Math.random() - 0.5);
-    words = words.slice(0, 50);
+    words = words.slice(0, 25);
     res.status(200).send(JSON.stringify(words));
   } catch (e) {
     res.status(500).send({ message: "Server Error." });

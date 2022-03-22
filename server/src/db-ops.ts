@@ -1,33 +1,59 @@
-// import { join } from "path";
-// import { Database, OPEN_CREATE, OPEN_READWRITE, verbose } from "sqlite3";
+import { join } from "path";
+import { serverDir } from "./dir";
+const Database = require("better-sqlite3");
 
-// let database: Database = null;
+interface Activity {
+  title?: string;
+  status?: string;
+  affectedSystems?: string;
+  startDatetime?: string;
+  endDatetime?: string;
+  impact?: string;
+  noImpact?: string;
+  remarks?: string;
+  contactPersons?: string;
+  createDatetime?: string;
+  updateDatetime?: string;
+}
 
-// export function dbRW() {
-//   if (!database) {
-//     const sqlite3 = verbose();
-//     const dbFile = join(__dirname, "/../db.db3");
-//     database = new sqlite3.Database(
-//       dbFile,
-//       OPEN_READWRITE | OPEN_CREATE,
-//       (err: string) => {
-//         if (err) {
-//           console.log("dbRW error", err);
-//           database = undefined;
-//         }
-//       }
-//     );
-//   }
-//   return database;
-// }
+const dbFile = join(serverDir, "/msi.sqlite3");
+try {
+  let db = Database(dbFile);
+  // Activities Table
+  db.exec(
+    `CREATE TABLE IF NOT EXISTS Activities(id	TEXT NOT NULL primary key, 
+      title	TEXT, 
+      status	TEXT, 
+      affectedSystems	TEXT, 
+      startDatetime	TEXT, 
+      endDatetime	TEXT, 
+      impact	TEXT, 
+      noImpact	TEXT, 
+      remarks	TEXT, 
+      contactPersons	TEXT,
+      createDatetime TEXT,
+      updateDatetime TEXT
+    );`
+  );
+  // Usres Table
+  db.exec(
+    `CREATE TABLE IF NOT EXISTS Users(id	TEXT NOT NULL primary key, 
+      pwd	TEXT,
+      status  TEXT
+    );`
+  );
+  // console.log(rslt);
+  db.close();
+} catch (e) {
+  console.log(e);
+}
 
-// export function dbClose() {
-//   if (database) {
-//     database.close((err: string) => {
-//       if (err) {
-//         console.error(err);
-//       }
-//     });
-//     database = undefined;
-//   }
-// }
+function dbOpen() {
+  let db = Database(dbFile);
+  return db;
+}
+function dbClose(db: any) {
+  db.close();
+}
+
+export { Activity, dbClose, dbOpen };
