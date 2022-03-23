@@ -486,17 +486,22 @@ export default {
             // console.log(resp.data);
             this.curActivity.id = resp.data.id;
             this.activities.push(this.curActivity);
+
             this.submitMsg = "Add successfully.";
-          })
-          .catch((err) => {
-            this.submitMsg = err;
-            console.log("post err:", err);
-          })
-          .finally(() => {
             setTimeout(() => {
               this.submitMsg = "";
               toggleModal();
             }, 3000);
+
+            this.calendarOptions.events.push({
+              id: this.curActivity.id,
+              title: this.curActivity.title,
+              start: dateToLocaleStr(new Date(this.curActivity.startDatetime)),
+            });
+          })
+          .catch((err) => {
+            this.submitMsg = err;
+            console.log("post err:", err);
           });
       }
     },
