@@ -123,8 +123,6 @@ import axios from "axios";
 import { useRoute } from "vue-router";
 import NavbarVue from "../components/Navbar.vue";
 
-// import router from "../router";
-
 export default {
   name: "Dictionary",
   components: { NavbarVue },

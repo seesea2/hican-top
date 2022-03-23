@@ -104,9 +104,11 @@
             </button>
           </div>
         </div>
-        <button class="btn btn-primary w-100 my-2" @click="getWords">
-          Refresh
-        </button>
+        <div class="text-center">
+          <button class="btn btn-primary my-2" @click="getWords">
+            Refresh
+          </button>
+        </div>
       </div>
     </div>
   </div>

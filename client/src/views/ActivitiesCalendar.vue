@@ -105,11 +105,14 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5
-                v-if="curActivity"
+                v-if="curActivity && curActivity.id"
                 class="modal-title"
                 id="editActivityModalToggleLabel"
               >
                 Edit Activity
+              </h5>
+              <h5 v-else class="modal-title" id="editActivityModalToggleLabel">
+                Add Activity
               </h5>
               <button
                 type="button"
@@ -220,24 +223,21 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button
-                class="btn btn-primary"
-                data-bs-dismiss="modal"
-                @click="Submit()"
-              >
-                Submit
-              </button>
+              <!-- yc todo: fully remove bootstrap: data-bs-dismiss="modal" -->
+              <button class="btn btn-primary" @click="Submit()">Submit</button>
             </div>
           </div>
         </div>
       </div>
 
       <hr class="border-1 my-3" />
-      <div
-        class="btn btn-primary btn-small"
-        @click="toggleModal('editActivityModalToggle')"
-      >
-        Add
+      <div class="text-center">
+        <button
+          class="btn btn-primary"
+          @click="toggleModal('editActivityModalToggle')"
+        >
+          Add
+        </button>
       </div>
     </div>
   </div>

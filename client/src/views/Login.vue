@@ -1,40 +1,32 @@
 <template>
-  <div>
-    <div class="container">
-      <div
-        class="row align-item-center justify-content-center"
-        style="height: 80vh"
-      >
-        <div class="col align-self-center">
-          <div
-            class="form mx-auto bg-light px-5 pt-4 pb-3"
-            style="max-width: 300px"
-          >
-            <label class="form-label small">ID:</label>
-            <input class="form-control" v-model="id" />
-            <label class="form-label small">Password:</label>
-            <input class="form-control" type="password" v-model="pwd" />
-            <div class="">
-              <button
-                class="form-control btn btn-primary btn-small mt-3"
-                @click="Login()"
-              >
-                Login
-              </button>
-              <div class="mt-3">
-                <small @click="Register()"> Register </small>
-              </div>
+  <div class="container">
+    <div
+      class="row align-item-center justify-content-center"
+      style="height: 80vh"
+    >
+      <div class="col align-self-center">
+        <div
+          class="form mx-auto bg-light px-5 pt-4 pb-3"
+          style="max-width: 300px"
+        >
+          <label class="form-label small">ID:</label>
+          <input class="form-control" v-model="id" />
+          <label class="form-label small">Password:</label>
+          <input class="form-control" type="password" v-model="pwd" />
+          <div class="">
+            <button
+              class="form-control btn btn-primary btn-small mt-3"
+              @click="Login()"
+            >
+              Login
+            </button>
+            <div class="mt-3">
+              <small @click="Register()"> Register </small>
             </div>
           </div>
-          <div class="text-center">
-            <small class="bg-warning">{{ errMsg }} </small>
-          </div>
         </div>
-      </div>
-
-      <div class="row align-item-end" style="height: 20vh">
-        <div class="col text-center align-self-end">
-          <AppFooter></AppFooter>
+        <div v-if="errMsg" class="text-center">
+          <small class="bg-warning">{{ errMsg }} </small>
         </div>
       </div>
     </div>
@@ -43,14 +35,12 @@
 
 
 <script>
-import AppFooter from "../components/AppFooter.vue";
 import router from "../router";
 import { localLogin } from "../common/msiLogin";
 import axios from "axios";
 
 export default {
   name: "LoginVue",
-  components: { AppFooter },
   data() {
     return {
       id: "test",
@@ -70,7 +60,7 @@ export default {
           // console.log(" login ok", resp.data);
           localLogin(this.id);
           router.push({
-            name: "Activities",
+            name: "ActivitieCalendar",
           });
         })
         .catch((err) => {

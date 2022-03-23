@@ -11,7 +11,7 @@
     </div> -->
     <router-view />
 
-    <!-- <AppFooter /> -->
+    <AppFooter></AppFooter>
 
     <!-- audio player globally available, e.g. for podcaset -->
     <AudioPlayer />
@@ -20,10 +20,9 @@
 
 <script>
 import AudioPlayer from "./components/AudioPlayer.vue";
-// import AppFooter from "./components/AppFooter.vue";
+import AppFooter from "./components/AppFooter.vue";
 export default {
-  // components: { AudioPlayer, AppFooter },
-  components: { AudioPlayer },
+  components: { AudioPlayer, AppFooter },
 };
 </script>
 
@@ -33,13 +32,8 @@ body {
   min-height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  padding-bottom: 30px; /* space for footer */
 }
-
-/* * {
-  border-style: solid;
-  border-width: 1px;
-  border-color: red;
-} */
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -61,4 +55,11 @@ body {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+/* for layout debugging */
+/* * {
+  border-style: solid;
+  border-width: 1px;
+  border-color: red;
+} */
 </style>
