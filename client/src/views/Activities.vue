@@ -16,10 +16,10 @@
         >
           <div
             class="card"
-            data-bs-toggle="modal"
-            href="#activityDetailsModalToggle"
             role="button"
-            @click="ViewDetails(activity)"
+            @click="
+              ViewDetails(activity) && toggleModal('activityDetailsModalToggle')
+            "
           >
             <div class="card-header">
               {{ activity.title }}
@@ -64,8 +64,8 @@
               <button
                 type="button"
                 class="btn-close"
-                data-bs-dismiss="modal"
                 aria-label="Close"
+                @click="toggleModal()"
               ></button>
             </div>
             <div class="modal-body" v-if="curActivity">
@@ -126,8 +126,7 @@
             <div class="modal-footer">
               <button
                 class="btn btn-primary"
-                data-bs-target="#editActivityModalToggle"
-                data-bs-toggle="modal"
+                @click="toggleModal('editActivityModalToggle')"
               >
                 Edit
               </button>
@@ -158,8 +157,8 @@
               <button
                 type="button"
                 class="btn-close"
-                data-bs-dismiss="modal"
                 aria-label="Close"
+                @click="toggleModal()"
               ></button>
             </div>
             <div class="modal-body" v-if="curActivity">
@@ -266,8 +265,7 @@
             <div class="modal-footer">
               <button
                 class="btn btn-primary"
-                data-bs-dismiss="modal"
-                @click="Submit()"
+                @click="Submit() && toggleModal()"
               >
                 Submit
               </button>
@@ -279,8 +277,7 @@
       <hr class="border-1 my-3" />
       <div
         class="btn btn-primary btn-small"
-        data-bs-target="#editActivityModalToggle"
-        data-bs-toggle="modal"
+        @click="toggleModal('editActivityModalToggle')"
       >
         Add
       </div>
@@ -297,6 +294,7 @@
 import axios from "axios";
 import MsiNavbarVue from "../components/MsiNavbar.vue";
 import { loginId } from "../common/msiLogin";
+import toggleModal from "../common/modal";
 import router from "../router";
 
 export default {
@@ -390,6 +388,9 @@ export default {
     this.minutes.push("45");
   },
   methods: {
+    toggleModal(id) {
+      return toggleModal(id);
+    },
     Refresh(filter) {
       if (filter) {
         if (filter == "Day") {
@@ -428,19 +429,6 @@ export default {
           // console.log(typeof resp.data);
           this.activities = resp.data;
           this.orgActivities = resp.data;
-
-          // console.log(Object.prototype.toString.call(this.activities));
-          // console.log(this.activities.length);
-          // for (let i = 0; i < this.activities.length; ++i) {
-          //   let item = this.activities[i];
-          //   for (let key in item) {
-          //     if (this.activities[i][key]) {
-          //       this.activities[i][key] = this.activities[i][key]
-          //         .replace(/\r\n/g, "<br>")
-          //         .replace(/\n/g, "<br>");
-          //     }
-          //   }
-          // }
         })
         .catch((err) => {
           console.log(err);
@@ -451,7 +439,7 @@ export default {
       console.log("in Submit:", this.curActivity);
       if (!this.curActivity.title) {
         this.submitMsg = "Title is empty.";
-        return;
+        return false;
       }
 
       // console.log("in a:", this.curActivity);
@@ -494,9 +482,11 @@ export default {
             setTimeout(() => {
               this.submitMsg = "";
             }, 3000);
+            return true;
           })
           .catch((err) => {
             console.log("post err:", err);
+            return false;
           });
       }
       // new act, to insert using POST
@@ -511,9 +501,11 @@ export default {
             setTimeout(() => {
               this.submitMsg = "";
             }, 3000);
+            return true;
           })
           .catch((err) => {
             console.log("post err:", err);
+            return false;
           });
       }
     },
@@ -537,6 +529,7 @@ export default {
       //   options
       // );
       // activityDetailsModal.show();
+      return true;
     },
   },
 };

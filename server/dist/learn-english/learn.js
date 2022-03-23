@@ -23,7 +23,7 @@ function learnWords(name, res) {
     try {
         let words = (0, words_1.getUserNewWords)(name);
         words.sort(() => Math.random() - 0.5);
-        words = words.slice(0, 50);
+        words = words.slice(0, 25);
         res.status(200).send(JSON.stringify(words));
     }
     catch (e) {

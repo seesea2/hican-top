@@ -6,6 +6,8 @@ const bus_arrival_1 = require("./lta/bus-arrival");
 const bus_stops_1 = require("./lta/bus-stops");
 const rss_1 = require("./podcast/rss");
 const learn_1 = require("./learn-english/learn");
+const activities_1 = require("./msi/activities");
+const users_1 = require("./msi/users");
 const cron_jobs_1 = require("./cron-jobs");
 const apiRouter = (0, express_1.Router)();
 apiRouter.get("/dictionary/oxford/lemmas/:word", (req, res) => {
@@ -45,5 +47,61 @@ apiRouter.get("/learn/:user", (req, res) => {
 });
 apiRouter.get("/learn/:user/count", (req, res) => {
     (0, learn_1.learntWordsCount)(req.params.user, res);
+});
+apiRouter.post("/msi/login", (req, res) => {
+    console.log(req.body);
+    let record = (0, users_1.LoginUser)(req.body);
+    if (record) {
+        res.status(200).send();
+    }
+    else {
+        res.status(403).send();
+    }
+});
+apiRouter.post("/msi/logout", (req, res) => {
+    console.log(req.body);
+    let record = (0, users_1.LogoutUser)(req.body);
+    if (record) {
+        res.status(200).send();
+    }
+    else {
+        res.status(403).send();
+    }
+});
+apiRouter.post("/msi/register", (req, res) => {
+    console.log(req.body);
+    let record = (0, users_1.InsertUser)(req.body);
+    if (record) {
+        res.status(200).send();
+    }
+    else {
+        res.status(403).send();
+    }
+});
+apiRouter.get("/msi/activities", (req, res) => {
+    let acts = (0, activities_1.AllActivitity)();
+    res.status(200).send(JSON.stringify(acts));
+});
+apiRouter.post("/msi/activities", (req, res) => {
+    console.log("req post:", req.body);
+    console.log("req post:", req.params);
+    let id = (0, activities_1.InsertActivitity)(req.body);
+    res.status(200).send({ id: id });
+});
+apiRouter.put("/msi/activities", (req, res) => {
+    console.log("req put:", req.body);
+    console.log("req put:", req.params);
+    let id = (0, activities_1.UpdateActivitity)(req.body);
+    res.status(200).send({ id: id });
+});
+apiRouter.delete("/msi/activities/:id", (req, res) => {
+    console.log("req delete:", req.params.id);
+    let rslt = (0, activities_1.DeleteActivitity)(req.params.id);
+    if (rslt == true) {
+        res.status(200).send();
+    }
+    else {
+        res.status(500).send({ err: "failed" });
+    }
 });
 exports.default = apiRouter;

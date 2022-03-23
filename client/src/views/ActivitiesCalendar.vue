@@ -5,46 +5,6 @@
     <div class="container mt-5">
       <FullCalendar id="fullCalendar" :options="calendarOptions" />
 
-      <div v-if="0 && activities.length" class="row">
-        <div
-          v-for="activity in activities"
-          class="col-sm-12 col-md-3"
-          :key="activity.id"
-        >
-          <!-- href="#activityDetailsModalToggle" -->
-          <div
-            class="card"
-            data-bs-toggle="modal"
-            role="button"
-            @click="ViewDetails(activity)"
-          >
-            <div class="card-header">
-              {{ activity.title }}
-            </div>
-            <div class="card-body">
-              <!-- <div class="card-title fw-bold">{{ activity.title }}</div> -->
-              <div class="card-text small">
-                <b>Start</b>:
-                {{ new Date(activity.startDatetime).toLocaleString() }}
-              </div>
-              <div class="card-text small">
-                <b>End</b>:
-                {{ new Date(activity.endDatetime).toLocaleString() }}
-              </div>
-              <p class="card-text small">
-                <b>Affected Systems</b> : {{ activity.affectedSystems }}
-              </p>
-            </div>
-            <!-- <button
-              class="btn btn-secondary btn-small"
-              @click="Delete(activity.id)"
-            >
-              Delete
-            </button> -->
-          </div>
-        </div>
-      </div>
-
       <div
         class="modal fade"
         id="activityDetailsModalToggle"
@@ -61,8 +21,8 @@
               <button
                 type="button"
                 class="btn-close"
-                data-bs-dismiss="modal"
                 aria-label="Close"
+                @click="toggleModal()"
               ></button>
             </div>
             <div class="modal-body" v-if="curActivity">
@@ -122,9 +82,8 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-primary"
-                data-bs-target="#editActivityModalToggle"
-                data-bs-toggle="modal"
+                class="btn btn-primary btn-small"
+                @click="toggleModal('editActivityModalToggle')"
               >
                 Edit
               </button>
@@ -155,8 +114,8 @@
               <button
                 type="button"
                 class="btn-close"
-                data-bs-dismiss="modal"
                 aria-label="Close"
+                @click="toggleModal()"
               ></button>
             </div>
             <div class="modal-body" v-if="curActivity">
@@ -276,8 +235,7 @@
       <hr class="border-1 my-3" />
       <div
         class="btn btn-primary btn-small"
-        data-bs-target="#editActivityModalToggle"
-        data-bs-toggle="modal"
+        @click="toggleModal('editActivityModalToggle')"
       >
         Add
       </div>
@@ -291,11 +249,11 @@ import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
-// import "bootstrap";
 
 import axios from "axios";
 import MsiNavbarVue from "../components/MsiNavbar.vue";
 import { loginId } from "../common/msiLogin";
+import toggleModal from "../common/modal";
 import router from "../router";
 
 export default {
@@ -345,13 +303,14 @@ export default {
           right: "dayGridMonth,timeGridWeek,timeGridDay",
         },
         events: [],
-        dateClick: this.handleDateClick,
         editable: true,
         selectable: true,
         selectMirror: true,
         dayMaxEvents: true,
         weekends: true,
-        eventsSet: this.handleEvents,
+        dateClick: this.handleDateClick,
+        eventClick: this.handleEventClick,
+        // eventsSet: this.handleEvents,
       },
     };
   },
@@ -377,11 +336,24 @@ export default {
     this.minutes.push("45");
   },
   methods: {
-    handleEvents(events) {
-      console.log("handleEvents", events);
+    handleEventClick(clickInfo) {
+      // console.log("handleEventClick", clickInfo.event);
+      // console.log("handleEventClick", clickInfo.event.id);
+      // console.log("handleEventClick", clickInfo.event.title);
+      for (let i = 0; i < this.activities.length; ++i) {
+        if (clickInfo.event.id == this.activities[i].id) {
+          this.curActivity = this.activities[i];
+        }
+      }
+
+      toggleModal("activityDetailsModalToggle");
     },
+    // handleEvents(events) {
+    //   console.log("handleEvents", events);
+    // },
     handleDateClick() {
-      console.log("in handleDateClick");
+      // console.log("in handleDateClick");
+      toggleModal("editActivityModalToggle");
     },
     Refresh() {
       axios
@@ -391,7 +363,7 @@ export default {
 
           for (let i = 0; i < this.activities.length; ++i) {
             this.calendarOptions.events.push({
-              id: i,
+              id: this.activities[i].id,
               title: this.activities[i].title,
               start: new Date(this.activities[i].startDatetime)
                 .toISOString()
@@ -482,15 +454,8 @@ export default {
         console.log(err);
       });
     },
-    ViewDetails(activity) {
-      // console.log(activity.id);
-      this.curActivity = activity;
-
-      // let activityDetailsModal = new bootstrap.Modal(
-      //   document.getElementById("activityDetailsModalToggle")
-      //   // options
-      // );
-      // activityDetailsModal.show();
+    toggleModal(id) {
+      return toggleModal(id);
     },
   },
 };
