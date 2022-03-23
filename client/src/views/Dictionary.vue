@@ -46,7 +46,7 @@
                   >
                     <i>[ {{ entry.pronunciations[0].phoneticSpelling }} ]</i>
                     <a
-                      class="btn p-1 btn-small"
+                      class="btn p-1 btn-sm"
                       @click="playAudio(entry.pronunciations[0].audioFile)"
                       style="font-size: 120%"
                     >

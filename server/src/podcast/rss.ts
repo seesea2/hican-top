@@ -40,7 +40,7 @@ function AllChannels() {
   let channels: Channel[] = [];
   try {
     for (let i = 0; i < podcastRss.length; i++) {
-      console.log("AllChannels", i);
+      // console.log("AllChannels", i);
       const rssJson = join(assetsDir, "./rss/podcast-" + i + ".json");
       const rawData = readFileSync(rssJson, "utf-8");
       let json = JSON.parse(rawData);

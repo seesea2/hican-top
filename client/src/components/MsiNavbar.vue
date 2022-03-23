@@ -1,9 +1,13 @@
 <template>
   <nav class="navbar navbar-dark bg-dark">
     <div class="col">
-      <router-link to="/act-cal">ActivitiesCalendar</router-link>
+      <router-link to="/act-cal" class="btn btn-sm text-white">
+        ActivitiesCalendar
+      </router-link>
       &#9775;
-      <router-link to="/activities">Activities</router-link>
+      <router-link to="/activities" class="btn btn-sm text-white">
+        Activities
+      </router-link>
     </div>
     <div class="col-auto">
       <button class="btn btn-sm text-white" @click="Logout()">Logout</button>

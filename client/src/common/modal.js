@@ -3,7 +3,7 @@
 let curOpenModalId = "";
 
 function toggleModal(id) {
-  console.log("common toggleModal:", id);
+  // console.log("common toggleModal:", id);
   let bodyEl = document.getElementsByTagName("body");
 
   // console.log("bodyEl.className : ", bodyEl.className);
@@ -25,9 +25,9 @@ function toggleModal(id) {
     doOpen = true;
   }
 
-  console.log(
-    `doClose: ${doClose}, doOpen: ${doOpen},  curOpenModalId: ${curOpenModalId}`
-  );
+  // console.log(
+  //   `doClose: ${doClose}, doOpen: ${doOpen},  curOpenModalId: ${curOpenModalId}`
+  // );
   if (doClose) {
     if (bodyEl.className) {
       bodyEl.className = bodyEl.className.replace(" modal-open", "");

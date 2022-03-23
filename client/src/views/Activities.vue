@@ -2,16 +2,11 @@
   <div>
     <MsiNavbarVue></MsiNavbarVue>
 
-    <!-- <div class="btn" @click="Refresh('Day')">The day</div>
-    <div class="btn" @click="Refresh('Week')">The week</div>
-    <div class="btn" @click="Refresh('Month')">The month</div> -->
-
     <div class="container mt-5">
-      <!-- <FullCalendar :options="calendarOptions" /> -->
       <div v-if="activities.length" class="row">
         <div
           v-for="activity in activities"
-          class="col-sm-12 col-md-3"
+          class="col-sm-12 col-md-3 my-1"
           :key="activity.id"
         >
           <div
@@ -276,16 +271,16 @@
           </div>
         </div>
       </div>
-
-      <hr class="border-1 my-3" />
-      <div class="text-center">
-        <button
-          class="btn btn-primary"
-          @click="toggleModal('editActivityModalToggle')"
-        >
-          Add
-        </button>
-      </div>
+    </div>
+    
+    <hr class="border-1 my-3" />
+    <div class="text-center">
+      <button
+        class="btn btn-primary"
+        @click="toggleModal('editActivityModalToggle')"
+      >
+        Add
+      </button>
     </div>
   </div>
 </template>

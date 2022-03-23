@@ -7,15 +7,15 @@
       <div class="col align-self-center">
         <div
           class="form mx-auto bg-light px-5 pt-4 pb-3"
-          style="max-width: 300px"
+          style="max-width: 350px"
         >
           <label class="form-label small">ID:</label>
           <input class="form-control" v-model="id" />
           <label class="form-label small">Password:</label>
           <input class="form-control" type="password" v-model="pwd" />
-          <div class="">
+          <div>
             <button
-              class="form-control btn btn-primary btn-small mt-3"
+              class="form-control btn btn-primary btn-sm mt-3"
               @click="Login()"
             >
               Login

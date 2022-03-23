@@ -17,14 +17,12 @@
 
 <script>
 // import axios from "axios";
-// import MsiNavbarVue from "../components/MsiNavbar.vue";
 import { loginId } from "../common/msiLogin";
 import router from "../router";
 
 export default {
   name: "ActivityDetailsVue",
   props: ["activity"],
-  // components: { MsiNavbarVue },
   data() {
     return {};
   },

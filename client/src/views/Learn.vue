@@ -17,7 +17,7 @@
             <div class="input-group-append">
               <button
                 @click="login"
-                class="col-auto btn btn-outline-primary btn-small"
+                class="col-auto btn btn-outline-primary btn-sm"
               >
                 Sign in
               </button>
@@ -27,7 +27,7 @@
             <span class="small"> Learnt:{{ learntCount }} </span>
             <button
               @click="logout"
-              class="col-auto p-1 ms-2 btn btn-outline-primary btn-small small"
+              class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm small"
             >
               Sign out
             </button>
@@ -63,7 +63,7 @@
           <div class="col-auto align-self-end ml-auto">
             <span class="ms-2"> [ </span>
             <a
-              class="btn p-0 btn-small"
+              class="btn p-0 btn-sm"
               target="_blank"
               :href="
                 'https://dictionary.cambridge.org/dictionary/english/' + word
@@ -72,7 +72,7 @@
               Cambridge
             </a>
             <a
-              class="btn p-0 ms-1 btn-small"
+              class="btn p-0 ms-1 btn-sm"
               target="_blank"
               :href="
                 'https://www.collinsdictionary.com/dictionary/english/' + word
@@ -81,14 +81,14 @@
               Collins
             </a>
             <a
-              class="btn p-0 ms-1 btn-small"
+              class="btn p-0 ms-1 btn-sm"
               target="_blank"
               :href="'https://www.lexico.com/en/definition/' + word"
             >
               Oxford
             </a>
             <a
-              class="btn p-0 ms-1 btn-small"
+              class="btn p-0 ms-1 btn-sm"
               target="_blank"
               :href="'https://dict.cn/' + word"
             >

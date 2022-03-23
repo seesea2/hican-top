@@ -1,6 +1,14 @@
-let a = 1
-let b = a
-console.log(a, b)
+// let tt = new Date();
+// console.log(tt.toLocaleString());
+// console.log(tt.toLocaleDateString());
+// console.log(tt.toISOString());
 
-b = 2
-console.log(a, b)
+// tt = new Date(tt.toISOString().split("Z")[0] + "+08:00");
+// console.log(tt.toLocaleString());
+// console.log(tt.toLocaleDateString());
+// console.log(tt.toISOString());
+
+// tt = new Date(tt.toISOString().split("Z")[0] + "-08:00");
+// console.log(tt.toLocaleString());
+// console.log(tt.toLocaleDateString());
+// console.log(tt.toISOString());
