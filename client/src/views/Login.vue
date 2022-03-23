@@ -5,8 +5,9 @@
       style="height: 80vh"
     >
       <div class="col align-self-center">
+        <h2 class="text-center">Please sign in</h2>
         <div
-          class="form mx-auto bg-light px-5 pt-4 pb-3"
+          class="form mx-auto px-5 pt-4 pb-3 bg-gray"
           style="max-width: 350px"
         >
           <label class="form-label small">ID:</label>
@@ -14,11 +15,8 @@
           <label class="form-label small">Password:</label>
           <input class="form-control" type="password" v-model="pwd" />
           <div>
-            <button
-              class="form-control btn btn-primary btn-sm mt-3"
-              @click="Login()"
-            >
-              Login
+            <button class="form-control btn btn-primary mt-3" @click="Login()">
+              Sign in
             </button>
             <div class="mt-3">
               <small @click="Register()"> Register </small>

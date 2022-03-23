@@ -1,14 +1,5 @@
 <template>
   <div>
-    <!-- <div id="nav">
-      <router-link to="/">BusArrival</router-link>
-      &#9775;
-      <router-link to="/dictionary">Dictionary</router-link>
-      &#9775;
-      <router-link to="/podcast">Podcast</router-link>
-      &#9775;
-      <router-link to="/learn">LearnWords</router-link>
-    </div> -->
     <router-view />
 
     <AppFooter></AppFooter>
@@ -40,7 +31,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
-  color: #2c3e50;
+  /* color: #2c3e50; */
 }
 
 #nav {
@@ -54,6 +45,10 @@ body {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.bg-gray {
+  background-color: #f5f5f5;
 }
 
 /* for layout debugging */

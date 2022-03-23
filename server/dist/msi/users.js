@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.allLoginUsers = exports.LogoutUser = exports.LoginUser = exports.DeleteUser = exports.InsertUser = exports.AllUsers = void 0;
+exports.allLoginUsers = exports.LogoutUser = exports.LoginUser = exports.InsertUser = exports.DeleteUser = exports.ChangePwd = exports.AllUsers = void 0;
 const db_ops_1 = require("../db-ops");
 const crypto_1 = require("crypto");
 let allLoginUsers = [];
@@ -29,6 +29,26 @@ function InsertUser(data) {
     }
 }
 exports.InsertUser = InsertUser;
+function ChangePwd(data) {
+    if (!data || !data.oldPwd || !data.newPwd)
+        return false;
+    try {
+        let oldPwdHash = (0, crypto_1.createHash)("sha1").update(data.oldPwd).digest("hex");
+        let newPwdHash = (0, crypto_1.createHash)("sha1").update(data.newPwd).digest("hex");
+        let sql = `update "Users" set "pwd"='${newPwdHash}' where "id"='${data.id}' and "pwd"='${oldPwdHash}'`;
+        let db = (0, db_ops_1.dbOpen)();
+        let stmt = db.prepare(sql);
+        let rslt = stmt.run();
+        console.log(rslt);
+        (0, db_ops_1.dbClose)(db);
+        return true;
+    }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+exports.ChangePwd = ChangePwd;
 function DeleteUser(id) {
     try {
         let db = (0, db_ops_1.dbOpen)();

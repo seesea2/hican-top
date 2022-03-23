@@ -28,6 +28,26 @@ function InsertUser(data: any) {
   }
 }
 
+function ChangePwd(data: any) {
+  if (!data || !data.oldPwd || !data.newPwd) return false;
+
+  try {
+    let oldPwdHash = createHash("sha1").update(data.oldPwd).digest("hex");
+    let newPwdHash = createHash("sha1").update(data.newPwd).digest("hex");
+
+    let sql = `update "Users" set "pwd"='${newPwdHash}' where "id"='${data.id}' and "pwd"='${oldPwdHash}'`;
+
+    let db = dbOpen();
+    let stmt = db.prepare(sql);
+    let rslt = stmt.run();
+    console.log(rslt);
+    dbClose(db);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
 function DeleteUser(id: string) {
   try {
     let db = dbOpen();
@@ -111,8 +131,9 @@ function AllUsers() {
 
 export {
   AllUsers,
-  InsertUser,
+  ChangePwd,
   DeleteUser,
+  InsertUser,
   LoginUser,
   LogoutUser,
   allLoginUsers,

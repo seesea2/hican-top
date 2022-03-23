@@ -16,7 +16,7 @@ import {
   UpdateActivitity,
   DeleteActivitity,
 } from "./msi/activities";
-import { LoginUser, LogoutUser, InsertUser } from "./msi/users";
+import { ChangePwd, LoginUser, LogoutUser, InsertUser } from "./msi/users";
 
 import ConJobs from "./cron-jobs";
 
@@ -102,6 +102,15 @@ apiRouter.post("/msi/register", (req, res) => {
     res.status(200).send();
   } else {
     res.status(403).send();
+  }
+});
+apiRouter.put("/msi/user/pwd", (req, res) => {
+  console.log(req.body);
+  let rslt = ChangePwd(req.body);
+  if (rslt) {
+    res.status(200).send();
+  } else {
+    res.status(403).send({ err: rslt });
   }
 });
 apiRouter.get("/msi/activities", (req, res) => {

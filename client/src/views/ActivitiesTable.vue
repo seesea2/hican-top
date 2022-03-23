@@ -4,43 +4,32 @@
 
     <div class="container">
       <h4 class="my-4">Ordered by StartDatetime Decreasing</h4>
-      <div v-if="activities.length" class="row">
-        <div
-          v-for="activity in activities"
-          class="col-sm-12 col-md-3 my-1"
-          :key="activity.id"
-        >
-          <div
-            class="card"
-            role="button"
+
+      <table class="table caption-top table-striped table-hover">
+        <thead class="text-center">
+          <tr>
+            <th scope="col" style="width: 5%">#</th>
+            <th scope="col" style="width: 40%">Title</th>
+            <th scope="col" style="width: 20%">Start</th>
+            <th scope="col" style="width: 20%">End</th>
+            <th scope="col" style="width: 25%">AffectedSystems</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(activity, ind) in activities"
+            class="small"
+            :key="activity.id"
             @click="ViewDetails(activity, 'activityDetailsModalToggle')"
           >
-            <div class="card-header">
-              {{ activity.title }}
-            </div>
-            <div class="card-body">
-              <!-- <div class="card-title fw-bold">{{ activity.title }}</div> -->
-              <div class="card-text small">
-                <b>Start</b>:
-                {{ new Date(activity.startDatetime).toLocaleString() }}
-              </div>
-              <div class="card-text small">
-                <b>End</b>:
-                {{ new Date(activity.endDatetime).toLocaleString() }}
-              </div>
-              <p class="card-text small">
-                <b>Affected Systems</b> : {{ activity.affectedSystems }}
-              </p>
-            </div>
-            <!-- <button
-              class="btn btn-secondary btn-small"
-              @click="Delete(activity.id)"
-            >
-              Delete
-            </button> -->
-          </div>
-        </div>
-      </div>
+            <td>{{ ind + 1 }}</td>
+            <td>{{ activity.title }}</td>
+            <td>{{ new Date(activity.startDatetime).toLocaleString() }}</td>
+            <td>{{ new Date(activity.endDatetime).toLocaleString() }}</td>
+            <td v-html="activity.affectedSystems"></td>
+          </tr>
+        </tbody>
+      </table>
 
       <div
         class="modal fade"
@@ -291,7 +280,7 @@ function dateToLocaleStr(date) {
 }
 
 export default {
-  name: "ActivitiesVue",
+  name: "ActivitiesTable",
   components: { MsiNavbarVue },
   data() {
     return {

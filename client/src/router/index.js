@@ -33,6 +33,11 @@ const routes = [
     component: () => import("../views/Activities.vue"),
   },
   {
+    path: "/act-table",
+    name: "ActivitiesTable",
+    component: () => import("../views/ActivitiesTable.vue"),
+  },
+  {
     path: "/act-cal",
     name: "ActivitieCalendar",
     component: () => import("../views/ActivitiesCalendar.vue"),
