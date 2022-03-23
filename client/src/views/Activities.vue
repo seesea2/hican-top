@@ -12,9 +12,7 @@
           <div
             class="card"
             role="button"
-            @click="
-              ViewDetails(activity) && toggleModal('activityDetailsModalToggle')
-            "
+            @click="ViewDetails(activity, 'activityDetailsModalToggle')"
           >
             <div class="card-header">
               {{ activity.title }}
@@ -120,7 +118,7 @@
             </div>
             <div class="modal-footer">
               <button
-                class="btn btn-primary"
+                class="btn btn-primary btn-sm"
                 @click="toggleModal('editActivityModalToggle')"
               >
                 Edit
@@ -130,7 +128,7 @@
         </div>
       </div>
 
-      <!-- Edit Act Details -->
+      <!-- Modal to Add/Edit Activity Details -->
       <div
         class="modal fade"
         id="editActivityModalToggle"
@@ -180,11 +178,11 @@
                     <div class="form-control">
                       <input
                         type="date"
-                        class="col-auto border-0"
-                        v-model="startDate"
+                        class="border-0"
+                        v-model="startDateStr"
                       />
                       <select
-                        class="col-auto border-0 bg-white"
+                        class="ms-4 border-0 bg-white"
                         v-model="startHour"
                       >
                         <option v-for="hour in hours" :key="hour">
@@ -192,10 +190,7 @@
                         </option>
                       </select>
                       :
-                      <select
-                        class="col-auto border-0 bg-white"
-                        v-model="startMinute"
-                      >
+                      <select class="border-0 bg-white" v-model="startMinute">
                         <option v-for="minute in minutes" :key="minute">
                           {{ minute }}
                         </option>
@@ -207,10 +202,10 @@
                     <div class="form-control">
                       <input
                         type="date"
-                        class="col-auto border-0"
-                        v-model="endDate"
+                        class="border-0"
+                        v-model="endDateStr"
                       />
-                      <select class="border-0 bg-white" v-model="endHour">
+                      <select class="ms-4 border-0 bg-white" v-model="endHour">
                         <option v-for="hour in hours" :value="hour" :key="hour">
                           {{ hour }}
                         </option>
@@ -259,25 +254,23 @@
                   </div>
                 </div>
               </div>
+              <div v-if="submitMsg" class="text-center">
+                <small class="bg-warning">{{ submitMsg }}</small>
+              </div>
             </div>
             <div class="modal-footer">
-              <button
-                class="btn btn-primary"
-                @click="Submit() && toggleModal()"
-              >
-                Submit
-              </button>
+              <button class="btn btn-primary" @click="Submit()">Submit</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <hr class="border-1 my-3" />
     <div class="text-center">
       <button
         class="btn btn-primary"
-        @click="toggleModal('editActivityModalToggle')"
+        @click="initData() || toggleModal('editActivityModalToggle')"
       >
         Add
       </button>
@@ -286,83 +279,39 @@
 </template>
 
 <script>
-// import "@fullcalendar/core/vdom"; // solves problem with Vite
-// import FullCalendar from "@fullcalendar/vue3";
-// import dayGridPlugin from "@fullcalendar/daygrid";
-// import interactionPlugin from "@fullcalendar/interaction";
-
 import axios from "axios";
 import MsiNavbarVue from "../components/MsiNavbar.vue";
 import { loginId } from "../common/msiLogin";
 import toggleModal from "../common/modal";
 import router from "../router";
 
+function dateToLocaleStr(date) {
+  return new Date(date.toISOString().split("Z")[0] + "-08:00").toISOString();
+}
+
 export default {
   name: "ActivitiesVue",
-  // components: {
-  //   FullCalendar,
-  // },
   components: { MsiNavbarVue },
   data() {
-    let today = new Date();
-    let dateString = today.getFullYear();
-    if (today.getMonth() + 1 < 10) {
-      dateString += "-0" + (today.getMonth() + 1);
-    } else {
-      dateString += "-" + (today.getMonth() + 1);
-    }
-    if (today.getDate() < 10) {
-      dateString += "-0" + today.getDate();
-    } else {
-      dateString += "-" + today.getDate();
-    }
-
-    // print("dateString", dateString);
     return {
-      orgActivities: [],
       activities: [],
-      curActivity: {},
-      title: "",
-      affectedSystems: "",
-      startDate: dateString,
+      curActivity: {
+        title: new String(),
+        affectedSystems: new String(),
+        impact: new String(),
+        noImpact: new String(),
+        remarks: new String(),
+        contactPersons: new String(),
+      },
+      startDateStr: dateToLocaleStr(new Date()).split("T")[0],
       startHour: "00",
       startMinute: "00",
       endHour: "00",
       endMinute: "00",
-      endDate: dateString,
-      impact: "",
-      noImpact: "",
-      remarks: "",
-      contactPersons: "",
+      endDateStr: dateToLocaleStr(new Date()).split("T")[0],
       hours: [],
       minutes: [],
       submitMsg: "",
-      // calendarOptions: {
-      //   plugins: [dayGridPlugin, interactionPlugin],
-      //   initialView: "dayGridMonth",
-      //   headerToolbar: {
-      //     left: "prev,next today",
-      //     center: "title",
-      //     right: "dayGridMonth,timeGridWeek,timeGridDay",
-      //   },
-      //   initialEvents: [
-      //     {
-      //       id: 1,
-      //       title: "All-day event",
-      //       start: new Date().toISOString().replace(/T.*$/, ""),
-      //     },
-      //     {
-      //       id: 2,
-      //       title: "TCC App Ver.01.08.01 upgrade",
-      //       start: new Date().toISOString().replace(/T.*$/, "") + "T13:00:00",
-      //     },
-      //   ],
-      //   editable: true,
-      //   selectable: true,
-      //   selectMirror: true,
-      //   dayMaxEvents: true,
-      //   weekends: true,
-      // },
     };
   },
   created() {
@@ -372,7 +321,6 @@ export default {
   },
   mounted() {
     document.title = "Activities";
-    // console.log(this.startDate, this.endDate);
     this.Refresh();
 
     for (let i = 0; i < 24; ++i) {
@@ -388,8 +336,25 @@ export default {
     this.minutes.push("45");
   },
   methods: {
-    toggleModal(id) {
-      return toggleModal(id);
+    dateToLocaleStr(date) {
+      return dateToLocaleStr(date);
+    },
+    initData() {
+      console.log("initData()");
+      this.curActivity = {
+        title: "",
+        affectedSystems: "",
+        impact: "",
+        noImpact: "",
+        remarks: "",
+        contactPersons: "",
+      };
+      this.startDateStr = dateToLocaleStr(new Date()).split("T")[0];
+      this.startHour = "00";
+      this.startMinute = "00";
+      this.endDateStr = dateToLocaleStr(new Date()).split("T")[0];
+      this.endHour = "00";
+      this.endMinute = "00";
     },
     Refresh(filter) {
       if (filter) {
@@ -426,9 +391,7 @@ export default {
       axios
         .get("/api/msi/activities")
         .then((resp) => {
-          // console.log(typeof resp.data);
           this.activities = resp.data;
-          this.orgActivities = resp.data;
         })
         .catch((err) => {
           console.log(err);
@@ -439,73 +402,72 @@ export default {
       console.log("in Submit:", this.curActivity);
       if (!this.curActivity.title) {
         this.submitMsg = "Title is empty.";
-        return false;
+        return;
       }
+      this.submitMsg = "";
 
-      // console.log("in a:", this.curActivity);
-      let startDatetime = new Date(this.startDate);
+      // SG locale datetime
+      let startDatetime = new Date(this.startDateStr);
       startDatetime.setHours(parseInt(this.startHour));
       startDatetime.setMinutes(parseInt(this.startMinute));
-      // console.log(startDatetime);
-      // console.log(startDatetime.toISOString());
       this.curActivity.startDatetime = startDatetime;
-
-      let endDatetime = new Date(this.endDate);
+      let endDatetime = new Date(this.endDateStr);
       endDatetime.setHours(parseInt(this.endHour));
       endDatetime.setMinutes(parseInt(this.endMinute));
       this.curActivity.endDatetime = endDatetime;
       // console.log("endDatetime:", endDatetime);
 
       console.log("in 2:", this.curActivity);
-      // let data = {
-      //   title: this.curActivity.title,
-      //   affectedSystems: this.curActivity.affectedSystems,
-      //   startDatetime: startDatetime,
-      //   endDatetime: endDatetime,
-      //   impact: this.curActivity.impact,
-      //   noImpact: this.curActivity.noImpact,
-      //   remarks: this.curActivity.remarks,
-      //   contactPersons: this.curActivity.contactPersons,
-      // };
-      // console.log(data);
 
-      // existig act, to update using PUT
-      console.log("in 3:", this.curActivity.id);
+      // for existig Act with ID, to update using PUT
       if (this.curActivity.id) {
         axios
           .put("/api/msi/activities", this.curActivity)
-          .then((resp) => {
-            console.log(resp.data);
-            // data.id = resp.data.id;
+          .then(() => {
+            // console.log(resp.data);
             // this.activities.push(data);
             this.submitMsg = "Edit successfully.";
             setTimeout(() => {
               this.submitMsg = "";
+              toggleModal();
             }, 3000);
+
+            // update info in class.
+            for (let i = 0; i < this.activities.length; ++i) {
+              if (this.activities[i].id == this.curActivity.id) {
+                for (let key in this.activities[i]) {
+                  this.activities[i][key] = this.curActivity[key];
+                }
+                // console.log("updated info:", this.activities[i]);
+                break;
+              }
+            }
             return true;
           })
           .catch((err) => {
-            console.log("post err:", err);
-            return false;
+            this.submitMsg = err;
+            console.log("put err:", err);
           });
       }
-      // new act, to insert using POST
+      // for new Act, to insert using POST
       else {
         axios
           .post("/api/msi/activities", this.curActivity)
           .then((resp) => {
-            // console.log(resp.data.id);
+            // console.log(resp.data);
             this.curActivity.id = resp.data.id;
             this.activities.push(this.curActivity);
+
             this.submitMsg = "Add successfully.";
             setTimeout(() => {
               this.submitMsg = "";
+              toggleModal();
             }, 3000);
-            return true;
+            return;
           })
           .catch((err) => {
+            this.submitMsg = err;
             console.log("post err:", err);
-            return false;
           });
       }
     },
@@ -520,16 +482,46 @@ export default {
         console.log(err);
       });
     },
-    ViewDetails(activity) {
-      // console.log(activity.id);
-      this.curActivity = activity;
+    ViewDetails(activity, modal) {
+      this.startDateStr = dateToLocaleStr(
+        new Date(activity.startDatetime)
+      ).split("T")[0];
+      this.startHour = new Date(activity.startDatetime)
+        .getHours()
+        .toString()
+        .padStart(2, "0");
+      this.startMinute = new Date(activity.startDatetime)
+        .getMinutes()
+        .toString()
+        .padStart(2, "0");
 
-      // let activityDetailsModal = new bootstrap.Modal(
-      //   document.getElementById("myModal"),
-      //   options
-      // );
-      // activityDetailsModal.show();
+      this.endDateStr = dateToLocaleStr(new Date(activity.endDatetime)).split(
+        "T"
+      )[0];
+      this.endHour = new Date(activity.endDatetime)
+        .getHours()
+        .toString()
+        .padStart(2, "0");
+      this.endMinute = new Date(activity.endDatetime)
+        .getMinutes()
+        .toString()
+        .padStart(2, "0");
+      console.log(
+        "handleEventClick:",
+        this.startDateStr,
+        this.startHour,
+        this.startMinute
+      );
+
+      for (let key in activity) {
+        this.curActivity[key] = activity[key];
+      }
+
+      this.toggleModal(modal);
       return true;
+    },
+    toggleModal(id) {
+      return toggleModal(id);
     },
   },
 };

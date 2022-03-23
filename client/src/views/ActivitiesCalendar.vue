@@ -223,7 +223,6 @@
               </div>
             </div>
             <div class="modal-footer">
-              <!-- yc todo: fully remove bootstrap: data-bs-dismiss="modal" -->
               <button class="btn btn-primary" @click="Submit()">Submit</button>
             </div>
           </div>
@@ -264,7 +263,6 @@ export default {
   name: "ActivitiesCalendarVue",
   components: { MsiNavbarVue, FullCalendar },
   data() {
-    // user IOS date to get SG local date
     return {
       activities: [],
       curActivity: {
@@ -396,11 +394,6 @@ export default {
         .get("/api/msi/activities")
         .then((resp) => {
           this.activities = resp.data;
-
-          // console.log(
-          //   this.activities[0].title,
-          //   typeof this.activities[0].title
-          // );
 
           for (let i = 0; i < this.activities.length; ++i) {
             this.calendarOptions.events.push({

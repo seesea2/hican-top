@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-dark bg-dark">
-    <div class="col">
+    <div class="col text-white">
       <router-link to="/act-cal" class="btn btn-sm text-white">
         ActivitiesCalendar
       </router-link>
@@ -28,9 +28,9 @@ export default {
       if (id) {
         axios
           .post("/api/msi/logout", { id: id })
-          .then((resp) => {
+          .then(() => {
             localLogout();
-            console.log(resp.data);
+            // console.log(resp.data);
           })
           .catch((err) => {
             console.log(err);

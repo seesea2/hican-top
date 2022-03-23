@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     document.title = "Activities";
-    console.log(this.startDate, this.endDate);
+    // console.log(this.startDate, this.endDate);
     this.Refresh();
 
     for (let i = 0; i < 24; ++i) {

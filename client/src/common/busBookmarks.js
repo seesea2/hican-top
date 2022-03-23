@@ -7,10 +7,10 @@ function add(busStop) {
     let bookmarks = getAll();
     bookmarks.push(busStop);
     localStorage.setItem("busStopBookmarks", JSON.stringify(bookmarks));
-    console.log("add true");
+    // console.log("add true");
     return true;
   } catch (err) {
-    console.log("add false");
+    // console.log("add false");
     console.log(err);
     return false;
   }
