@@ -17,6 +17,7 @@
 **/node_modules
 
 **/*.db3
+**/*.sqlite3
 **/english
 **/oxford
 **/rss
