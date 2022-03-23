@@ -59,7 +59,7 @@ function toggleModal(id) {
       bodyEl.style = {};
     }
     bodyEl.style.overflow = "hidden";
-    bodyEl.style.paddingRight = "17px";
+    // bodyEl.style.paddingRight = "17px";
 
     let divEl = document.createElement("div");
     divEl.className = "modal-backdrop fade show";

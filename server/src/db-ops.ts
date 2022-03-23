@@ -23,7 +23,6 @@ try {
   db.exec(
     `CREATE TABLE IF NOT EXISTS Activities(id	TEXT NOT NULL primary key, 
       title	TEXT, 
-      status	TEXT, 
       affectedSystems	TEXT, 
       startDatetime	TEXT, 
       endDatetime	TEXT, 
@@ -31,6 +30,7 @@ try {
       noImpact	TEXT, 
       remarks	TEXT, 
       contactPersons	TEXT,
+      status	TEXT, 
       createDatetime TEXT,
       updateDatetime TEXT
     );`
@@ -39,6 +39,8 @@ try {
   db.exec(
     `CREATE TABLE IF NOT EXISTS Users(id	TEXT NOT NULL primary key, 
       pwd	TEXT,
+      team TEXT,
+      role TEXT,
       status  TEXT
     );`
   );

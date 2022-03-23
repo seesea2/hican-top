@@ -21,16 +21,19 @@
             <div class="card-body">
               <!-- <div class="card-title fw-bold">{{ activity.title }}</div> -->
               <div class="card-text small">
-                <b>Start</b>:
+                <b>Start:</b>
                 {{ new Date(activity.startDatetime).toLocaleString() }}
               </div>
               <div class="card-text small">
-                <b>End</b>:
+                <b>End:</b>
                 {{ new Date(activity.endDatetime).toLocaleString() }}
               </div>
-              <p class="card-text small">
-                <b>Affected Systems</b> : {{ activity.affectedSystems }}
-              </p>
+              <div class="card-text small">
+                <b>Affected Systems:</b> {{ activity.affectedSystems }}
+              </div>
+              <div class="card-text small">
+                <b>Contact Persons:</b> {{ activity.contactPersons }}
+              </div>
             </div>
             <!-- <button
               class="btn btn-secondary btn-small"

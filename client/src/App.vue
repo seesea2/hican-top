@@ -57,4 +57,7 @@ body {
   border-width: 1px;
   border-color: red;
 } */
+.modal-fullscreen {
+  padding-right: 17px;
+}
 </style>
