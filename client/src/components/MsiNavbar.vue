@@ -2,11 +2,11 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="col text-white">
       <router-link to="/act-cal" class="btn btn-sm text-white">
-        ActivitiesCalendar
+        Activity Calendar
       </router-link>
       &#9775;
       <router-link to="/activities" class="btn btn-sm text-white">
-        Activities
+        Activity Card
       </router-link>
     </div>
     <div class="col-auto">

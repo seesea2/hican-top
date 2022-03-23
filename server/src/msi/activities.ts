@@ -111,7 +111,7 @@ function AllActivitity() {
       `select * from Activities order by "startDatetime" desc;`
     );
     let items = stmt.all();
-    // console.log(item);
+    // console.log(items);
     // console.log(typeof items);
     dbClose(db);
     return items;

@@ -2,7 +2,8 @@
   <div>
     <MsiNavbarVue></MsiNavbarVue>
 
-    <div class="container mt-5">
+    <div class="container">
+      <h3 class="my-4">Ordered by StartDatetime Decreasing</h3>
       <div v-if="activities.length" class="row">
         <div
           v-for="activity in activities"
@@ -357,7 +358,7 @@ export default {
       this.endMinute = "00";
     },
     Refresh(filter) {
-      if (filter) {
+      if (0 && filter) {
         if (filter == "Day") {
           console.log("filter", filter);
           this.activities = this.orgActivities;
@@ -392,6 +393,9 @@ export default {
         .get("/api/msi/activities")
         .then((resp) => {
           this.activities = resp.data;
+          this.activities.sort(function (a, b) {
+            return new Date(b.startDatetime) - new Date(a.startDatetime);
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -442,6 +446,9 @@ export default {
                 break;
               }
             }
+            this.activities.sort(function (a, b) {
+              return new Date(b.startDatetime) - new Date(a.startDatetime);
+            });
             return true;
           })
           .catch((err) => {
@@ -457,6 +464,9 @@ export default {
             // console.log(resp.data);
             this.curActivity.id = resp.data.id;
             this.activities.push(this.curActivity);
+            this.activities.sort(function (a, b) {
+              return new Date(b.startDatetime) - new Date(a.startDatetime);
+            });
 
             this.submitMsg = "Add successfully.";
             setTimeout(() => {

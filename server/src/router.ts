@@ -107,7 +107,7 @@ apiRouter.post("/msi/register", (req, res) => {
 apiRouter.get("/msi/activities", (req, res) => {
   let acts = AllActivitity();
   // console.log(typeof acts);
-  res.status(200).send(JSON.stringify(acts));
+  res.status(200).send(acts);
 });
 apiRouter.post("/msi/activities", (req, res) => {
   console.log("req post:", req.body);
