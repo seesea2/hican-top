@@ -6,14 +6,16 @@ function toggleModal(id) {
   console.log("common toggleModal:", id);
   let bodyEl = document.getElementsByTagName("body");
 
+  // console.log("bodyEl.className : ", bodyEl.className);
+
   let doClose = false;
   let doOpen = false;
   if (!id) {
     doClose = true;
     doOpen = false;
   } else if (
-    bodyEl.className &&
-    bodyEl.className.indexOf(" modal-open") != -1
+    curOpenModalId ||
+    (bodyEl.className && bodyEl.className.indexOf(" modal-open") != -1)
   ) {
     doClose = true;
     if (id != curOpenModalId) {
