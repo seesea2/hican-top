@@ -1,5 +1,5 @@
 <template>
-  <footer class="text-center fixed-bottom bg-gray small">
+  <footer class="text-center fixed-bottom bg-gray small py-1">
     <!-- <footer class="container-fluid text-center py-4"> -->
     <span @click="toTop()">
       We
