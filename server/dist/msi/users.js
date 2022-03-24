@@ -39,13 +39,15 @@ function ChangePwd(data) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(sql);
         let rslt = stmt.run();
-        console.log(rslt);
         (0, db_ops_1.dbClose)(db);
-        return true;
+        if (rslt.changes) {
+            return { msg: "Done" };
+        }
+        return { err: "No record is changed." };
     }
     catch (e) {
         console.log(e);
-        return false;
+        return { err: e };
     }
 }
 exports.ChangePwd = ChangePwd;

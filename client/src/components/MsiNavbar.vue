@@ -174,15 +174,15 @@ export default {
           console.log(resp.data);
           if (resp.data.err) {
             this.changePwdMsg = resp.data.err;
-          } else {
-            this.changePwdMsg = "Completed.";
-            setTimeout(() => {
-              toggleModal();
-            }, 3000);
+            return;
           }
+
+          this.changePwdMsg = "Completed.";
+          setTimeout(() => {
+            toggleModal();
+          }, 3000);
         })
-        .catch((err, resp) => {
-          console.log(err, resp);
+        .catch((err) => {
           this.changePwdMsg = err;
         });
     },
