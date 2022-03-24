@@ -40,12 +40,15 @@ function ChangePwd(data: any) {
     let db = dbOpen();
     let stmt = db.prepare(sql);
     let rslt = stmt.run();
-    console.log(rslt);
+    // console.log(rslt);
     dbClose(db);
-    return true;
+    if (rslt.changes) {
+      return { msg: "Done" };
+    }
+    return { err: "No record is changed." };
   } catch (e) {
     console.log(e);
-    return false;
+    return { err: e };
   }
 }
 function DeleteUser(id: string) {

@@ -107,11 +107,7 @@ apiRouter.post("/msi/register", (req, res) => {
 apiRouter.put("/msi/user/pwd", (req, res) => {
   console.log(req.body);
   let rslt = ChangePwd(req.body);
-  if (rslt) {
-    res.status(200).send();
-  } else {
-    res.status(403).send({ err: rslt });
-  }
+  res.status(200).send(rslt);
 });
 apiRouter.get("/msi/activities", (req, res) => {
   let acts = AllActivitity();

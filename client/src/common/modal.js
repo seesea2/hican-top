@@ -2,9 +2,16 @@
 
 let curOpenModalId = "";
 
+function goBackEventListern() {
+  console.log("in goBackEventListern");
+  toggleModal();
+}
+
 function toggleModal(id) {
   // console.log("common toggleModal:", id);
-  let bodyEl = document.getElementsByTagName("body");
+  let bodyEl = document.getElementsByTagName("BODY")[0];
+  // console.log(bodyEl);
+  // console.log(bodyEl);
 
   // console.log("bodyEl.className : ", bodyEl.className);
 
@@ -28,6 +35,7 @@ function toggleModal(id) {
   // console.log(
   //   `doClose: ${doClose}, doOpen: ${doOpen},  curOpenModalId: ${curOpenModalId}`
   // );
+  // console.log("bodyEl.className : ", bodyEl.className);
   if (doClose) {
     if (bodyEl.className) {
       bodyEl.className = bodyEl.className.replace(" modal-open", "");
@@ -37,16 +45,24 @@ function toggleModal(id) {
       bodyEl.style.paddingRight = "";
     }
 
-    bodyEl[0].removeChild(bodyEl[0].lastChild);
+    let backDropEl = document.getElementById("modal-backdrop");
+    if (backDropEl) {
+      bodyEl.removeChild(backDropEl);
+    }
 
     if (curOpenModalId) {
       let elm = document.getElementById(curOpenModalId);
-      elm.style.display = "none";
-      if (elm.className) {
-        elm.className = elm.className.replace(" show", "");
+      // console.log("elm,", elm);
+      if (elm) {
+        elm.style.display = "none";
+        if (elm.className) {
+          elm.className = elm.className.replace(" show", "");
+        }
       }
       curOpenModalId = "";
     }
+
+    window.removeEventListener("popstate", goBackEventListern);
   }
 
   if (doOpen) {
@@ -59,14 +75,16 @@ function toggleModal(id) {
       bodyEl.style = {};
     }
     bodyEl.style.overflow = "hidden";
-    // bodyEl.style.paddingRight = "17px";
+    bodyEl.style.paddingRight = "17px";
 
     let divEl = document.createElement("div");
+    divEl.id = "modal-backdrop";
     divEl.className = "modal-backdrop fade show";
-    bodyEl[0].appendChild(divEl);
+    bodyEl.appendChild(divEl);
 
     curOpenModalId = id;
     let elm = document.getElementById(id);
+    // console.log("elm,", elm);
     if (!elm.style) {
       elm.style = {};
     }
@@ -76,7 +94,14 @@ function toggleModal(id) {
     } else {
       elm.className += " show";
     }
+
+    window.addEventListener("popstate", goBackEventListern);
   }
+  // console.log(
+  //   "end: ",
+  //   `doClose: ${doClose}, doOpen: ${doOpen},  curOpenModalId: ${curOpenModalId}`
+  // );
+  // console.log("bodyEl.className : ", bodyEl.className);
   return true;
 }
 

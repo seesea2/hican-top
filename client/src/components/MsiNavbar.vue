@@ -172,9 +172,17 @@ export default {
         })
         .then((resp) => {
           console.log(resp.data);
-          setTimeout(()=>{}, 3000)
+          if (resp.data.err) {
+            this.changePwdMsg = resp.data.err;
+          } else {
+            this.changePwdMsg = "Completed.";
+            setTimeout(() => {
+              toggleModal();
+            }, 3000);
+          }
         })
-        .catch((err) => {
+        .catch((err, resp) => {
+          console.log(err, resp);
           this.changePwdMsg = err;
         });
     },
