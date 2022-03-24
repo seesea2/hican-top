@@ -19,6 +19,10 @@
           />
         </router-link>
       </div>
+      <div class="col mx-auto">
+        <img style="width: 60px" src="../assets/Logo_MSI.jpg" />
+        <!-- <span class="text-primary">MSI</span> -->
+      </div>
       <div class="col-auto">
         <div class="btn-group btn text-white">
           <!-- <img
