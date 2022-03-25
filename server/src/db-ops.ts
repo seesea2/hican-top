@@ -39,9 +39,12 @@ try {
   db.exec(
     `CREATE TABLE IF NOT EXISTS Users(id	TEXT NOT NULL primary key, 
       pwd	TEXT,
+      email	TEXT,
       team TEXT,
       role TEXT,
-      status  TEXT
+      created TEXT,
+      updated TEXT,
+      status TEXT
     );`
   );
   // console.log(rslt);
@@ -54,8 +57,5 @@ function dbOpen() {
   let db = Database(dbFile);
   return db;
 }
-function dbClose(db: any) {
-  db.close();
-}
 
-export { Activity, dbClose, dbOpen };
+export { Activity, dbOpen };

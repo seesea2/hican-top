@@ -1,30 +1,55 @@
-import { dbOpen, dbClose } from "../db-ops";
+import { dbOpen } from "../db-ops";
 import { createHash } from "crypto";
+
+const dbUserColumns = [
+  "id",
+  "pwd",
+  "email",
+  "team",
+  "role",
+  "created",
+  "updated",
+];
 
 let allLoginUsers: any = [];
 
 function InsertUser(data: any) {
-  if (!data || !data.id || !data.pwd) return;
+  console.log("InsertUser", data);
+  if (!data || !data.id || !data.pwd) {
+    return { err: "ID & Password are required!" };
+  }
 
   try {
-    let fields = `"id"`;
-    let values = "'" + data.id + "'";
-
-    fields += `,"pwd"`;
-    let hash = createHash("sha1").update(data.pwd).digest("hex");
-    console.log(hash);
-    values += `,'${hash}'`;
+    let fields = "created";
+    let values = `'${new Date().toISOString()}'`;
+    for (let ind in dbUserColumns) {
+      if (data[dbUserColumns[ind]]) {
+        data[dbUserColumns[ind]] = data[dbUserColumns[ind]].replace("'", "''");
+        fields += `,"${dbUserColumns[ind]}"`;
+        if (dbUserColumns[ind] != "pwd") {
+          values += `,'${data[dbUserColumns[ind]]}'`;
+        } else {
+          let pwdHash = createHash("sha1")
+            .update(data[dbUserColumns[ind]])
+            .digest("hex");
+          values += `,'${pwdHash}'`;
+        }
+      }
+    }
 
     let sql = `insert into "Users"(${fields}) values(${values});`;
-    console.log("sql: ", sql);
+    // console.log("sql: ", sql);
     let db = dbOpen();
     let stmt = db.prepare(sql);
-    stmt.run();
-    dbClose(db);
-    return true;
+    let rslt = stmt.run();
+    db.close();
+    if (rslt && rslt.changes) {
+      return { msg: "Done" };
+    }
+    return { err: "Create user failed." };
   } catch (e) {
-    console.log(e);
-    return false;
+    // console.log(typeof e, e);
+    return { err: e };
   }
 }
 
@@ -41,8 +66,8 @@ function ChangePwd(data: any) {
     let stmt = db.prepare(sql);
     let rslt = stmt.run();
     // console.log(rslt);
-    dbClose(db);
-    if (rslt.changes) {
+    db.close();
+    if (rslt && rslt.changes) {
       return { msg: "Done" };
     }
     return { err: "No record is changed." };
@@ -56,7 +81,7 @@ function DeleteUser(id: string) {
     let db = dbOpen();
     let stmt = db.prepare(`delete from Users where id='${id}';`);
     stmt.run();
-    dbClose(db);
+    db.close();
     return true;
   } catch (e) {
     console.log(e);
@@ -83,7 +108,7 @@ function LoginUser(data: any) {
     let stmt = db.prepare(sql);
     let record = stmt.get();
     console.log("login: ", record);
-    dbClose(db);
+    db.close();
     if (record) {
       allLoginUsers.push(record);
       return record;
@@ -118,7 +143,7 @@ function AllUsers() {
     let stmt = db.prepare(`select * from Users;`);
     let items = stmt.all();
     // console.log(item);
-    dbClose(db);
+    db.close();
     return items;
   } catch (e) {
     console.log(e);

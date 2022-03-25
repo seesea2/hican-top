@@ -7,7 +7,7 @@
       <div class="col align-self-center">
         <h2 class="text-center">Please sign in</h2>
         <div
-          class="form mx-auto px-5 pt-4 pb-3 bg-gray"
+          class="form mx-auto px-5 pt-4 pb-3 bg-myblue"
           style="max-width: 20rem"
         >
           <label class="form-label small">ID:</label>
@@ -18,9 +18,6 @@
             <button class="form-control btn btn-primary mt-3" @click="Login()">
               Sign in
             </button>
-            <div class="mt-3">
-              <small @click="Register()"> Register </small>
-            </div>
           </div>
         </div>
         <div v-if="errMsg" class="text-center">
@@ -71,26 +68,6 @@ export default {
         })
         .finally(() => {
           // console.log(" login ended");
-        });
-    },
-    Register() {
-      // console.log(this.id, this.pwd);
-      axios
-        .post("/api/msi/register", { id: this.id, pwd: this.pwd })
-        .then(() => {
-          // console.log(" login ok", resp.data);
-          this.Login();
-        })
-        .catch((err) => {
-          // console.log(" Register failed");
-          // console.log("post err:", err);
-          this.errMsg = err;
-          setTimeout(() => {
-            this.errMsg = "";
-          }, 5000);
-        })
-        .finally(() => {
-          // console.log(" Register ended");
         });
     },
   },

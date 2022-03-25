@@ -36,12 +36,15 @@ body {
   padding-bottom: 3rem;
 }
 
-.bg-gray {
+.bg-mygray {
   background-color: #f5f5f5;
 }
 
 .modal-fullscreen {
   padding-right: 17px;
+}
+.bg-myblue {
+  background-color: #3f51b5;
 }
 
 /* for layout debugging */

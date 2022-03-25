@@ -5,22 +5,25 @@
         <router-link to="/act-cal" class="mx-1">
           <img
             src="../assets/svg/calendar-event.svg"
-            class="p-1 rounded bg-gray"
+            class="p-1 rounded bg-mygray"
           />
         </router-link>
         <!-- &#9775; -->
         <router-link to="/act-table" class="mx-1">
-          <img src="../assets/svg/table.svg" class="m-0 p-1 rounded bg-gray" />
+          <img
+            src="../assets/svg/table.svg"
+            class="m-0 p-1 rounded bg-mygray"
+          />
         </router-link>
         <router-link to="/activities" class="mx-1">
           <img
             src="../assets/svg/card-heading.svg"
-            class="p-1 rounded bg-gray"
+            class="p-1 rounded bg-mygray"
           />
         </router-link>
       </div>
       <div class="col mx-auto">
-        <div class="btn-group rounded bg-gray">
+        <div class="btn-group rounded bg-mygray">
           <img
             src="../assets/Logo_MSI.jpg"
             class="rounded"
@@ -62,24 +65,8 @@
           </ul>
         </div>
       </div>
-      <!-- <div class="col mx-auto">
-        <a href="https://msi-global.com.sg/" target="_blank">
-          <img
-            src="../assets/Logo_MSI.jpg"
-            class="rounded"
-            style="width: 4rem"
-          />
-        </a>
-        <a
-          href="https://compass.fsmsi.com.sg/tmtrack/tmtrack.dll?"
-          target="_blank"
-          class="text-light"
-        >
-          Compass
-        </a>
-      </div> -->
       <div class="col-auto">
-        <div class="btn-group rounded bg-gray">
+        <div class="btn-group rounded bg-mygray">
           <img
             src="../assets/svg/person.svg"
             class="dropdown-toggle btn btn-sm px-1"
@@ -96,6 +83,9 @@
             <li class="dropdown-item" @click="toggleModal('changePwdModal')">
               Change Password
             </li>
+            <li class="dropdown-item" @click="toggleModal('registerModal')">
+              Register User
+            </li>
             <!-- <li class="dropdown-item">Others</li> -->
           </ul>
         </div>
@@ -111,8 +101,8 @@
     >
       <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="changePwdModalLabel">
+          <div class="modal-header bg-myblue">
+            <h5 class="modal-title text-white" id="changePwdModalLabel">
               Change Password
             </h5>
             <button
@@ -176,6 +166,8 @@
         </div>
       </div>
     </div>
+
+    <RegisterComp></RegisterComp>
   </div>
 </template>
 
@@ -184,9 +176,11 @@ import axios from "axios";
 import router from "../router";
 import { localLogout, loginId } from "../common/msiLogin";
 import toggleModal from "../common/modal";
+import RegisterComp from "./Register.vue";
 
 export default {
   name: "MsiNavbarVue",
+  components: { RegisterComp },
   data() {
     return {
       id: "",
@@ -227,8 +221,8 @@ export default {
         this.changePwdMsg = "Invalid new password.";
         return;
       }
+      
       this.changePwdMsg = "";
-
       axios
         .put("/api/msi/user/pwd", {
           id: this.id,

@@ -40,8 +40,11 @@
       >
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div v-if="curActivity.id" class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="activityDetailsModalToggleLabel">
+            <div class="modal-header bg-myblue">
+              <h5
+                class="modal-title text-white"
+                id="activityDetailsModalToggleLabel"
+              >
                 {{ curActivity.title }}
               </h5>
               <button
@@ -129,15 +132,19 @@
       >
         <div class="modal-dialog modal-fullscreen modal-dialog-centered">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-myblue">
               <h5
                 v-if="curActivity && curActivity.id"
-                class="modal-title"
+                class="modal-title text-white"
                 id="editActivityModalToggleLabel"
               >
                 Edit Activity
               </h5>
-              <h5 v-else class="modal-title" id="editActivityModalToggleLabel">
+              <h5
+                v-else
+                class="modal-title text-white"
+                id="editActivityModalToggleLabel"
+              >
                 Add Activity
               </h5>
               <button

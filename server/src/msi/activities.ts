@@ -1,5 +1,5 @@
 import { randomUUID } from "crypto";
-import { Activity, dbOpen, dbClose } from "../db-ops";
+import { Activity, dbOpen } from "../db-ops";
 
 const dbActivitiesColumns = [
   "title",
@@ -43,7 +43,7 @@ function InsertActivitity(data: any) {
     let db = dbOpen();
     let stmt = db.prepare(sql);
     stmt.run();
-    dbClose(db);
+    db.close();
     return id;
   } catch (e) {
     console.log(e);
@@ -70,7 +70,7 @@ function UpdateActivitity(data: any) {
     let db = dbOpen();
     let stmt = db.prepare(sql);
     console.log(stmt.run());
-    dbClose(db);
+    db.close();
     return true;
   } catch (e) {
     console.log(e);
@@ -83,7 +83,7 @@ function DeleteActivitity(id: string) {
     let db = dbOpen();
     let stmt = db.prepare(`delete from Activities where id='${id}';`);
     stmt.run();
-    dbClose(db);
+    db.close();
     return true;
   } catch (e) {
     console.log(e);
@@ -96,7 +96,7 @@ function SelectActivitity(id: string) {
     let db = dbOpen();
     let stmt = db.prepare(`select * from Activities where id='${id}';`);
     let record = stmt.get();
-    dbClose(db);
+    db.close();
     return record;
   } catch (e) {
     console.log(e);
@@ -113,7 +113,7 @@ function AllActivitity() {
     let items = stmt.all();
     // console.log(items);
     // console.log(typeof items);
-    dbClose(db);
+    db.close();
     return items;
   } catch (e) {
     console.log(e);

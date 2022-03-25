@@ -95,13 +95,13 @@ apiRouter.post("/msi/logout", (req, res) => {
     res.status(403).send();
   }
 });
-apiRouter.post("/msi/register", (req, res) => {
+apiRouter.post("/msi/user", (req, res) => {
   console.log(req.body);
-  let record = InsertUser(req.body);
-  if (record) {
-    res.status(200).send();
-  } else {
-    res.status(403).send();
+  try {
+    let rslt = InsertUser(req.body.user);
+    res.status(200).send(rslt);
+  } catch (err) {
+    res.status(500).send(err);
   }
 });
 apiRouter.put("/msi/user/pwd", (req, res) => {
