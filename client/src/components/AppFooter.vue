@@ -1,7 +1,12 @@
 <template>
   <footer class="text-center fixed-bottom bg-gray small py-1">
     <!-- <footer class="container-fluid text-center py-4"> -->
-    <span @click="toTop()">
+    <span
+      @click="toTop()"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Scroll to top"
+    >
       We
       <span style="font-size: 150%; color: red"> &#10084; </span>
       SG

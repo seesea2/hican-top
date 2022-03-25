@@ -1,6 +1,6 @@
 <template>
-  <div class="px-3 bg-dark text-white">
-    <nav class="navbar">
+  <div class="px-3 text-white bg-dark">
+    <nav class="navbar navbar-dark">
       <div class="col">
         <router-link to="/act-cal" class="mx-1">
           <img
@@ -20,7 +20,13 @@
         </router-link>
       </div>
       <div class="col mx-auto">
-        <img style="width: 60px" src="../assets/Logo_MSI.jpg" />
+        <a href="https://msi-global.com.sg/" target="_blank">
+          <img
+            src="../assets/Logo_MSI.jpg"
+            class="rounded"
+            style="width: 60px"
+          />
+        </a>
         <!-- <span class="text-primary">MSI</span> -->
       </div>
       <div class="col-auto">
