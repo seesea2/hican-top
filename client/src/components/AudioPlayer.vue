@@ -1,13 +1,19 @@
 <template>
   <div
     id="audioarea"
-    style="position: fixed; bottom: 0px; right: 10px"
+    style="position: fixed; bottom: 3rem; right: 1rem"
     class="w-100 d-none"
   >
     <div class="container-fluid">
       <div class="row no-gutters justify-content-end">
-        <audio id="audioplayer" controls class="col-9 col-sm-auto p-0 m-0"></audio>
-        <button @click="close()" class="col-auto btn rounded-0 m-0 text-white">X</button>
+        <audio
+          id="audioplayer"
+          controls
+          class="col-9 col-sm-auto p-0 m-0"
+        ></audio>
+        <button @click="close()" class="col-auto btn rounded-0 m-0 text-white">
+          X
+        </button>
       </div>
     </div>
   </div>
@@ -32,12 +38,6 @@ export default {
 </script>
 
 <style scoped>
-/* * {
-    border-style: solid;
-    border-width: 1px;
-    border-color: red;
-  } */
-
 audio,
 button {
   background-color: black;

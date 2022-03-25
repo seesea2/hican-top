@@ -1,6 +1,7 @@
 <template>
   <div>
     <NavbarVue></NavbarVue>
+
     <div class="container py-2">
       <div class="text-center">
         <h2>Learn Words</h2>
@@ -15,10 +16,7 @@
               v-on:keyup.enter="login"
             />
             <div class="input-group-append">
-              <button
-                @click="login"
-                class="col-auto btn btn-outline-primary btn-sm"
-              >
+              <button @click="login" class="col-auto btn btn-primary">
                 Sign in
               </button>
             </div>
@@ -27,7 +25,7 @@
             <span class="small"> Learnt:{{ learntCount }} </span>
             <button
               @click="logout"
-              class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm small"
+              class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm"
             >
               Sign out
             </button>
@@ -47,7 +45,7 @@
         </span>
       </div>
 
-      <div class="w-100" center>
+      <div center>
         <div v-if="bLogin" class="small">
           <div>Note:</div>
           <ul>

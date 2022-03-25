@@ -20,22 +20,28 @@ export default {
 <style>
 html,
 body {
-  min-height: 100%;
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-bottom: 30px; /* space for footer */
+  font-family: Helvetica, Arial, sans-serif;
+  /* background-color: #f8f9fa; */
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   /* color: #2c3e50; */
+  /* for footer */
+  min-height: 100%;
+  padding-bottom: 3rem;
 }
 
 .bg-gray {
   background-color: #f5f5f5;
+}
+
+.modal-fullscreen {
+  padding-right: 17px;
 }
 
 /* for layout debugging */
@@ -44,7 +50,4 @@ body {
   border-width: 1px;
   border-color: red;
 } */
-.modal-fullscreen {
-  padding-right: 17px;
-}
 </style>

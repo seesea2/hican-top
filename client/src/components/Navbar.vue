@@ -1,5 +1,5 @@
 <template>
-  <div id="nav">
+  <div id="nav" class="p-3">
     <router-link to="/">BusArrival</router-link>
     &#9775;
     <router-link to="/dictionary">Dictionary</router-link>
@@ -17,16 +17,12 @@ export default {
 </script>
 
 <style scoped>
-#nav {
-  padding: 30px;
-}
-
 #nav a {
   font-weight: bold;
   color: #2c3e50;
 }
 
-#nav a.router-link-exact-active {
+#nav a.router-link-active {
   color: #42b983;
 }
 </style>

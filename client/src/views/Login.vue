@@ -8,7 +8,7 @@
         <h2 class="text-center">Please sign in</h2>
         <div
           class="form mx-auto px-5 pt-4 pb-3 bg-gray"
-          style="max-width: 350px"
+          style="max-width: 20rem"
         >
           <label class="form-label small">ID:</label>
           <input class="form-control" v-model="id" />
@@ -98,11 +98,6 @@ export default {
 </script>
 
 <style scoped>
-/* * {
-  border-style: solid;
-  border-width: 1px;
-  border-color: red;
-} */
 small:hover {
   cursor: pointer;
 }
