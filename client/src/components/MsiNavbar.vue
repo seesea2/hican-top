@@ -20,6 +20,49 @@
         </router-link>
       </div>
       <div class="col mx-auto">
+        <div class="btn-group rounded bg-gray">
+          <img
+            src="../assets/Logo_MSI.jpg"
+            class="rounded"
+            style="width: 4rem"
+            type="button"
+            id="dropdownMenuMsi"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          />
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuMsi">
+            <a
+              href="https://compass.fsmsi.com.sg/tmtrack/tmtrack.dll?"
+              target="_blank"
+              class="dropdown-item small"
+            >
+              Compass
+            </a>
+            <a
+              href="https://hriqlive.iqdynamics.com.sg/MSIglobalHR/Main/Login.aspx"
+              target="_blank"
+              class="dropdown-item small"
+            >
+              HR
+            </a>
+            <a
+              href="https://sharepoint.msi-global.com.sg/"
+              target="_blank"
+              class="dropdown-item small"
+            >
+              SharePoint
+            </a>
+            <a
+              href="https://msi-global.com.sg/"
+              target="_blank"
+              class="dropdown-item small"
+            >
+              Msi-Global
+            </a>
+          </ul>
+        </div>
+      </div>
+      <!-- <div class="col mx-auto">
         <a href="https://msi-global.com.sg/" target="_blank">
           <img
             src="../assets/Logo_MSI.jpg"
@@ -27,8 +70,14 @@
             style="width: 4rem"
           />
         </a>
-        <!-- <span class="text-primary">MSI</span> -->
-      </div>
+        <a
+          href="https://compass.fsmsi.com.sg/tmtrack/tmtrack.dll?"
+          target="_blank"
+          class="text-light"
+        >
+          Compass
+        </a>
+      </div> -->
       <div class="col-auto">
         <div class="btn-group rounded bg-gray">
           <img
@@ -39,21 +88,6 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           />
-          <!-- <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            class="bi bi-person dropdown-toggle"
-            viewBox="0 0 16 16"
-            id="dropdownMenuButton1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <path
-              d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"
-            />
-          </svg> -->
           <ul
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="dropdownMenuButton1"
