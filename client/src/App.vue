@@ -9,12 +9,9 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import AudioPlayer from "./components/AudioPlayer.vue";
 import AppFooter from "./components/AppFooter.vue";
-export default {
-  components: { AudioPlayer, AppFooter },
-};
 </script>
 
 <style>

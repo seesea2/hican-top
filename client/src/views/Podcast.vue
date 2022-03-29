@@ -14,41 +14,30 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import ChannelVue from "../components/Channel.vue";
 import NavbarVue from "../components/Navbar.vue";
 
 import axios from "axios";
+import { onBeforeMount } from "@vue/runtime-core";
 
-export default {
-  name: "Podcast",
-  components: { ChannelVue, NavbarVue },
-  data() {
-    return {
-      channels: [],
-    };
-  },
-  created() {
-    this.getChannels();
-  },
-  mounted() {
-    document.title = "Podcast";
-  },
-  methods: {
-    getChannels() {
-      axios
-        .get("/api/podcast")
-        .then((resp) => {
-          this.channels = resp.data;
-        })
-        .catch((err) => {
-          console.log(err);
-          this.channels = [];
-        });
-    },
-  },
-};
+document.title = "Podcast";
+
+let channels = [];
+
+onBeforeMount(() => {
+  axios
+    .get("/api/podcast")
+    .then((resp) => {
+      // channels = resp.data;
+      for (let item in resp.data) {
+        channels.push(item);
+      }
+      console.log(channels);
+    })
+    .catch((err) => {
+      console.log(err);
+      channels = [];
+    });
+});
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>

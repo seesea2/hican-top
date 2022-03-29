@@ -119,7 +119,7 @@
                   type="password"
                   class="form-control"
                   placeholder="old password"
-                  v-model="oldPwd"
+                  v-model.trim="oldPwd"
                   required
                 />
                 <label for="floatingInput">Old Password</label>
@@ -129,7 +129,7 @@
                   type="password"
                   class="form-control"
                   placeholder="new password"
-                  v-model="newPwd1"
+                  v-model.trim="newPwd1"
                   required
                 />
                 <label for="floatingInput">New Password</label>
@@ -139,7 +139,7 @@
                   type="password"
                   class="form-control"
                   placeholder="confirm new password"
-                  v-model="newPwd2"
+                  v-model.trim="newPwd2"
                   required
                 />
                 <label for="floatingInput">Confirm new Password</label>

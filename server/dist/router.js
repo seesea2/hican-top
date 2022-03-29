@@ -68,14 +68,14 @@ apiRouter.post("/msi/logout", (req, res) => {
         res.status(403).send();
     }
 });
-apiRouter.post("/msi/register", (req, res) => {
+apiRouter.post("/msi/user", (req, res) => {
     console.log(req.body);
-    let record = (0, users_1.InsertUser)(req.body);
-    if (record) {
-        res.status(200).send();
+    try {
+        let rslt = (0, users_1.InsertUser)(req.body.user);
+        res.status(200).send(rslt);
     }
-    else {
-        res.status(403).send();
+    catch (err) {
+        res.status(500).send(err);
     }
 });
 apiRouter.put("/msi/user/pwd", (req, res) => {

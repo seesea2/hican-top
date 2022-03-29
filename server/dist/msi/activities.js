@@ -39,7 +39,7 @@ function InsertActivitity(data) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(sql);
         stmt.run();
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return id;
     }
     catch (e) {
@@ -66,7 +66,7 @@ function UpdateActivitity(data) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(sql);
         console.log(stmt.run());
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return true;
     }
     catch (e) {
@@ -80,7 +80,7 @@ function DeleteActivitity(id) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`delete from Activities where id='${id}';`);
         stmt.run();
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return true;
     }
     catch (e) {
@@ -94,7 +94,7 @@ function SelectActivitity(id) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`select * from Activities where id='${id}';`);
         let record = stmt.get();
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return record;
     }
     catch (e) {
@@ -107,7 +107,7 @@ function AllActivitity() {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`select * from Activities order by "startDatetime" desc;`);
         let items = stmt.all();
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return items;
     }
     catch (e) {

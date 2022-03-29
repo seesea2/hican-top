@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbOpen = exports.dbClose = void 0;
+exports.dbOpen = void 0;
 const path_1 = require("path");
 const dir_1 = require("./dir");
 const Database = require("better-sqlite3");
@@ -22,9 +22,12 @@ try {
     );`);
     db.exec(`CREATE TABLE IF NOT EXISTS Users(id	TEXT NOT NULL primary key, 
       pwd	TEXT,
+      email	TEXT,
       team TEXT,
       role TEXT,
-      status  TEXT
+      created TEXT,
+      updated TEXT,
+      status TEXT
     );`);
     db.close();
 }
@@ -36,7 +39,3 @@ function dbOpen() {
     return db;
 }
 exports.dbOpen = dbOpen;
-function dbClose(db) {
-    db.close();
-}
-exports.dbClose = dbClose;

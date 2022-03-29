@@ -3,29 +3,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.allLoginUsers = exports.LogoutUser = exports.LoginUser = exports.InsertUser = exports.DeleteUser = exports.ChangePwd = exports.AllUsers = void 0;
 const db_ops_1 = require("../db-ops");
 const crypto_1 = require("crypto");
+const dbUserColumns = [
+    "id",
+    "pwd",
+    "email",
+    "team",
+    "role",
+    "created",
+    "updated",
+];
 let allLoginUsers = [];
 exports.allLoginUsers = allLoginUsers;
 function InsertUser(data) {
-    if (!data || !data.id || !data.pwd)
-        return;
+    console.log("InsertUser", data);
+    if (!data || !data.id || !data.pwd) {
+        return { err: "ID & Password are required!" };
+    }
     try {
-        let fields = `"id"`;
-        let values = "'" + data.id + "'";
-        fields += `,"pwd"`;
-        let hash = (0, crypto_1.createHash)("sha1").update(data.pwd).digest("hex");
-        console.log(hash);
-        values += `,'${hash}'`;
+        let fields = "created";
+        let values = `'${new Date().toISOString()}'`;
+        for (let ind in dbUserColumns) {
+            if (data[dbUserColumns[ind]]) {
+                data[dbUserColumns[ind]] = data[dbUserColumns[ind]].replace("'", "''");
+                fields += `,"${dbUserColumns[ind]}"`;
+                if (dbUserColumns[ind] != "pwd") {
+                    values += `,'${data[dbUserColumns[ind]]}'`;
+                }
+                else {
+                    let pwdHash = (0, crypto_1.createHash)("sha1")
+                        .update(data[dbUserColumns[ind]])
+                        .digest("hex");
+                    values += `,'${pwdHash}'`;
+                }
+            }
+        }
         let sql = `insert into "Users"(${fields}) values(${values});`;
-        console.log("sql: ", sql);
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(sql);
-        stmt.run();
-        (0, db_ops_1.dbClose)(db);
-        return true;
+        let rslt = stmt.run();
+        db.close();
+        if (rslt && rslt.changes) {
+            return { msg: "Done" };
+        }
+        return { err: "Create user failed." };
     }
     catch (e) {
-        console.log(e);
-        return false;
+        return { err: e };
     }
 }
 exports.InsertUser = InsertUser;
@@ -39,8 +62,8 @@ function ChangePwd(data) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(sql);
         let rslt = stmt.run();
-        (0, db_ops_1.dbClose)(db);
-        if (rslt.changes) {
+        db.close();
+        if (rslt && rslt.changes) {
             return { msg: "Done" };
         }
         return { err: "No record is changed." };
@@ -56,7 +79,7 @@ function DeleteUser(id) {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`delete from Users where id='${id}';`);
         stmt.run();
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return true;
     }
     catch (e) {
@@ -82,7 +105,7 @@ function LoginUser(data) {
         let stmt = db.prepare(sql);
         let record = stmt.get();
         console.log("login: ", record);
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         if (record) {
             allLoginUsers.push(record);
             return record;
@@ -119,7 +142,7 @@ function AllUsers() {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`select * from Users;`);
         let items = stmt.all();
-        (0, db_ops_1.dbClose)(db);
+        db.close();
         return items;
     }
     catch (e) {

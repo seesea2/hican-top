@@ -10,7 +10,7 @@
         <div class="col-auto">
           <div v-if="!bLogin" class="input-group">
             <input
-              v-model="user"
+              v-model.trim="user"
               placeholder="user"
               class="form-control"
               v-on:keyup.enter="login"

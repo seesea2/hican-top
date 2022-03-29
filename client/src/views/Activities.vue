@@ -13,7 +13,7 @@
           <div
             class="card"
             role="button"
-            @click="ViewDetails(activity, 'activityDetailsModalToggle')"
+            @click="ViewDetails(activity, 'activityDetailsModal')"
           >
             <div class="card-header">
               {{ activity.title }}
@@ -45,253 +45,29 @@
         </div>
       </div>
 
-      <div
-        class="modal fade"
-        id="activityDetailsModalToggle"
-        aria-hidden="true"
-        aria-labelledby="activityDetailsModalToggleLabel"
-        tabindex="-1"
-      >
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div v-if="curActivity.id" class="modal-content">
-            <div class="modal-header bg-myblue">
-              <h5
-                class="modal-title text-white"
-                id="activityDetailsModalToggleLabel"
-              >
-                {{ curActivity.title }}
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                aria-label="Close"
-                @click="toggleModal()"
-              ></button>
-            </div>
-            <div class="modal-body" v-if="curActivity">
-              <div class="card-text small">
-                <b>Start:</b>
-                {{ new Date(curActivity.startDatetime).toLocaleString() }}
-              </div>
-              <div class="card-text small">
-                <b>End:</b>
-                {{ new Date(curActivity.endDatetime).toLocaleString() }}
-              </div>
-              <div class="card-text mt-1 small">
-                <b>Affected Systems:</b> {{ curActivity.affectedSystems }}
-              </div>
-              <hr />
-              <div class="card-text mt-1 small">
-                <b>Impact:</b>
-                <div
-                  v-if="curActivity.impact"
-                  v-html="
-                    curActivity.impact
-                      .replace(/\r\n/g, '<br>')
-                      .replace(/\n/g, '<br>')
-                  "
-                  class="mx-3"
-                ></div>
-              </div>
-              <div class="card-text mt-1 small">
-                <b>NoImpact:</b>
-                <div
-                  v-if="curActivity.noImpact"
-                  v-html="
-                    curActivity.noImpact
-                      .replace(/\r\n/g, '<br>')
-                      .replace(/\n/g, '<br>')
-                  "
-                  class="mx-3"
-                ></div>
-              </div>
-              <hr />
-              <div class="card-text mt-1 small">
-                <b>Remarks:</b>
-                <div
-                  v-if="curActivity.remarks"
-                  v-html="
-                    curActivity.remarks
-                      .replace(/\r\n/g, '<br>')
-                      .replace(/\n/g, '<br>')
-                  "
-                  class="mx-3"
-                ></div>
-              </div>
-              <div class="card-text mt-1 small">
-                <b>Contact Persons:</b>
-                <span v-html="curActivity.contactPersons"></span>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button
-                class="btn btn-primary btn-sm"
-                @click="toggleModal('editActivityModalToggle')"
-              >
-                Edit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Modal to Add/Edit Activity Details -->
-      <div
-        class="modal fade"
-        id="editActivityModalToggle"
-        data-bs-backdrop="static"
-        aria-hidden="true"
-        aria-labelledby="editActivityModalToggleLabel"
-        tabindex="-1"
-      >
-        <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header bg-myblue">
-              <h5
-                v-if="curActivity && curActivity.id"
-                class="modal-title text-white"
-                id="editActivityModalToggleLabel"
-              >
-                Edit Activity
-              </h5>
-              <h5
-                v-else
-                class="modal-title text-white"
-                id="editActivityModalToggleLabel"
-              >
-                Add Activity
-              </h5>
-              <button
-                type="button"
-                class="btn-close"
-                aria-label="Close"
-                @click="toggleModal()"
-              ></button>
-            </div>
-            <div class="modal-body" v-if="curActivity">
-              <div class="form-group mt-5">
-                <div class="row">
-                  <div class="col">
-                    <label>Title:</label>
-                    <input class="form-control" v-model="curActivity.title" />
-                  </div>
-                  <div class="col">
-                    <label>Affected Systems:</label>
-                    <input
-                      class="form-control"
-                      v-model="curActivity.affectedSystems"
-                    />
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label>Start Datetime:</label>
-                    <div class="form-control">
-                      <input
-                        type="date"
-                        class="border-0"
-                        v-model="startDateStr"
-                      />
-                      <select
-                        class="ms-4 border-0 bg-white"
-                        v-model="startHour"
-                      >
-                        <option v-for="hour in hours" :key="hour">
-                          {{ hour }}
-                        </option>
-                      </select>
-                      :
-                      <select class="border-0 bg-white" v-model="startMinute">
-                        <option v-for="minute in minutes" :key="minute">
-                          {{ minute }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <label>End Datetime:</label>
-                    <div class="form-control">
-                      <input
-                        type="date"
-                        class="border-0"
-                        v-model="endDateStr"
-                      />
-                      <select class="ms-4 border-0 bg-white" v-model="endHour">
-                        <option v-for="hour in hours" :value="hour" :key="hour">
-                          {{ hour }}
-                        </option>
-                      </select>
-                      :
-                      <select class="border-0 bg-white" v-model="endMinute">
-                        <option
-                          v-for="minute in minutes"
-                          :value="minute"
-                          :key="minute"
-                        >
-                          {{ minute }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <label>Contact Persons:</label>
-                    <input
-                      class="form-control"
-                      v-model="curActivity.contactPersons"
-                    />
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label>Impact:</label>
-                    <textarea
-                      class="form-control"
-                      v-model="curActivity.impact"
-                    ></textarea>
-                  </div>
-                  <div class="col">
-                    <label>No Impact:</label>
-                    <textarea
-                      class="form-control"
-                      v-model="curActivity.noImpact"
-                    ></textarea>
-                  </div>
-                  <div class="col">
-                    <label>Remarks:</label>
-                    <textarea
-                      class="form-control"
-                      v-model="curActivity.remarks"
-                    ></textarea>
-                  </div>
-                </div>
-              </div>
-              <div v-if="submitMsg" class="text-center">
-                <small class="bg-warning">{{ submitMsg }}</small>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" @click="Submit()">Submit</button>
-            </div>
-          </div>
-        </div>
+
+      <hr class="border-1 my-3" />
+      <div class="text-center">
+        <button
+          class="btn btn-primary"
+          @click="initData() || toggleModal('editActivityModalToggle')"
+        >
+          Add
+        </button>
       </div>
     </div>
 
-    <hr class="border-1 my-3" />
-    <div class="text-center">
-      <button
-        class="btn btn-primary"
-        @click="initData() || toggleModal('editActivityModalToggle')"
-      >
-        Add
-      </button>
-    </div>
+    <ActivityDetailsComp :curActivity="curActivity"></ActivityDetailsComp>
+    <!-- <ActivityEditComp :propsActivity="curActivity"></ActivityEditComp> -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import MsiNavbarVue from "../components/MsiNavbar.vue";
+import ActivityDetailsComp from "../components/ActivityDetails.vue";
+
 import { loginId } from "../common/msiLogin";
 import toggleModal from "../common/modal";
 import router from "../router";
@@ -302,7 +78,7 @@ function dateToLocaleStr(date) {
 
 export default {
   name: "ActivitiesVue",
-  components: { MsiNavbarVue },
+  components: { MsiNavbarVue, ActivityDetailsComp },
   data() {
     return {
       activities: [],
@@ -367,38 +143,7 @@ export default {
       this.endHour = "00";
       this.endMinute = "00";
     },
-    Refresh(filter) {
-      if (0 && filter) {
-        if (filter == "Day") {
-          console.log("filter", filter);
-          this.activities = this.orgActivities;
-          this.activities.filter((item) => {
-            if (!item.startDate && !item.endDate) {
-              console.log("filter 1");
-              return false;
-            }
-
-            if (
-              new Date(item.startDate) >
-              new Date().setDate(new Date().getDate() + 1)
-            ) {
-              console.log("filter 2");
-              return false;
-            }
-            if (
-              new Date(item.endDate) <
-              new Date().setDate(new Date().getDate() - 1)
-            ) {
-              console.log("filter 3");
-              return false;
-            }
-            console.log("filter end");
-            return true;
-          });
-        }
-        return;
-      }
-
+    Refresh() {
       axios
         .get("/api/msi/activities")
         .then((resp) => {
@@ -412,85 +157,7 @@ export default {
           this.activities = [];
         });
     },
-    Submit() {
-      console.log("in Submit:", this.curActivity);
-      if (!this.curActivity.title) {
-        this.submitMsg = "Title is empty.";
-        return;
-      }
-      this.submitMsg = "";
 
-      // SG locale datetime
-      let startDatetime = new Date(this.startDateStr);
-      startDatetime.setHours(parseInt(this.startHour));
-      startDatetime.setMinutes(parseInt(this.startMinute));
-      this.curActivity.startDatetime = startDatetime;
-      let endDatetime = new Date(this.endDateStr);
-      endDatetime.setHours(parseInt(this.endHour));
-      endDatetime.setMinutes(parseInt(this.endMinute));
-      this.curActivity.endDatetime = endDatetime;
-      // console.log("endDatetime:", endDatetime);
-
-      console.log("in 2:", this.curActivity);
-
-      // for existig Act with ID, to update using PUT
-      if (this.curActivity.id) {
-        axios
-          .put("/api/msi/activities", this.curActivity)
-          .then(() => {
-            // console.log(resp.data);
-            // this.activities.push(data);
-            this.submitMsg = "Edit successfully.";
-            setTimeout(() => {
-              this.submitMsg = "";
-              toggleModal();
-            }, 3000);
-
-            // update info in class.
-            for (let i = 0; i < this.activities.length; ++i) {
-              if (this.activities[i].id == this.curActivity.id) {
-                for (let key in this.activities[i]) {
-                  this.activities[i][key] = this.curActivity[key];
-                }
-                // console.log("updated info:", this.activities[i]);
-                break;
-              }
-            }
-            this.activities.sort(function (a, b) {
-              return new Date(b.startDatetime) - new Date(a.startDatetime);
-            });
-            return true;
-          })
-          .catch((err) => {
-            this.submitMsg = err;
-            console.log("put err:", err);
-          });
-      }
-      // for new Act, to insert using POST
-      else {
-        axios
-          .post("/api/msi/activities", this.curActivity)
-          .then((resp) => {
-            // console.log(resp.data);
-            this.curActivity.id = resp.data.id;
-            this.activities.push(this.curActivity);
-            this.activities.sort(function (a, b) {
-              return new Date(b.startDatetime) - new Date(a.startDatetime);
-            });
-
-            this.submitMsg = "Add successfully.";
-            setTimeout(() => {
-              this.submitMsg = "";
-              toggleModal();
-            }, 3000);
-            return;
-          })
-          .catch((err) => {
-            this.submitMsg = err;
-            console.log("post err:", err);
-          });
-      }
-    },
     Delete(id) {
       console.log("delete act:", id);
       if (!id) {

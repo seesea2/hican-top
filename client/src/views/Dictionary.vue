@@ -7,7 +7,7 @@
           <img src="../assets/PBO_black.png" alt="Oxofrd Logo" />
           <div class="input-group py-3">
             <input
-              v-model="word"
+              v-model.trim="word"
               placeholder="input word"
               class="form-control"
               v-on:keyup.enter="search"

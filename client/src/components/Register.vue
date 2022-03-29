@@ -25,7 +25,7 @@
               <input
                 class="form-control"
                 placeholder="old password"
-                v-model="user.id"
+                v-model.trim="user.id"
                 required
               />
               <label for="floatingInput" class="small">ID</label>
@@ -35,7 +35,7 @@
                 type="password"
                 class="form-control"
                 placeholder="new password"
-                v-model="user.pwd"
+                v-model.trim="user.pwd"
                 required
               />
               <label for="floatingInput" class="small">Password</label>
@@ -45,13 +45,13 @@
                 type="password"
                 class="form-control"
                 placeholder="confirm new password"
-                v-model="user.email"
+                v-model.trim="user.email"
               />
               <label for="floatingInput" class="small">Email</label>
             </div>
             <div class="mt-2 input-group">
               <label class="input-group-text">Team:</label>
-              <select class="form-select" v-model="user.team">
+              <select class="form-select" v-model.trim="user.team">
                 <option value="DMT">DMT</option>
                 <option value="Infra">Infra</option>
                 <option value="Security">Security</option>

@@ -126,13 +126,13 @@
                 <div class="row">
                   <div class="col">
                     <label>Title:</label>
-                    <input class="form-control" v-model="curActivity.title" />
+                    <input class="form-control" v-model.trim="curActivity.title" />
                   </div>
                   <div class="col">
                     <label>Affected Systems:</label>
                     <input
                       class="form-control"
-                      v-model="curActivity.affectedSystems"
+                      v-model.trim="curActivity.affectedSystems"
                     />
                   </div>
                 </div>
@@ -143,18 +143,18 @@
                       <input
                         type="date"
                         class="border-0"
-                        v-model="startDateStr"
+                        v-model.trim="startDateStr"
                       />
                       <select
                         class="ms-4 border-0 bg-white"
-                        v-model="startHour"
+                        v-model.trim="startHour"
                       >
                         <option v-for="hour in hours" :key="hour">
                           {{ hour }}
                         </option>
                       </select>
                       :
-                      <select class="border-0 bg-white" v-model="startMinute">
+                      <select class="border-0 bg-white" v-model.trim="startMinute">
                         <option v-for="minute in minutes" :key="minute">
                           {{ minute }}
                         </option>
@@ -167,15 +167,15 @@
                       <input
                         type="date"
                         class="border-0"
-                        v-model="endDateStr"
+                        v-model.trim="endDateStr"
                       />
-                      <select class="ms-4 border-0 bg-white" v-model="endHour">
+                      <select class="ms-4 border-0 bg-white" v-model.trim="endHour">
                         <option v-for="hour in hours" :value="hour" :key="hour">
                           {{ hour }}
                         </option>
                       </select>
                       :
-                      <select class="border-0 bg-white" v-model="endMinute">
+                      <select class="border-0 bg-white" v-model.trim="endMinute">
                         <option
                           v-for="minute in minutes"
                           :value="minute"
@@ -190,7 +190,7 @@
                     <label>Contact Persons:</label>
                     <input
                       class="form-control"
-                      v-model="curActivity.contactPersons"
+                      v-model.trim="curActivity.contactPersons"
                     />
                   </div>
                 </div>
@@ -199,21 +199,21 @@
                     <label>Impact:</label>
                     <textarea
                       class="form-control"
-                      v-model="curActivity.impact"
+                      v-model.trim="curActivity.impact"
                     ></textarea>
                   </div>
                   <div class="col">
                     <label>No Impact:</label>
                     <textarea
                       class="form-control"
-                      v-model="curActivity.noImpact"
+                      v-model.trim="curActivity.noImpact"
                     ></textarea>
                   </div>
                   <div class="col">
                     <label>Remarks:</label>
                     <textarea
                       class="form-control"
-                      v-model="curActivity.remarks"
+                      v-model.trim="curActivity.remarks"
                     ></textarea>
                   </div>
                 </div>

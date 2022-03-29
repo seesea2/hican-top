@@ -10,7 +10,7 @@
           <div class="col-12 col-md-6 col-lg-4">
             <div class="input-group">
               <input
-                v-model="inputCode"
+                v-model.trim="inputCode"
                 placeholder="Bus stop code"
                 class="form-control"
                 v-on:keyup.enter="getBusArrival()"
