@@ -107,14 +107,13 @@ function LoginUser(data: any) {
     let db = dbOpen();
     let stmt = db.prepare(sql);
     let record = stmt.get();
-    console.log("login: ", record);
+    console.log("login record: ", record);
     db.close();
     if (record) {
       allLoginUsers.push(record);
       return record;
     } else {
-      return false;
-      return "user or password not correct.";
+      return { err: "user or password not correct." };
     }
   } catch (e) {
     console.log(e);

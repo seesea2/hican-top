@@ -9,15 +9,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-myblue">
-          <h5 class="modal-title text-white" id="registerModalLabel">
-            New User
-          </h5>
-          <button
-            type="button"
-            class="btn-close"
-            aria-label="Close"
-            @click="toggleModal()"
-          ></button>
+          <h5 class="modal-title text-white" id="registerModalLabel">New User</h5>
+          <button type="button" class="btn-close" aria-label="Close" @click="toggleModal()"></button>
         </div>
         <div class="modal-body">
           <div class="form">
@@ -25,7 +18,7 @@
               <input
                 class="form-control"
                 placeholder="old password"
-                v-model.trim="user.id"
+                v-model.trim="data.user.id"
                 required
               />
               <label for="floatingInput" class="small">ID</label>
@@ -35,7 +28,7 @@
                 type="password"
                 class="form-control"
                 placeholder="new password"
-                v-model.trim="user.pwd"
+                v-model.trim="data.user.pwd"
                 required
               />
               <label for="floatingInput" class="small">Password</label>
@@ -45,13 +38,13 @@
                 type="password"
                 class="form-control"
                 placeholder="confirm new password"
-                v-model.trim="user.email"
+                v-model.trim="data.user.email"
               />
               <label for="floatingInput" class="small">Email</label>
             </div>
             <div class="mt-2 input-group">
               <label class="input-group-text">Team:</label>
-              <select class="form-select" v-model.trim="user.team">
+              <select class="form-select" v-model.trim="data.user.team">
                 <option value="DMT">DMT</option>
                 <option value="Infra">Infra</option>
                 <option value="Security">Security</option>
@@ -60,19 +53,11 @@
             </div>
           </div>
           <div class="text-center mt-3">
-            <label v-if="msg" class="bg-info px-2">
-              {{ msg }}
-            </label>
+            <label v-if="data.msg" class="bg-info px-2">{{ data.msg }}</label>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click="toggleModal()"
-          >
-            Close
-          </button>
+          <button type="button" class="btn btn-secondary" @click="toggleModal()">Close</button>
           <button @click="register()" class="btn btn-primary">Submit</button>
         </div>
       </div>
@@ -80,60 +65,52 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
+import { reactive } from "vue";
 import toggleModal from "../common/modal";
 
-export default {
-  name: "RegisterComp",
-  data() {
-    return {
-      user: {
-        id: "",
-        pwd: "",
-        email: "",
-        team: "DMT",
-      },
-      msg: "",
-    };
+let data = reactive({
+  user: {
+    id: "",
+    pwd: "",
+    email: "",
+    team: "DMT",
   },
-  methods: {
-    register() {
-      if (!this.user.id || !this.user.pwd) {
-        this.msg = "ID and Password are required.";
+  msg: "",
+});
+
+function register() {
+  if (!data.user.id || !data.user.pwd) {
+    data.msg = "ID and Password are required.";
+    return;
+  }
+  if (!data.user.email) {
+    let rslt = confirm(
+      "Register without email?\n\nEmail can be used for password reset.</b>"
+    );
+    if (!rslt) {
+      return;
+    }
+  }
+
+  data.msg = "";
+  axios
+    .post("/api/msi/user", { user: data.user })
+    .then((resp) => {
+      if (resp.data.err) {
+        data.msg = resp.data.err;
         return;
       }
-      if (!this.user.email) {
-        let rslt = confirm(
-          "Register without email?\n\nEmail can be used for password reset.</b>"
-        );
-        if (!rslt) {
-          return;
-        }
-      }
+      data.msg = resp.data.msg;
 
-      this.msg = "";
-      axios
-        .post("/api/msi/user", { user: this.user })
-        .then((resp) => {
-          if (resp.data.err) {
-            this.msg = resp.data.err;
-            return;
-          }
-          this.msg = resp.data.msg;
-
-          setTimeout(() => {
-            this.msg = "";
-            toggleModal();
-          }, 3000);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    toggleModal(modalId) {
-      return toggleModal(modalId);
-    },
-  },
-};
+      setTimeout(() => {
+        data.msg = "";
+        toggleModal();
+      }, 3000);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 </script>

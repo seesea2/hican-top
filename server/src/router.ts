@@ -78,12 +78,13 @@ apiRouter.get("/learn/:user/count", (req, res) => {
 
 // API for msi db
 apiRouter.post("/msi/login", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   let record = LoginUser(req.body);
-  if (record) {
+  // res.status(200).send(record);
+  if (record && record.id == req.body.id) {
     res.status(200).send();
   } else {
-    res.status(403).send();
+    res.status(200).send(record);
   }
 });
 apiRouter.post("/msi/logout", (req, res) => {

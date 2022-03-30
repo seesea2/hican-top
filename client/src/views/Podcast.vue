@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <NavbarVue></NavbarVue>
+  <NavbarVue></NavbarVue>
 
-    <div class="container py-2">
-      <div class="text-center">
-        <h2>Podcasts</h2>
-      </div>
+  <div class="container py-2">
+    <div class="text-center">
+      <h2>Podcasts</h2>
+    </div>
 
-      <div v-for="channel in channels" :key="channel.title">
-        <ChannelVue :channel="channel"></ChannelVue>
-      </div>
+    <div v-for="channel in data.channels" :key="channel.title">
+      <ChannelVue :channel="channel"></ChannelVue>
     </div>
   </div>
 </template>
@@ -19,25 +17,24 @@ import ChannelVue from "../components/Channel.vue";
 import NavbarVue from "../components/Navbar.vue";
 
 import axios from "axios";
-import { onBeforeMount } from "@vue/runtime-core";
+import { reactive, onBeforeMount } from "vue";
 
 document.title = "Podcast";
 
-let channels = [];
+let data = reactive({
+  channels: []
+});
 
 onBeforeMount(() => {
   axios
     .get("/api/podcast")
     .then((resp) => {
-      // channels = resp.data;
-      for (let item in resp.data) {
-        channels.push(item);
-      }
-      console.log(channels);
+      data.channels = resp.data;
     })
-    .catch((err) => {
-      console.log(err);
-      channels = [];
-    });
+    .catch(() => {
+      // console.log("err", err);
+      data.channels = [];
+    })
 });
+
 </script>

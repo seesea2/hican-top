@@ -3,23 +3,14 @@
     <nav class="navbar">
       <div class="col">
         <router-link to="/act-cal" class="mx-1">
-          <img
-            src="../assets/svg/calendar-event.svg"
-            class="p-1 rounded bg-mygray"
-          />
+          <img src="../assets/svg/calendar-event.svg" class="p-1 rounded bg-mygray" />
         </router-link>
         <!-- &#9775; -->
         <router-link to="/act-table" class="mx-1">
-          <img
-            src="../assets/svg/table.svg"
-            class="m-0 p-1 rounded bg-mygray"
-          />
+          <img src="../assets/svg/table.svg" class="m-0 p-1 rounded bg-mygray" />
         </router-link>
         <router-link to="/activities" class="mx-1">
-          <img
-            src="../assets/svg/card-heading.svg"
-            class="p-1 rounded bg-mygray"
-          />
+          <img src="../assets/svg/card-heading.svg" class="p-1 rounded bg-mygray" />
         </router-link>
       </div>
       <div class="col mx-auto">
@@ -38,30 +29,22 @@
               href="https://compass.fsmsi.com.sg/tmtrack/tmtrack.dll?"
               target="_blank"
               class="dropdown-item small"
-            >
-              Compass
-            </a>
+            >Compass</a>
             <a
               href="https://hriqlive.iqdynamics.com.sg/MSIglobalHR/Main/Login.aspx"
               target="_blank"
               class="dropdown-item small"
-            >
-              HR
-            </a>
+            >HR</a>
             <a
               href="https://sharepoint.msi-global.com.sg/"
               target="_blank"
               class="dropdown-item small"
-            >
-              SharePoint
-            </a>
+            >SharePoint</a>
             <a
               href="https://msi-global.com.sg/"
               target="_blank"
               class="dropdown-item small"
-            >
-              Msi-Global
-            </a>
+            >Msi-Global</a>
           </ul>
         </div>
       </div>
@@ -75,17 +58,10 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           />
-          <ul
-            class="dropdown-menu dropdown-menu-end"
-            aria-labelledby="dropdownMenuButton1"
-          >
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
             <li class="dropdown-item" @click="Logout()">Sign out</li>
-            <li class="dropdown-item" @click="toggleModal('changePwdModal')">
-              Change Password
-            </li>
-            <li class="dropdown-item" @click="toggleModal('registerModal')">
-              Register User
-            </li>
+            <li class="dropdown-item" @click="toggleModal('changePwdModal')">Change Password</li>
+            <li class="dropdown-item" @click="toggleModal('registerModal')">Register User</li>
             <!-- <li class="dropdown-item">Others</li> -->
           </ul>
         </div>
@@ -102,15 +78,8 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header bg-myblue">
-            <h5 class="modal-title text-white" id="changePwdModalLabel">
-              Change Password
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Close"
-              @click="toggleModal()"
-            ></button>
+            <h5 class="modal-title text-white" id="changePwdModalLabel">Change Password</h5>
+            <button type="button" class="btn-close" aria-label="Close" @click="toggleModal()"></button>
           </div>
           <div class="modal-body">
             <div class="form">
@@ -146,22 +115,12 @@
               </div>
             </div>
             <div class="text-center mt-3">
-              <label v-if="changePwdMsg" class="bg-warning">
-                {{ changePwdMsg }}
-              </label>
+              <label v-if="changePwdMsg" class="bg-warning">{{ changePwdMsg }}</label>
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="toggleModal()"
-            >
-              Close
-            </button>
-            <button @click="ChangePassword()" class="btn btn-primary">
-              Submit
-            </button>
+            <button type="button" class="btn btn-secondary" @click="toggleModal()">Close</button>
+            <button @click="ChangePassword()" class="btn btn-primary">Submit</button>
           </div>
         </div>
       </div>
@@ -171,85 +130,76 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
+
 import router from "../router";
+import RegisterComp from "./Register.vue";
 import { localLogout, loginId } from "../common/msiLogin";
 import toggleModal from "../common/modal";
-import RegisterComp from "./Register.vue";
+import { ref } from "vue";
 
-export default {
-  name: "MsiNavbarVue",
-  components: { RegisterComp },
-  data() {
-    return {
-      id: "",
-      oldPwd: "",
-      newPwd1: "",
-      newPwd2: "",
-      changePwdMsg: "",
-    };
-  },
-  mounted() {
-    this.id = loginId();
-  },
-  methods: {
-    Logout() {
-      if (this.id) {
-        axios
-          .post("/api/msi/logout", { id: this.id })
-          .then(() => {
-            localLogout();
-            // console.log(resp.data);
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-          .finally(() => {
-            router.push("/login");
-          });
-      }
-    },
-    ChangePassword() {
-      console.log("in ChangePassword");
-      if (!this.oldPwd) {
-        this.changePwdMsg = "Old password is required.";
+let id = ref("")
+let oldPwd = ref("")
+let newPwd1 = ref("")
+let newPwd2 = ref("")
+let changePwdMsg = ref("")
+
+function Logout() {
+  id.value = loginId();
+  if (id.value) {
+    axios
+      .post("/api/msi/logout", { id: id.value })
+      .then(() => {
+        localLogout();
+        // console.log(resp.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        changePwdMsg.value = err;
+      })
+      .finally(() => {
+        router.push("/login");
+      });
+  }
+}
+
+function ChangePassword() {
+  // console.log("in ChangePassword");
+  if (!oldPwd.value) {
+    changePwdMsg.value = "Old password is required.";
+    return;
+  }
+
+  if (!newPwd1.value || newPwd1.value != newPwd2.value) {
+    changePwdMsg.value = "Invalid new password.";
+    return;
+  }
+
+  id.value = loginId();
+  changePwdMsg.value = "";
+  axios
+    .put("/api/msi/user/pwd", {
+      id: id.value,
+      oldPwd: oldPwd.value,
+      newPwd: newPwd1.value,
+    })
+    .then((resp) => {
+      console.log(resp.data);
+      if (resp.data.err) {
+        changePwdMsg.value = resp.data.err;
         return;
       }
 
-      if (!this.newPwd1 || this.newPwd1 != this.newPwd2) {
-        this.changePwdMsg = "Invalid new password.";
-        return;
-      }
-      
-      this.changePwdMsg = "";
-      axios
-        .put("/api/msi/user/pwd", {
-          id: this.id,
-          oldPwd: this.oldPwd,
-          newPwd: this.newPwd1,
-        })
-        .then((resp) => {
-          console.log(resp.data);
-          if (resp.data.err) {
-            this.changePwdMsg = resp.data.err;
-            return;
-          }
-
-          this.changePwdMsg = "Completed.";
-          setTimeout(() => {
-            toggleModal();
-          }, 3000);
-        })
-        .catch((err) => {
-          this.changePwdMsg = err;
-        });
-    },
-    toggleModal(id) {
-      toggleModal(id);
-    },
-  },
-};
+      changePwdMsg.value = "Completed.";
+      setTimeout(() => {
+        toggleModal();
+      }, 3000);
+    })
+    .catch((err) => {
+      changePwdMsg.value = err;
+    });
+}
 </script>
 
 <style scoped>
