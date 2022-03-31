@@ -64,6 +64,7 @@ let data = reactive({
 onBeforeMount(() => {
   if (!loginId()) {
     router.push("/login");
+    return
   }
   Refresh();
 })
