@@ -112,7 +112,7 @@ import dateToLocaleStr from "../common/date";
 import toggleModal from "../common/modal";
 
 let props = defineProps(["activity"])
-// console.log('in edit act:', props.activity)
+// console.log('props.activity in edit act root:', props.activity)
 let emit = defineEmits(['edit'])
 
 let data = reactive({
@@ -137,26 +137,27 @@ for (let i = 0; i < 24; ++i) {
 }
 data.minutes = ['00', '15', '30', '45']
 
-
 watch(props.activity, () => {
-  // console.log('val in watch', props.activity)
+  // console.log('props.activity in watch', props.activity)
   initData();
 })
 
 function initData() {
-  // console.log('initData', props.activity)
-  for (let key in props.activity) {
-    // console.log('props.activity[key]', props.activity[key])
-    data.curActivity[key] = props.activity[key]
+  // console.log('props.activity in initData', props.activity)
+  if (props.activity.id) {
+    for (let key in props.activity) {
+      // console.log('props.activity[key]', props.activity[key])
+      data.curActivity[key] = props.activity[key]
+    }
   }
 
-  if (data.curActivity.startDatetime) {
-    data.startDateStr = dateToLocaleStr(new Date(data.curActivity.startDatetime)).split("T")[0];
-    data.startHour = new Date(data.curActivity.startDatetime)
+  if (props.activity.startDatetime) {
+    data.startDateStr = dateToLocaleStr(new Date(props.activity.startDatetime)).split("T")[0];
+    data.startHour = new Date(props.activity.startDatetime)
       .getHours()
       .toString()
       .padStart(2, "0");
-    data.startMinute = new Date(data.curActivity.startDatetime)
+    data.startMinute = new Date(props.activity.startDatetime)
       .getMinutes()
       .toString()
       .padStart(2, "0");
@@ -166,13 +167,13 @@ function initData() {
     data.startMinute = '00'
   }
 
-  if (data.curActivity.endDatetime) {
-    data.endDateStr = dateToLocaleStr(new Date(data.curActivity.endDatetime)).split("T")[0];
-    data.endHour = new Date(data.curActivity.endDatetime)
+  if (props.activity.endDatetime) {
+    data.endDateStr = dateToLocaleStr(new Date(props.activity.endDatetime)).split("T")[0];
+    data.endHour = new Date(props.activity.endDatetime)
       .getHours()
       .toString()
       .padStart(2, "0");
-    data.endMinute = new Date(data.curActivity.endDatetime)
+    data.endMinute = new Date(props.activity.endDatetime)
       .getMinutes()
       .toString()
       .padStart(2, "0");

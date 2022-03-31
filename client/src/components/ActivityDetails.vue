@@ -92,7 +92,7 @@
 import axios from "axios";
 // import { loginId } from "../common/msiLogin";
 // import router from "../router";
-import { defineProps, defineEmits, reactive } from 'vue'
+import { watch, defineProps, defineEmits, reactive } from 'vue'
 
 import ActivityEdit from "./ActivityEdit.vue";
 import toggleModal from "../common/modal";
@@ -102,12 +102,18 @@ let props = defineProps(["activity"])
 let emit = defineEmits(['delete', 'edit'])
 let data = reactive({ curActivity: {} })
 
+watch(props.activity, () => {
+  for (let key in props.activity) {
+    data.curActivity[key] = props.activity[key];
+  }
+  console.log('watch in vuedetails', props.activity)
+})
 
 function editActivity() {
   for (let key in props.activity) {
     data.curActivity[key] = props.activity[key];
   }
-  // console.log('editActivity()', data.curActivity)
+  console.log('editActivity()', data.curActivity)
   toggleModal('editActivityModalToggle')
 }
 
