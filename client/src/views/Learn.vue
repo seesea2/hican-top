@@ -93,7 +93,7 @@ import axios from "axios";
 import router from "../router";
 import NavbarVue from "../components/Navbar.vue";
 import { addParam, getParam } from "../common/localStorage";
-import { reactive, onBeforeMount, onMounted } from "vue";
+import { reactive, onBeforeMount } from "vue";
 
 document.title = "Learn Words";
 
@@ -144,7 +144,7 @@ onBeforeMount(() => {
   // url same as last login user.
 })
 
-onMounted(() => {
+onBeforeMount(() => {
   getWords();
 })
 
@@ -185,7 +185,7 @@ function getWords() {
     })
     .catch((err) => {
       console.log(err);
-      data.words = [];
+      data.words.length = 0;
       data.loading = false;
     });
 

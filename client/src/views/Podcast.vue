@@ -29,11 +29,13 @@ onBeforeMount(() => {
   axios
     .get("/api/podcast")
     .then((resp) => {
-      data.channels = resp.data;
+      for (let item of resp.data) {
+        data.channels.push(item);
+      }
     })
-    .catch(() => {
-      // console.log("err", err);
-      data.channels = [];
+    .catch((err) => {
+      data.channels.length = 0;
+      console.log("err", err);
     })
 });
 

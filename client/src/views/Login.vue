@@ -44,7 +44,7 @@ function Login() {
         errMsg.value = resp.data.err
         setTimeout(() => {
           errMsg.value = "";
-        }, 5000);
+        }, 2000);
         return
       }
 
@@ -58,7 +58,7 @@ function Login() {
       errMsg.value = err;
       setTimeout(() => {
         errMsg.value = "";
-      }, 5000);
+      }, 2000);
     });
 }
 </script>

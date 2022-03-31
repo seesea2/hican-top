@@ -58,7 +58,7 @@ document.title = "Activities Table";
 
 let data = reactive({
   activities: [],
-  curActivity: {}
+  curActivity: {},
 });
 
 onBeforeMount(() => {
@@ -69,21 +69,6 @@ onBeforeMount(() => {
   Refresh();
 })
 
-function Refresh() {
-  axios
-    .get("/api/msi/activities")
-    .then((resp) => {
-      data.activities = resp.data;
-      data.activities.sort(function (a, b) {
-        return new Date(b.startDatetime) - new Date(a.startDatetime);
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      data.activities = [];
-    });
-}
-
 function catchDelete(id) {
   // console.log('catchDelete', id)
   data.activities = data.activities.filter(item => item.id != id)
@@ -91,9 +76,10 @@ function catchDelete(id) {
 
 function catchEdit(newAct) {
   if (data.curActivity.id) {
-    for (let i = 0; i < data.activities.length; ++i) {
+    for (let i in data.activities.length) {
       if (data.activities[i].id == newAct.id) {
         data.activities[i] = newAct
+		break;
       }
     }
   }
@@ -105,14 +91,34 @@ function catchEdit(newAct) {
   }
 }
 
+function Refresh() {
+  axios
+    .get("/api/msi/activities")
+    .then((resp) => {
+      for (let item of resp.data) {
+        data.activities.push(item);
+      }
+      data.activities.sort(function (a, b) {
+        return new Date(b.startDatetime) - new Date(a.startDatetime);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      data.activities.length = 0;
+    });
+}
+
 function addActivity() {
-  data.curActivity = {};
+  for (let key in data.curActivity) {
+    data.curActivity[key] = null;
+  }
   toggleModal('editActivityModalToggle')
 }
 
 function viewActivity(activity) {
-  data.curActivity = activity
+  for (let key in activity) {
+    data.curActivity[key] = activity[key]
+  }
   toggleModal('activityDetailsModal');
 }
-
 </script>

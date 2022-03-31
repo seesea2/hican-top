@@ -149,6 +149,10 @@ function initData() {
       // console.log('props.activity[key]', props.activity[key])
       data.curActivity[key] = props.activity[key]
     }
+  } else {
+    for (let key in data.curActivity) {
+      data.curActivity[key] = null;
+    }
   }
 
   if (props.activity.startDatetime) {

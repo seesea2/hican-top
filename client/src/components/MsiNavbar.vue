@@ -194,7 +194,7 @@ function ChangePassword() {
       changePwdMsg.value = "Completed.";
       setTimeout(() => {
         toggleModal();
-      }, 3000);
+      }, 2000);
     })
     .catch((err) => {
       changePwdMsg.value = err;

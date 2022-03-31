@@ -45,7 +45,7 @@
 
 <script setup>
 import axios from "axios";
-import { reactive, onBeforeMount } from 'vue'
+import { reactive, onBeforeMount } from "vue"
 
 import msiNavbar from "../components/MsiNavbar.vue";
 import activityDetails from "../components/ActivityDetails.vue";
@@ -76,9 +76,10 @@ function catchDelete(id) {
 
 function catchEdit(newAct) {
   if (data.curActivity.id) {
-    for (let i = 0; i < data.activities.length; ++i) {
+    for (let i in data.activities.length) {
       if (data.activities[i].id == newAct.id) {
         data.activities[i] = newAct
+        break;
       }
     }
   }
@@ -94,24 +95,30 @@ function Refresh() {
   axios
     .get("/api/msi/activities")
     .then((resp) => {
-      data.activities = resp.data;
+      for (let item of resp.data) {
+        data.activities.push(item);
+      }
       data.activities.sort(function (a, b) {
         return new Date(b.startDatetime) - new Date(a.startDatetime);
       });
     })
     .catch((err) => {
       console.log(err);
-      data.activities = [];
+      data.activities.length = 0;
     });
 }
 
 function addActivity() {
-  data.curActivity = {};
+  for (let key in data.curActivity) {
+    data.curActivity[key] = null;
+  }
   toggleModal('editActivityModalToggle')
 }
 
 function viewActivity(activity) {
-  data.curActivity = activity
+  for (let key in activity) {
+    data.curActivity[key] = activity[key]
+  }
   toggleModal('activityDetailsModal');
 }
 </script>
