@@ -93,7 +93,7 @@ function LoginUser(data) {
         if (!data.id || !data.pwd) {
             return;
         }
-        for (let i = 0; i < allLoginUsers.length; ++i) {
+        for (let i in allLoginUsers) {
             if (allLoginUsers[i].id == data.id) {
                 return allLoginUsers[i];
             }
@@ -123,7 +123,7 @@ exports.LoginUser = LoginUser;
 function LogoutUser(data) {
     try {
         console.log(allLoginUsers);
-        for (let i = 0; i < allLoginUsers.length; ++i) {
+        for (let i in allLoginUsers) {
             if (allLoginUsers[i].id == data.id) {
                 allLoginUsers.splice(i, 1);
                 return true;

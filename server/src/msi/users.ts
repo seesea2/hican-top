@@ -95,7 +95,7 @@ function LoginUser(data: any) {
       return;
     }
 
-    for (let i = 0; i < allLoginUsers.length; ++i) {
+    for (let i in allLoginUsers) {
       if (allLoginUsers[i].id == data.id) {
         return allLoginUsers[i];
       }
@@ -124,7 +124,7 @@ function LoginUser(data: any) {
 function LogoutUser(data: any) {
   try {
     console.log(allLoginUsers);
-    for (let i = 0; i < allLoginUsers.length; ++i) {
+    for (let i in allLoginUsers) {
       if (allLoginUsers[i].id == data.id) {
         allLoginUsers.splice(i, 1);
         return true;

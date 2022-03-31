@@ -103,10 +103,11 @@ let emit = defineEmits(['delete', 'edit'])
 let data = reactive({ curActivity: {} })
 
 watch(props.activity, () => {
+  // console.log('activityDetails', props.activity)
   for (let key in props.activity) {
     data.curActivity[key] = props.activity[key];
   }
-  console.log('watch in vuedetails', props.activity)
+  // console.log('watch in vuedetails', props.activity)
 })
 
 function editActivity() {

@@ -23,7 +23,7 @@ function InsertActivitity(data: any) {
     let id = randomUUID();
     let values = "'" + id + "'";
 
-    for (let i = 0; i < dbActivitiesColumns.length; ++i) {
+    for (let i in dbActivitiesColumns) {
       let key = dbActivitiesColumns[i];
       if (data[key]) {
         console.log(data[key]);
@@ -56,7 +56,7 @@ function UpdateActivitity(data: any) {
 
   try {
     let sql = `update "Activities" set `;
-    for (let i = 0; i < dbActivitiesColumns.length; ++i) {
+    for (let i in dbActivitiesColumns) {
       let key = dbActivitiesColumns[i];
       if (data[key]) {
         // console.log(data[key]);

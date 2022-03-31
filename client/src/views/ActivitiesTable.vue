@@ -75,11 +75,13 @@ function catchDelete(id) {
 }
 
 function catchEdit(newAct) {
+  // console.log('catchEdit', newAct)
   if (data.curActivity.id) {
-    for (let i in data.activities.length) {
+    for (let i in data.activities) {
       if (data.activities[i].id == newAct.id) {
+        // console.log('changed')
         data.activities[i] = newAct
-		break;
+        break;
       }
     }
   }
@@ -119,6 +121,7 @@ function viewActivity(activity) {
   for (let key in activity) {
     data.curActivity[key] = activity[key]
   }
+  // console.log('in activitytable', data.curActivity)
   toggleModal('activityDetailsModal');
 }
 </script>

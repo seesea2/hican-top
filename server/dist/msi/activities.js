@@ -23,7 +23,7 @@ function InsertActivitity(data) {
         let fields = `"id"`;
         let id = (0, crypto_1.randomUUID)();
         let values = "'" + id + "'";
-        for (let i = 0; i < dbActivitiesColumns.length; ++i) {
+        for (let i in dbActivitiesColumns) {
             let key = dbActivitiesColumns[i];
             if (data[key]) {
                 console.log(data[key]);
@@ -53,7 +53,7 @@ function UpdateActivitity(data) {
         return;
     try {
         let sql = `update "Activities" set `;
-        for (let i = 0; i < dbActivitiesColumns.length; ++i) {
+        for (let i in dbActivitiesColumns) {
             let key = dbActivitiesColumns[i];
             if (data[key]) {
                 data[key] = data[key].replace("'", "''");

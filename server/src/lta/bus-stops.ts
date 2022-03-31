@@ -64,7 +64,7 @@ function getNearbyBusStops(latitude: number, longitude: number, res: Response) {
 
   let nearbyStops = [];
   const R = 6371e3;
-  for (let i = 0; i < busStops.length; i++) {
+  for (let i in busStops) {
     let dLat = ((busStops[i].Latitude - latitude) * Math.PI) / 180;
     let dLong = ((busStops[i].Longitude - longitude) * Math.PI) / 180;
 

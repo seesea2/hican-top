@@ -125,7 +125,7 @@ function refreshFullCalendar() {
 
 function catchEdit(newAct) {
   if (data.curActivity.id) {
-    for (let i in data.activities.length) {
+    for (let i in data.activities) {
       if (data.activities[i].id == newAct.id) {
         data.activities[i] = newAct
         break;
