@@ -106,12 +106,15 @@
 
 <script setup>
 import axios from "axios";
-import { reactive } from "vue";
+import { watch, reactive, defineProps, defineEmits } from "vue";
 
 import dateToLocaleStr from "../common/date";
 import toggleModal from "../common/modal";
 
-// let props = defineProps(["activity"])
+let props = defineProps(["activity"])
+// console.log('in edit act:', props.activity)
+let emit = defineEmits(['edit'])
+
 let data = reactive({
   curActivity: {},
   startDateStr: dateToLocaleStr(new Date()).split("T")[0],
@@ -134,8 +137,56 @@ for (let i = 0; i < 24; ++i) {
 }
 data.minutes = ['00', '15', '30', '45']
 
+
+watch(props.activity, () => {
+  // console.log('val in watch', props.activity)
+  initData();
+})
+
+function initData() {
+  // console.log('initData', props.activity)
+  for (let key in props.activity) {
+    // console.log('props.activity[key]', props.activity[key])
+    data.curActivity[key] = props.activity[key]
+  }
+
+  if (data.curActivity.startDatetime) {
+    data.startDateStr = dateToLocaleStr(new Date(data.curActivity.startDatetime)).split("T")[0];
+    data.startHour = new Date(data.curActivity.startDatetime)
+      .getHours()
+      .toString()
+      .padStart(2, "0");
+    data.startMinute = new Date(data.curActivity.startDatetime)
+      .getMinutes()
+      .toString()
+      .padStart(2, "0");
+  } else {
+    data.startDateStr = dateToLocaleStr(new Date()).split("T")[0];
+    data.startHour = '00'
+    data.startMinute = '00'
+  }
+
+  if (data.curActivity.endDatetime) {
+    data.endDateStr = dateToLocaleStr(new Date(data.curActivity.endDatetime)).split("T")[0];
+    data.endHour = new Date(data.curActivity.endDatetime)
+      .getHours()
+      .toString()
+      .padStart(2, "0");
+    data.endMinute = new Date(data.curActivity.endDatetime)
+      .getMinutes()
+      .toString()
+      .padStart(2, "0");
+  } else {
+    data.endDateStr = dateToLocaleStr(new Date()).split("T")[0];
+    data.endHour = '00'
+    data.endMinute = '00'
+  }
+
+  // console.log('in edit | data.curActivity:', data.curActivity)
+}
+
 function Submit() {
-  console.log("in Submit:", data.curActivity);
+  // console.log("in Submit:", data.curActivity);
   if (!data.curActivity.title) {
     data.submitMsg = "Title is empty.";
     return;
@@ -153,7 +204,7 @@ function Submit() {
   data.curActivity.endDatetime = endDatetime;
   // console.log("endDatetime:", endDatetime);
 
-  console.log("in 2:", data.curActivity);
+  // console.log("in 2:", data.curActivity);
 
   // for existig Act with ID, to update using PUT
   if (data.curActivity.id) {
@@ -163,24 +214,11 @@ function Submit() {
         // console.log(resp.data);
         // data.activities.push(data);
         data.submitMsg = "Edit successfully.";
+        emit('edit', data.curActivity);
         setTimeout(() => {
           data.submitMsg = "";
           toggleModal();
-        }, 3000);
-
-        // update info in class.
-        // for (let i = 0; i < data.activities.length; ++i) {
-        //   if (data.activities[i].id == data.curActivity.id) {
-        //     for (let key in data.activities[i]) {
-        //       data.activities[i][key] = data.curActivity[key];
-        //     }
-        //     break;
-        //   }
-        // }
-        // data.activities.sort(function (a, b) {
-        //   return new Date(b.startDatetime) - new Date(a.startDatetime);
-        // });
-        return true;
+        }, 2000);
       })
       .catch((err) => {
         data.submitMsg = err;
@@ -192,18 +230,14 @@ function Submit() {
     axios
       .post("/api/msi/activities", data.curActivity)
       .then((resp) => {
-        // console.log(resp.data);
         data.curActivity.id = resp.data.id;
-        // data.activities.push(data.curActivity);
-        // data.activities.sort(function (a, b) {
-        //   return new Date(b.startDatetime) - new Date(a.startDatetime);
-        // });
 
         data.submitMsg = "Add successfully.";
+        emit('edit', data.curActivity);
         setTimeout(() => {
           data.submitMsg = "";
           toggleModal();
-        }, 3000);
+        }, 2000);
         return;
       })
       .catch((err) => {

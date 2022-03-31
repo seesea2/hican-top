@@ -1,11 +1,11 @@
 <template>
-  <MsiNavbarVue></MsiNavbarVue>
+  <msi-navbar></msi-navbar>
 
   <div class="container">
     <h4 class="my-4">Ordered by StartDatetime Decreasing</h4>
     <div v-if="data.activities.length" class="row">
       <div v-for="activity in data.activities" class="col-sm-12 col-md-3 my-1" :key="activity.id">
-        <div class="card" role="button" @click="ViewDetails(activity, 'activityDetailsModal')">
+        <div class="card" role="button" @click="viewActivity(activity)">
           <div class="card-header">{{ activity.title }}</div>
           <div class="card-body">
             <!-- <div class="card-title fw-bold">{{ activity.title }}</div> -->
@@ -32,95 +32,63 @@
 
     <hr class="border-1 my-3" />
     <div class="text-center">
-      <button
-        class="btn btn-primary"
-        @click="initData() || toggleModal('editActivityModalToggle')"
-      >Add</button>
+      <button class="btn btn-primary" @click="addActivity()">Add</button>
     </div>
   </div>
 
-  <ActivityDetailsComp :curActivity="data.curActivity"></ActivityDetailsComp>
+  <activity-details
+    :activity="data.curActivity"
+    @delete="(id) => catchDelete(id)"
+    @edit="(newAct) => catchEdit(newAct)"
+  ></activity-details>
 </template>
 
 <script setup>
 import axios from "axios";
-import { onBeforeMount, onMounted } from 'vue'
+import { reactive, onBeforeMount } from 'vue'
 
-import MsiNavbarVue from "../components/MsiNavbar.vue";
-import ActivityDetailsComp from "../components/ActivityDetails.vue";
+import msiNavbar from "../components/MsiNavbar.vue";
+import activityDetails from "../components/ActivityDetails.vue";
 
 import { loginId } from "../common/msiLogin";
 import toggleModal from "../common/modal";
 import router from "../router";
-import { reactive } from "vue";
 
 document.title = "Activities";
 
-function dateToLocaleStr(date) {
-  return new Date(date.toISOString().split("Z")[0] + "-08:00").toISOString();
-}
-
 let data = reactive({
   activities: [],
-  curActivity: {
-    title: new String(),
-    affectedSystems: new String(),
-    impact: new String(),
-    noImpact: new String(),
-    remarks: new String(),
-    contactPersons: new String(),
-  },
-  startDateStr: dateToLocaleStr(new Date()).split("T")[0],
-  startHour: "00",
-  startMinute: "00",
-  endHour: "00",
-  endMinute: "00",
-  endDateStr: dateToLocaleStr(new Date()).split("T")[0],
-  hours: [],
-  minutes: [],
-  submitMsg: "",
+  curActivity: {},
 });
 
 onBeforeMount(() => {
   if (!loginId()) {
     router.push("/login");
   }
+  Refresh();
 })
 
-onMounted(() => {
-  Refresh();
+function catchDelete(id) {
+  // console.log('catchDelete', id)
+  data.activities = data.activities.filter(item => item.id != id)
+}
 
-  for (let i = 0; i < 24; ++i) {
-    if (i < 10) {
-      data.hours.push("0" + i);
-    } else {
-      data.hours.push(i.toString());
+function catchEdit(newAct) {
+  if (data.curActivity.id) {
+    for (let i = 0; i < data.activities.length; ++i) {
+      if (data.activities[i].id == newAct.id) {
+        data.activities[i] = newAct
+      }
     }
   }
-  data.minutes.push("00");
-  data.minutes.push("15");
-  data.minutes.push("30");
-  data.minutes.push("45");
-})
-
-
-function initData() {
-  console.log("initData()");
-  data.curActivity = {
-    title: "",
-    affectedSystems: "",
-    impact: "",
-    noImpact: "",
-    remarks: "",
-    contactPersons: "",
-  };
-  data.startDateStr = dateToLocaleStr(new Date()).split("T")[0];
-  data.startHour = "00";
-  data.startMinute = "00";
-  data.endDateStr = dateToLocaleStr(new Date()).split("T")[0];
-  data.endHour = "00";
-  data.endMinute = "00";
+  else {
+    data.activities.push(newAct)
+    data.activities.sort(function (a, b) {
+      return new Date(b.startDatetime) - new Date(a.startDatetime);
+    });
+  }
 }
+
 function Refresh() {
   axios
     .get("/api/msi/activities")
@@ -136,54 +104,13 @@ function Refresh() {
     });
 }
 
-// function Delete(id) {
-//   console.log("delete act:", id);
-//   if (!id) {
-//     return;
-//   }
+function addActivity() {
+  data.curActivity = {};
+  toggleModal('editActivityModalToggle')
+}
 
-//   data.activities = data.activities.filter((item) => item.id != id);
-//   axios.delete("/api/msi/activities/" + id).catch((err) => {
-//     console.log(err);
-//   });
-// }
-
-function ViewDetails(activity, modal) {
-  data.startDateStr = dateToLocaleStr(
-    new Date(activity.startDatetime)
-  ).split("T")[0];
-  data.startHour = new Date(activity.startDatetime)
-    .getHours()
-    .toString()
-    .padStart(2, "0");
-  data.startMinute = new Date(activity.startDatetime)
-    .getMinutes()
-    .toString()
-    .padStart(2, "0");
-
-  data.endDateStr = dateToLocaleStr(new Date(activity.endDatetime)).split(
-    "T"
-  )[0];
-  data.endHour = new Date(activity.endDatetime)
-    .getHours()
-    .toString()
-    .padStart(2, "0");
-  data.endMinute = new Date(activity.endDatetime)
-    .getMinutes()
-    .toString()
-    .padStart(2, "0");
-  console.log(
-    "handleEventClick:",
-    data.startDateStr,
-    data.startHour,
-    data.startMinute
-  );
-
-  for (let key in activity) {
-    data.curActivity[key] = activity[key];
-  }
-
-  toggleModal(modal);
-  return true;
+function viewActivity(activity) {
+  data.curActivity = activity
+  toggleModal('activityDetailsModal');
 }
 </script>

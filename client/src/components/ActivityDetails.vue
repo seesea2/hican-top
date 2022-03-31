@@ -7,12 +7,12 @@
     tabindex="-1"
   >
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div v-if="props.curActivity.id" class="modal-content">
+      <div v-if="props.activity.id" class="modal-content">
         <div class="modal-header bg-myblue">
           <h5
             class="modal-title text-white"
             id="activityDetailsModalLabel"
-          >{{ props.curActivity.title }}</h5>
+          >{{ props.activity.title }}</h5>
           <button
             type="button"
             class="btn-close btn-close-white"
@@ -20,26 +20,26 @@
             @click="toggleModal()"
           ></button>
         </div>
-        <div class="modal-body" v-if="props.curActivity">
+        <div class="modal-body" v-if="props.activity">
           <div class="card-text small">
             <b>Start:</b>
-            {{ new Date(props.curActivity.startDatetime).toLocaleString() }}
+            {{ new Date(props.activity.startDatetime).toLocaleString() }}
           </div>
           <div class="card-text small">
             <b>End:</b>
-            {{ new Date(props.curActivity.endDatetime).toLocaleString() }}
+            {{ new Date(props.activity.endDatetime).toLocaleString() }}
           </div>
           <div class="card-text mt-1 small">
             <b>Affected Systems:</b>
-            {{ props.curActivity.affectedSystems }}
+            {{ props.activity.affectedSystems }}
           </div>
           <hr />
           <div class="card-text mt-1 small">
             <b>Impact:</b>
             <div
-              v-if="props.curActivity.impact"
+              v-if="props.activity.impact"
               v-html="
-                props.curActivity.impact
+                props.activity.impact
                   .replace(/\r\n/g, '<br>')
                   .replace(/\n/g, '<br>')
               "
@@ -49,9 +49,9 @@
           <div class="card-text mt-1 small">
             <b>NoImpact:</b>
             <div
-              v-if="props.curActivity.noImpact"
+              v-if="props.activity.noImpact"
               v-html="
-                props.curActivity.noImpact
+                props.activity.noImpact
                   .replace(/\r\n/g, '<br>')
                   .replace(/\n/g, '<br>')
               "
@@ -62,9 +62,9 @@
           <div class="card-text mt-1 small">
             <b>Remarks:</b>
             <div
-              v-if="props.curActivity.remarks"
+              v-if="props.activity.remarks"
               v-html="
-                props.curActivity.remarks
+                props.activity.remarks
                   .replace(/\r\n/g, '<br>')
                   .replace(/\n/g, '<br>')
               "
@@ -73,32 +73,59 @@
           </div>
           <div class="card-text mt-1 small">
             <b>Contact Persons:</b>
-            <span v-html="props.curActivity.contactPersons"></span>
+            <span v-html="props.activity.contactPersons"></span>
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            class="btn btn-primary btn-sm"
-            @click="toggleModal('editActivityModalToggle')"
-          >Edit</button>
+          <button class="btn btn-secondary btn-sm" @click="deleteActivity()">Delete</button>
+          <button class="btn btn-primary btn-sm ms-2" @click="editActivity()">Edit</button>
         </div>
       </div>
     </div>
   </div>
 
-  <ActivityEditComp :curActivity="props.curActivity"></ActivityEditComp>
+  <activity-edit :activity="data.curActivity" @edit="newAct => catchEdit(newAct)"></activity-edit>
 </template>
 
 
 <script setup>
-// import axios from "axios";
+import axios from "axios";
 // import { loginId } from "../common/msiLogin";
 // import router from "../router";
-import { defineProps } from 'vue'
+import { defineProps, defineEmits, reactive } from 'vue'
 
-import ActivityEditComp from "./ActivityEdit.vue";
+import ActivityEdit from "./ActivityEdit.vue";
 import toggleModal from "../common/modal";
 
-let props = defineProps(["curActivity"])
+let props = defineProps(["activity"])
+// console.log('in view details:', props.activity)
+let emit = defineEmits(['delete', 'edit'])
+let data = reactive({ curActivity: {} })
 
+
+function editActivity() {
+  for (let key in props.activity) {
+    data.curActivity[key] = props.activity[key];
+  }
+  // console.log('editActivity()', data.curActivity)
+  toggleModal('editActivityModalToggle')
+}
+
+function catchEdit(newAct) {
+  emit('edit', newAct)
+}
+
+function deleteActivity() {
+  let rslt = confirm('Sure to delete the record?')
+  if (!rslt) {
+    return
+  }
+
+  axios.delete("/api/msi/activities/" + props.activity.id).then(() => {
+    toggleModal();
+    emit('delete', props.activity.id)
+  }).catch((err) => {
+    console.log(err);
+  });
+}
 </script>
