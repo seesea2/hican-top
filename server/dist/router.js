@@ -49,13 +49,12 @@ apiRouter.get("/learn/:user/count", (req, res) => {
     (0, learn_1.learntWordsCount)(req.params.user, res);
 });
 apiRouter.post("/msi/login", (req, res) => {
-    console.log(req.body);
     let record = (0, users_1.LoginUser)(req.body);
-    if (record) {
+    if (record && record.id == req.body.id) {
         res.status(200).send();
     }
     else {
-        res.status(403).send();
+        res.status(200).send(record);
     }
 });
 apiRouter.post("/msi/logout", (req, res) => {
