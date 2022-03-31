@@ -58,7 +58,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="toggleModal()">Close</button>
-          <button @click="register()" class="btn btn-primary">Submit</button>
+          <button @click="register()" class="btn btn-primary" :disabled="disableSubmit">Submit</button>
         </div>
       </div>
     </div>
@@ -67,7 +67,7 @@
 
 <script setup>
 import axios from "axios";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import toggleModal from "../common/modal";
 
 let data = reactive({
@@ -79,6 +79,8 @@ let data = reactive({
   },
   msg: "",
 });
+
+let disableSubmit = ref(false)
 
 function register() {
   if (!data.user.id || !data.user.pwd) {
@@ -94,6 +96,7 @@ function register() {
     }
   }
 
+  disableSubmit.value = true;
   data.msg = "";
   axios
     .post("/api/msi/user", { user: data.user })
@@ -111,6 +114,8 @@ function register() {
     })
     .catch((err) => {
       console.log(err);
-    });
+    }).finally(() => {
+      disableSubmit.value = false;
+    })
 }
 </script>

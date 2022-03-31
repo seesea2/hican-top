@@ -97,7 +97,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" @click="Submit()">Submit</button>
+          <button class="btn btn-primary" @click="Submit()" :disabled="disableSubmit">Submit</button>
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@
 
 <script setup>
 import axios from "axios";
-import { watch, reactive, defineProps, defineEmits } from "vue";
+import { watch, reactive, defineProps, defineEmits, ref } from "vue";
 
 import dateToLocaleStr from "../common/date";
 import toggleModal from "../common/modal";
@@ -114,6 +114,7 @@ import toggleModal from "../common/modal";
 let props = defineProps(["activity"])
 // console.log('props.activity in edit act root:', props.activity)
 let emit = defineEmits(['edit'])
+let disableSubmit = ref(false)
 
 let data = reactive({
   curActivity: {},
@@ -211,6 +212,7 @@ function Submit() {
 
   // console.log("in 2:", data.curActivity);
 
+  disableSubmit.value = true;
   // for existig Act with ID, to update using PUT
   if (data.curActivity.id) {
     axios
@@ -223,11 +225,13 @@ function Submit() {
         setTimeout(() => {
           data.submitMsg = "";
           toggleModal();
+          disableSubmit.value = false;
         }, 2000);
       })
       .catch((err) => {
         data.submitMsg = err;
         console.log("put err:", err);
+        disableSubmit.value = false;
       });
   }
   // for new Act, to insert using POST
@@ -242,12 +246,14 @@ function Submit() {
         setTimeout(() => {
           data.submitMsg = "";
           toggleModal();
+          disableSubmit.value = false;
         }, 2000);
         return;
       })
       .catch((err) => {
         data.submitMsg = err;
         console.log("post err:", err);
+        disableSubmit.value = false;
       });
   }
 }
