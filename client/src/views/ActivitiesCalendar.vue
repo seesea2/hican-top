@@ -118,7 +118,10 @@ function refreshFullCalendar() {
       title: activity.title,
       start: dateToLocaleStr(
         new Date(activity.startDatetime)
-      )
+      ),
+      end: dateToLocaleStr(
+        new Date(activity.endDatetime)
+      ),
     });
   }
 }
