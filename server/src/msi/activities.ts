@@ -123,11 +123,12 @@ function AllActivitity() {
 
 // for testing
 let startDate = new Date();
-startDate.setDate(new Date().getDate() - 30);
-for (let i = 0; i < 60; ++i) {
-  let act1: Activity = {};
-  act1.title = "temp atc " + i;
-  act1.affectedSystems = "temp device " + i;
+startDate.setDate(new Date().getDate() - 5);
+for (let i = 0; i < 10; ++i) {
+  let act1: any = {};
+  for (let val of dbActivitiesColumns) {
+    act1[val] = "act" + i;
+  }
   act1.startDatetime = startDate.toISOString();
   act1.endDatetime = startDate.toISOString();
   startDate.setDate(startDate.getDate() + 1);
