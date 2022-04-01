@@ -9,6 +9,9 @@ const dbActivitiesColumns = [
   "endDatetime",
   "impact",
   "noImpact",
+  "stakeholders",
+  "teams",
+  "riskAndMitigation",
   "remarks",
   "contactPersons",
   "createDatetime",
@@ -23,13 +26,12 @@ function InsertActivitity(data: any) {
     let id = randomUUID();
     let values = "'" + id + "'";
 
-    for (let i in dbActivitiesColumns) {
-      let key = dbActivitiesColumns[i];
-      if (data[key]) {
-        console.log(data[key]);
-        data[key] = data[key].replace("'", "''");
-        fields += `,"${key}"`;
-        values += `,'${data[key]}'`;
+    for (let val of dbActivitiesColumns) {
+      if (data[val]) {
+        console.log(data[val]);
+        data[val] = data[val].replace("'", "''");
+        fields += `,"${val}"`;
+        values += `,'${data[val]}'`;
       }
     }
 
@@ -56,12 +58,11 @@ function UpdateActivitity(data: any) {
 
   try {
     let sql = `update "Activities" set `;
-    for (let i in dbActivitiesColumns) {
-      let key = dbActivitiesColumns[i];
-      if (data[key]) {
+    for (let val of dbActivitiesColumns) {
+      if (data[val]) {
         // console.log(data[key]);
-        data[key] = data[key].replace("'", "''");
-        sql += `"${key}"='${data[key]}',`;
+        data[val] = data[val].replace("'", "''");
+        sql += `"${val}"='${data[val]}',`;
       }
     }
     sql += `"updateDatetime"='${new Date().toISOString()}' `;
@@ -100,7 +101,7 @@ function SelectActivitity(id: string) {
     return record;
   } catch (e) {
     console.log(e);
-    return e.message;
+    return e;
   }
 }
 

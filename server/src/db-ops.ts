@@ -10,6 +10,9 @@ interface Activity {
   endDatetime?: string;
   impact?: string;
   noImpact?: string;
+  stakeholders?: string;
+  teams?: string;
+  riskAndMitigation?: string;
   remarks?: string;
   contactPersons?: string;
   createDatetime?: string;
@@ -28,6 +31,9 @@ try {
       endDatetime	TEXT, 
       impact	TEXT, 
       noImpact	TEXT, 
+      stakeholders	TEXT, 
+      teams	TEXT, 
+      riskAndMitigation	TEXT, 
       remarks	TEXT, 
       contactPersons	TEXT,
       status	TEXT, 
