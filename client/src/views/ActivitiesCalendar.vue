@@ -52,7 +52,7 @@ let data = reactive({
       right: "dayGridMonth,timeGridWeek,timeGridDay",
     },
     events: [],
-    editable: true,
+    editable: false,
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
@@ -124,9 +124,12 @@ function refreshFullCalendar() {
       ),
     });
   }
+
+  console.log('refreshFullCalendar, ', data.calendarOptions.events)
 }
 
 function catchEdit(newAct) {
+  console.log('catchEdit', data.curActivity.id)
   if (data.curActivity.id) {
     for (let i in data.activities) {
       if (data.activities[i].id == newAct.id) {
@@ -141,6 +144,7 @@ function catchEdit(newAct) {
       return new Date(b.startDatetime) - new Date(a.startDatetime);
     });
   }
+  console.log('catchedit, ', data.activities)
   refreshFullCalendar()
 }
 

@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { Activity, dbOpen } from "../db-ops";
+import { emailActivity as email }  from "./email";
 
 const dbActivitiesColumns = [
   "title",
@@ -121,6 +122,12 @@ function AllActivitity() {
   }
 }
 
+function emailActivity(data: any) {
+  console.log(data);
+  email(data);
+  return { done: true };
+}
+
 // for testing
 let startDate = new Date();
 startDate.setDate(new Date().getDate() - 5);
@@ -146,4 +153,11 @@ for (let i = 0; i < 10; ++i) {
 // let j = { type: "INSERT" };
 // console.log(JSON.stringify(j));
 
-export { AllActivitity, InsertActivitity, UpdateActivitity, DeleteActivitity };
+export {
+  AllActivitity,
+  InsertActivitity,
+  UpdateActivitity,
+  DeleteActivitity,
+  emailActivity,
+  dbActivitiesColumns,
+};

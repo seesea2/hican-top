@@ -10,7 +10,12 @@
       <div class="modal-content">
         <div class="modal-header bg-myblue">
           <h5 class="modal-title text-white" id="registerModalLabel">New User</h5>
-          <button type="button" class="btn-close" aria-label="Close" @click="toggleModal()"></button>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            aria-label="Close"
+            @click="toggleModal()"
+          ></button>
         </div>
         <div class="modal-body">
           <div class="form">

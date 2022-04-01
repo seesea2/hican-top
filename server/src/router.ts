@@ -15,6 +15,7 @@ import {
   InsertActivitity,
   UpdateActivitity,
   DeleteActivitity,
+  emailActivity,
 } from "./msi/activities";
 import { ChangePwd, LoginUser, LogoutUser, InsertUser } from "./msi/users";
 
@@ -140,6 +141,16 @@ apiRouter.delete("/msi/activities/:id", (req, res) => {
     res.status(200).send();
   } else {
     res.status(500).send({ err: "failed" });
+  }
+});
+
+apiRouter.post("/msi/activities/email", (req, res) => {
+  console.log("req email:", req.body);
+  let rslt: any = emailActivity(req.body);
+  if (rslt.err || rslt.done) {
+    res.status(200).send(rslt);
+  } else {
+    res.status(500).send({ err: "server failed" });
   }
 });
 

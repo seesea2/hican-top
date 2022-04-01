@@ -162,7 +162,7 @@ function deleteActivity() {
 }
 
 function emailActivity() {
-  axios.get("/api/msi/activities/email").then((resp) => {
+  axios.post("/api/msi/activities/email", { emails: '', activity: props.activity }).then((resp) => {
     console.log(resp.data)
   }).catch(err => {
     console.log(err)

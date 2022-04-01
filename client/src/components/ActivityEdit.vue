@@ -188,6 +188,9 @@ function initData() {
     data.startHour = '00'
     data.startMinute = '00'
   }
+  if (!['00', '15', '30', '45'].includes(data.startMinute)) {
+    data.startMinute = '00'
+  }
 
   if (props.activity.endDatetime) {
     data.endDateStr = dateToLocaleStr(new Date(props.activity.endDatetime)).split("T")[0];
@@ -202,6 +205,9 @@ function initData() {
   } else {
     data.endDateStr = dateToLocaleStr(new Date()).split("T")[0];
     data.endHour = '00'
+    data.endMinute = '00'
+  }
+  if (!['00', '15', '30', '45'].includes(data.endMinute)) {
     data.endMinute = '00'
   }
 
