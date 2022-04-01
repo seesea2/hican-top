@@ -24,7 +24,7 @@
           ></button>
         </div>
         <div class="modal-body" v-if="data.curActivity">
-          <div class="form-group mt-5">
+          <div class="form-group mt-3">
             <div class="row">
               <div class="col">
                 <label>Title:</label>
@@ -35,7 +35,7 @@
                 <input class="form-control" v-model.trim="data.curActivity.affectedSystems" />
               </div>
             </div>
-            <div class="row">
+            <div class="row mt-2 py-2">
               <div class="col">
                 <label>Start Datetime:</label>
                 <div class="form-control">
@@ -72,12 +72,23 @@
                   </select>
                 </div>
               </div>
+            </div>
+            <hr class="my-4" />
+            <div class="row mt-2">
+              <div class="col">
+                <label>Stakeholders:</label>
+                <input class="form-control" v-model.trim="data.curActivity.stakeholders" />
+              </div>
+              <div class="col">
+                <label>Implementation Teams:</label>
+                <input class="form-control" v-model.trim="data.curActivity.teams" />
+              </div>
               <div class="col">
                 <label>Contact Persons:</label>
                 <input class="form-control" v-model.trim="data.curActivity.contactPersons" />
               </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
               <div class="col">
                 <label>Impact:</label>
                 <textarea class="form-control" v-model.trim="data.curActivity.impact"></textarea>
@@ -85,6 +96,12 @@
               <div class="col">
                 <label>No Impact:</label>
                 <textarea class="form-control" v-model.trim="data.curActivity.noImpact"></textarea>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col">
+                <label>Risk & Mitigation:</label>
+                <textarea class="form-control" v-model.trim="data.curActivity.riskAndMitigation"></textarea>
               </div>
               <div class="col">
                 <label>Remarks:</label>

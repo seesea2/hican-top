@@ -60,6 +60,34 @@
           </div>
           <hr />
           <div class="card-text mt-1 small">
+            <b>Stakeholders:</b>
+            <span v-if="props.activity.stakeholders" class="mx-2">{{ props.activity.stakeholders }}</span>
+          </div>
+          <div class="card-text mt-1 small">
+            <b>Implementation Teams:</b>
+            <span v-if="props.activity.teams" class="mx-2">{{ props.activity.teams }}</span>
+          </div>
+          <div class="card-text mt-1 small">
+            <b>Contact Persons:</b>
+            <span
+              v-if="props.activity.contactPersons"
+              class="mx-2"
+            >{{ props.activity.contactPersons }}</span>
+          </div>
+          <hr />
+          <div class="card-text mt-1 small">
+            <b>Risk & Mitigation:</b>
+            <div
+              v-if="props.activity.riskAndMitigation"
+              v-html="
+                props.activity.riskAndMitigation
+                  .replace(/\r\n/g, '<br>')
+                  .replace(/\n/g, '<br>')
+              "
+              class="mx-3"
+            ></div>
+          </div>
+          <div class="card-text mt-1 small">
             <b>Remarks:</b>
             <div
               v-if="props.activity.remarks"
@@ -71,13 +99,10 @@
               class="mx-3"
             ></div>
           </div>
-          <div class="card-text mt-1 small">
-            <b>Contact Persons:</b>
-            <span v-html="props.activity.contactPersons"></span>
-          </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-secondary btn-sm" @click="deleteActivity()">Delete</button>
+          <button class="btn btn-outline-danger btn-sm" @click="deleteActivity()">Delete</button>
+          <button class="btn btn-info btn-sm ms-2" @click="emailActivity()">Email</button>
           <button class="btn btn-primary btn-sm ms-2" @click="editActivity()">Edit</button>
         </div>
       </div>
@@ -134,5 +159,13 @@ function deleteActivity() {
   }).catch((err) => {
     console.log(err);
   });
+}
+
+function emailActivity() {
+  axios.get("/api/msi/activities/email").then((resp) => {
+    console.log(resp.data)
+  }).catch(err => {
+    console.log(err)
+  })
 }
 </script>
