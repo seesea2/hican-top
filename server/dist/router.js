@@ -108,4 +108,14 @@ apiRouter.delete("/msi/activities/:id", (req, res) => {
         res.status(500).send({ err: "failed" });
     }
 });
+apiRouter.post("/msi/activities/email", (req, res) => {
+    console.log("req email:", req.body);
+    let rslt = (0, activities_1.emailActivity)(req.body);
+    if (rslt.err || rslt.done) {
+        res.status(200).send(rslt);
+    }
+    else {
+        res.status(500).send({ err: "server failed" });
+    }
+});
 exports.default = apiRouter;

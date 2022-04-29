@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DeleteActivitity = exports.UpdateActivitity = exports.InsertActivitity = exports.AllActivitity = void 0;
+exports.dbActivitiesColumns = exports.emailActivity = exports.DeleteActivitity = exports.UpdateActivitity = exports.InsertActivitity = exports.AllActivitity = void 0;
 const crypto_1 = require("crypto");
 const db_ops_1 = require("../db-ops");
+const email_1 = require("./email");
 const dbActivitiesColumns = [
     "title",
     "status",
@@ -11,11 +12,15 @@ const dbActivitiesColumns = [
     "endDatetime",
     "impact",
     "noImpact",
+    "stakeholders",
+    "teams",
+    "riskAndMitigation",
     "remarks",
     "contactPersons",
     "createDatetime",
     "updateDatetime",
 ];
+exports.dbActivitiesColumns = dbActivitiesColumns;
 function InsertActivitity(data) {
     if (!data || !data.title)
         return;
@@ -23,13 +28,12 @@ function InsertActivitity(data) {
         let fields = `"id"`;
         let id = (0, crypto_1.randomUUID)();
         let values = "'" + id + "'";
-        for (let i in dbActivitiesColumns) {
-            let key = dbActivitiesColumns[i];
-            if (data[key]) {
-                console.log(data[key]);
-                data[key] = data[key].replace("'", "''");
-                fields += `,"${key}"`;
-                values += `,'${data[key]}'`;
+        for (let val of dbActivitiesColumns) {
+            if (data[val]) {
+                console.log(data[val]);
+                data[val] = data[val].replace("'", "''");
+                fields += `,"${val}"`;
+                values += `,'${data[val]}'`;
             }
         }
         fields += `,"createDatetime"`;
@@ -53,11 +57,10 @@ function UpdateActivitity(data) {
         return;
     try {
         let sql = `update "Activities" set `;
-        for (let i in dbActivitiesColumns) {
-            let key = dbActivitiesColumns[i];
-            if (data[key]) {
-                data[key] = data[key].replace("'", "''");
-                sql += `"${key}"='${data[key]}',`;
+        for (let val of dbActivitiesColumns) {
+            if (data[val]) {
+                data[val] = data[val].replace("'", "''");
+                sql += `"${val}"='${data[val]}',`;
             }
         }
         sql += `"updateDatetime"='${new Date().toISOString()}' `;
@@ -99,7 +102,7 @@ function SelectActivitity(id) {
     }
     catch (e) {
         console.log(e);
-        return e.message;
+        return e;
     }
 }
 function AllActivitity() {
@@ -115,12 +118,19 @@ function AllActivitity() {
     }
 }
 exports.AllActivitity = AllActivitity;
+function emailActivity(data) {
+    console.log(data);
+    (0, email_1.emailActivity)(data);
+    return { done: true };
+}
+exports.emailActivity = emailActivity;
 let startDate = new Date();
-startDate.setDate(new Date().getDate() - 30);
-for (let i = 0; i < 60; ++i) {
+startDate.setDate(new Date().getDate() - 5);
+for (let i = 0; i < 10; ++i) {
     let act1 = {};
-    act1.title = "temp atc " + i;
-    act1.affectedSystems = "temp device " + i;
+    for (let val of dbActivitiesColumns) {
+        act1[val] = "act" + i;
+    }
     act1.startDatetime = startDate.toISOString();
     act1.endDatetime = startDate.toISOString();
     startDate.setDate(startDate.getDate() + 1);

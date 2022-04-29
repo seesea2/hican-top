@@ -51,11 +51,8 @@
 
     <div class="btn-group mt-3">
       <button v-if="!data.loadingNote" @click="refresh" class="btn btn-primary">Refresh</button>
-      <button
-        v-if="!data.loadingNote && !data.bookmark"
-        @click="addBookmark"
-        class="btn btn-primary"
-      >BookmarkBusStop</button>
+      <button v-if="!data.loadingNote && !data.bookmark" @click="addBookmark"
+        class="btn btn-primary">BookmarkBusStop</button>
       <button class="btn btn-primary" @click="this.$router.go(-1)">Back</button>
     </div>
   </div>

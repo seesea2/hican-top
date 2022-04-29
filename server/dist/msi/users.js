@@ -11,6 +11,7 @@ const dbUserColumns = [
     "role",
     "created",
     "updated",
+    "status",
 ];
 let allLoginUsers = [];
 exports.allLoginUsers = allLoginUsers;
@@ -22,17 +23,15 @@ function InsertUser(data) {
     try {
         let fields = "created";
         let values = `'${new Date().toISOString()}'`;
-        for (let ind in dbUserColumns) {
-            if (data[dbUserColumns[ind]]) {
-                data[dbUserColumns[ind]] = data[dbUserColumns[ind]].replace("'", "''");
-                fields += `,"${dbUserColumns[ind]}"`;
-                if (dbUserColumns[ind] != "pwd") {
-                    values += `,'${data[dbUserColumns[ind]]}'`;
+        for (let val of dbUserColumns) {
+            if (data[val]) {
+                data[val] = data[val].replace("'", "''");
+                fields += `,"${val}"`;
+                if (val != "pwd") {
+                    values += `,'${data[val]}'`;
                 }
                 else {
-                    let pwdHash = (0, crypto_1.createHash)("sha1")
-                        .update(data[dbUserColumns[ind]])
-                        .digest("hex");
+                    let pwdHash = (0, crypto_1.createHash)("sha1").update(data[val]).digest("hex");
                     values += `,'${pwdHash}'`;
                 }
             }
@@ -149,3 +148,8 @@ function AllUsers() {
     }
 }
 exports.AllUsers = AllUsers;
+let user = {
+    id: "test",
+    pwd: "test",
+};
+InsertUser(user);
