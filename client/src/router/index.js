@@ -12,11 +12,11 @@ const routes = [
     name: "BusArrivalTime",
     component: () => import("../views/BusArrivalTime.vue"),
   },
-  {
-    path: "/dictionary/:word?",
-    name: "Dictionary",
-    component: () => import("../views/Dictionary.vue"),
-  },
+  // {
+  //   path: "/dictionary/:word?",
+  //   name: "Dictionary",
+  //   component: () => import("../views/Dictionary.vue"),
+  // },
   {
     path: "/podcast",
     name: "Podcast",

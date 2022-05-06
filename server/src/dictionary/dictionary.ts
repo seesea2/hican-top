@@ -84,7 +84,8 @@ async function OxfordApiWord(word: string) {
       JSON.stringify(entries)
     );
     return entries;
-  } catch {
+  } catch (err) {
+    console.log(err);
     return;
   }
 }
@@ -101,7 +102,8 @@ async function OxfordApiLemmas(word: string) {
       JSON.stringify(lemmas)
     );
     return lemmas;
-  } catch {
+  } catch (err) {
+    console.log(err);
     return;
   }
 }

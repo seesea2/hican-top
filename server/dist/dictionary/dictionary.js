@@ -82,7 +82,8 @@ function OxfordApiWord(word) {
             (0, fs_1.writeFileSync)((0, path_1.join)(dir_1.assetsDir, "/oxford/json/" + word + ".json"), JSON.stringify(entries));
             return entries;
         }
-        catch (_a) {
+        catch (err) {
+            console.log(err);
             return;
         }
     });
@@ -97,7 +98,8 @@ function OxfordApiLemmas(word) {
             (0, fs_1.writeFileSync)((0, path_1.join)(dir_1.assetsDir, "/oxford/json/lemmas-" + word + ".json"), JSON.stringify(lemmas));
             return lemmas;
         }
-        catch (_a) {
+        catch (err) {
+            console.log(err);
             return;
         }
     });
