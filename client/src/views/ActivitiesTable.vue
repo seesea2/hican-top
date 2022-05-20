@@ -58,20 +58,20 @@ document.title = "Activities Table";
 
 let data = reactive({
   activities: [],
-  curActivity: {},
+  curActivity: { id: "" },
 });
 
 onBeforeMount(() => {
   if (!loginId()) {
     router.push("/login");
-    return
+    return;
   }
   Refresh();
-})
+});
 
 function catchDelete(id) {
   // console.log('catchDelete', id)
-  data.activities = data.activities.filter(item => item.id != id)
+  data.activities = data.activities.filter((item) => item.id != id);
 }
 
 function catchEdit(newAct) {
@@ -79,18 +79,23 @@ function catchEdit(newAct) {
   if (data.curActivity.id) {
     for (let i in data.activities) {
       if (data.activities[i].id == newAct.id) {
-        // console.log('changed')
-        data.activities[i] = newAct
+        console.log("changed act:", newAct);
+        data.activities[i] = newAct;
         break;
       }
     }
-  }
-  else {
-    data.activities.push(newAct)
+  } else {
+    console.log("add act:", newAct);
+    let newCopy = {};
+    for (let key in newAct) {
+      newCopy[key] = newAct[key];
+    }
+    data.activities.push(newCopy);
     data.activities.sort(function (a, b) {
       return new Date(b.startDatetime) - new Date(a.startDatetime);
     });
   }
+  console.log("log catchEdit data.activities:", data.activities);
 }
 
 function Refresh() {
@@ -114,14 +119,16 @@ function addActivity() {
   for (let key in data.curActivity) {
     data.curActivity[key] = null;
   }
-  toggleModal('editActivityModalToggle')
+  data.curActivity.type = "Activity";
+  console.log("actTable -- data.curActivity:", data.curActivity);
+  toggleModal("editActivityModal");
 }
 
 function viewActivity(activity) {
   for (let key in activity) {
-    data.curActivity[key] = activity[key]
+    data.curActivity[key] = activity[key];
   }
   // console.log('in activitytable', data.curActivity)
-  toggleModal('activityDetailsModal');
+  toggleModal("activityDetailsModal");
 }
 </script>

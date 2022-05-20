@@ -9,7 +9,9 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-myblue">
-          <h5 class="modal-title text-white" id="registerModalLabel">New User</h5>
+          <h5 class="modal-title text-white" id="registerModalLabel">
+            New User
+          </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
@@ -62,8 +64,20 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="toggleModal()">Close</button>
-          <button @click="register()" class="btn btn-primary" :disabled="disableSubmit">Submit</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="toggleModal()"
+          >
+            Close
+          </button>
+          <button
+            @click="register()"
+            class="btn btn-primary"
+            :disabled="disableSubmit"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>
@@ -85,7 +99,7 @@ let data = reactive({
   msg: "",
 });
 
-let disableSubmit = ref(false)
+let disableSubmit = ref(false);
 
 function register() {
   if (!data.user.id || !data.user.pwd) {
@@ -119,8 +133,9 @@ function register() {
     })
     .catch((err) => {
       console.log(err);
-    }).finally(() => {
-      disableSubmit.value = false;
     })
+    .finally(() => {
+      disableSubmit.value = false;
+    });
 }
 </script>

@@ -9,7 +9,9 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header bg-myblue">
-          <h5 class="modal-title text-white" id="changePwdModalLabel">Change Password</h5>
+          <h5 class="modal-title text-white" id="changePwdModalLabel">
+            Change Password
+          </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
@@ -51,12 +53,26 @@
             </div>
           </div>
           <div class="text-center mt-3">
-            <label v-if="changePwdMsg" class="bg-warning">{{ changePwdMsg }}</label>
+            <label v-if="changePwdMsg" class="bg-warning">{{
+              changePwdMsg
+            }}</label>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="toggleModal()">Close</button>
-          <button @click="ChangePassword()" class="btn btn-primary" :disabled="disableSubmit">Submit</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            @click="toggleModal()"
+          >
+            Close
+          </button>
+          <button
+            @click="ChangePassword()"
+            class="btn btn-primary"
+            :disabled="disableSubmit"
+          >
+            Submit
+          </button>
         </div>
       </div>
     </div>
@@ -70,13 +86,12 @@ import axios from "axios";
 import toggleModal from "../common/modal";
 import { loginId } from "../common/msiLogin";
 
-
-let id = ref("")
-let oldPwd = ref("")
-let newPwd1 = ref("")
-let newPwd2 = ref("")
-let changePwdMsg = ref("")
-let disableSubmit = ref(false)
+let id = ref("");
+let oldPwd = ref("");
+let newPwd1 = ref("");
+let newPwd2 = ref("");
+let changePwdMsg = ref("");
+let disableSubmit = ref(false);
 
 function ChangePassword() {
   // console.log("in ChangePassword");
@@ -118,5 +133,4 @@ function ChangePassword() {
       disableSubmit.value = false;
     });
 }
-
 </script>

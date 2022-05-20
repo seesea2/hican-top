@@ -15,14 +15,19 @@
               v-on:keyup.enter="getBusArrival()"
             />
             <div class="input-group-append">
-              <button class="btn btn-primary" @click="getBusArrival()">Get</button>
+              <button class="btn btn-primary" @click="getBusArrival()">
+                Get
+              </button>
             </div>
           </div>
           <div v-if="data.inputNote">{{ data.inputNote }}</div>
         </div>
       </div>
 
-      <div v-if="data.bookmarkBusStops && data.bookmarkBusStops.length" class="mt-4">
+      <div
+        v-if="data.bookmarkBusStops && data.bookmarkBusStops.length"
+        class="mt-4"
+      >
         <h3>Bus Stop Bookmark</h3>
         <table class="table table-sm mt-2">
           <thead class="thead-dark">
@@ -33,21 +38,24 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="bookmark in data.bookmarkBusStops" :key="bookmark.BusStopCode">
+            <tr
+              v-for="bookmark in data.bookmarkBusStops"
+              :key="bookmark.BusStopCode"
+            >
               <td>
-                <a
-                  @click="getBusArrival(bookmark.BusStopCode)"
-                  class="btn"
-                >{{ bookmark.BusStopCode }}</a>
+                <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">{{
+                  bookmark.BusStopCode
+                }}</a>
               </td>
               <td>
-                <a
-                  @click="getBusArrival(bookmark.BusStopCode)"
-                  class="btn"
-                >{{ bookmark.Description }}@{{ bookmark.RoadName }}</a>
+                <a @click="getBusArrival(bookmark.BusStopCode)" class="btn"
+                  >{{ bookmark.Description }}@{{ bookmark.RoadName }}</a
+                >
               </td>
               <td>
-                <a @click="removeBookmark(bookmark.BusStopCode)" class="btn">X</a>
+                <a @click="removeBookmark(bookmark.BusStopCode)" class="btn"
+                  >X</a
+                >
               </td>
             </tr>
           </tbody>
@@ -74,15 +82,22 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="nearbyBusStop in data.nearbyBusStops" :key="nearbyBusStop.busStop.BusStopCode">
+          <tr
+            v-for="nearbyBusStop in data.nearbyBusStops"
+            :key="nearbyBusStop.busStop.BusStopCode"
+          >
             <td>
               <a
                 @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
                 class="btn"
-              >{{ nearbyBusStop.busStop.BusStopCode }}</a>
+                >{{ nearbyBusStop.busStop.BusStopCode }}</a
+              >
             </td>
             <td>
-              <a @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)" class="btn">
+              <a
+                @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
+                class="btn"
+              >
                 {{ nearbyBusStop.busStop.Description }}@{{
                   nearbyBusStop.busStop.RoadName
                 }}
@@ -119,7 +134,7 @@ let data = reactive({
 
 onBeforeMount(() => {
   refreshBookmarks();
-})
+});
 
 function getBusArrival(inputCode) {
   if (inputCode) {

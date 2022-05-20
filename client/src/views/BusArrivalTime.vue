@@ -5,7 +5,11 @@
       <h5>Bus Stop: {{ data.inputCode }}</h5>
 
       <div v-if="data.loading" class="my-3">
-        <div class="spinner-border" style="width: 10rem; height: 10rem" role="status">
+        <div
+          class="spinner-border"
+          style="width: 10rem; height: 10rem"
+          role="status"
+        >
           <span class="sr-only">Loading...</span>
         </div>
       </div>
@@ -22,11 +26,20 @@
         </tr>
       </thead>
       <tbody v-if="data.busArrival.Services.length">
-        <tr v-for="service in data.busArrival.Services" :key="service.ServiceNo">
+        <tr
+          v-for="service in data.busArrival.Services"
+          :key="service.ServiceNo"
+        >
           <th scope="row">{{ service.ServiceNo }}</th>
-          <td :class="getLoadColour(service.NextBus)">{{ calculateArrivalTime(service.NextBus) }}</td>
-          <td :class="getLoadColour(service.NextBus2)">{{ calculateArrivalTime(service.NextBus2) }}</td>
-          <td :class="getLoadColour(service.NextBus2)">{{ calculateArrivalTime(service.NextBus3) }}</td>
+          <td :class="getLoadColour(service.NextBus)">
+            {{ calculateArrivalTime(service.NextBus) }}
+          </td>
+          <td :class="getLoadColour(service.NextBus2)">
+            {{ calculateArrivalTime(service.NextBus2) }}
+          </td>
+          <td :class="getLoadColour(service.NextBus2)">
+            {{ calculateArrivalTime(service.NextBus3) }}
+          </td>
         </tr>
       </tbody>
       <tbody v-else>
@@ -50,9 +63,16 @@
     </table>
 
     <div class="btn-group mt-3">
-      <button v-if="!data.loadingNote" @click="refresh" class="btn btn-primary">Refresh</button>
-      <button v-if="!data.loadingNote && !data.bookmark" @click="addBookmark"
-        class="btn btn-primary">BookmarkBusStop</button>
+      <button v-if="!data.loadingNote" @click="refresh" class="btn btn-primary">
+        Refresh
+      </button>
+      <button
+        v-if="!data.loadingNote && !data.bookmark"
+        @click="addBookmark"
+        class="btn btn-primary"
+      >
+        BookmarkBusStop
+      </button>
       <button class="btn btn-primary" @click="$router.go(-1)">Back</button>
     </div>
   </div>
@@ -79,7 +99,7 @@ onBeforeMount(() => {
   const route = useRoute();
   data.inputCode = route.params.inputCode;
   refresh();
-})
+});
 
 function refresh() {
   data.loading = true;

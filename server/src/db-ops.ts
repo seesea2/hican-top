@@ -45,8 +45,8 @@ try {
   // Table for Activity Template
   db.exec(
     `CREATE TABLE IF NOT EXISTS Templates(id	TEXT NOT NULL primary key, 
-      Group1 TEXT,
-      Group2 TEXT,
+      group1 TEXT,
+      group2 TEXT,
       created TEXT,
       updated TEXT
     );`

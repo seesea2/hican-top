@@ -25,41 +25,79 @@
     <div v-if="data.results.length">
       <h3>Definitions:</h3>
       <div v-for="result in data.results" :key="result.id">
-        <div v-for="lexicalEntry in result.lexicalEntries" :key="lexicalEntry.text">
-          <div class="card mt-4" v-for="(entry, index) in lexicalEntry.entries" :key="index">
+        <div
+          v-for="lexicalEntry in result.lexicalEntries"
+          :key="lexicalEntry.text"
+        >
+          <div
+            class="card mt-4"
+            v-for="(entry, index) in lexicalEntry.entries"
+            :key="index"
+          >
             <div class="card-body">
               <h5 class="card-title">
                 <span>{{ lexicalEntry.text }} |</span>
-                <span class="small">{{ lexicalEntry.lexicalCategory.text }}</span>
-                <span class="mx-2 small" v-if="entry.pronunciations && entry.pronunciations.length">
+                <span class="small">{{
+                  lexicalEntry.lexicalCategory.text
+                }}</span>
+                <span
+                  class="mx-2 small"
+                  v-if="entry.pronunciations && entry.pronunciations.length"
+                >
                   <i>[ {{ entry.pronunciations[0].phoneticSpelling }} ]</i>
                   <a
                     class="btn p-1 btn-sm"
                     @click="playAudio(entry.pronunciations[0].audioFile)"
                     style="font-size: 120%"
-                  >&#9836;</a>
+                    >&#9836;</a
+                  >
                 </span>
               </h5>
               <ol class="list-group list-group-numbered">
-                <li class="list-group-item d-flex" v-for="sense in entry.senses" :key="sense.id">
-                  <div class="px-1" v-for="(definition, ind) in sense.definitions" :key="ind">
+                <li
+                  class="list-group-item d-flex"
+                  v-for="sense in entry.senses"
+                  :key="sense.id"
+                >
+                  <div
+                    class="px-1"
+                    v-for="(definition, ind) in sense.definitions"
+                    :key="ind"
+                  >
                     {{ definition }}
-                    <div class="small" v-if="sense.examples && sense.examples.length">
+                    <div
+                      class="small"
+                      v-if="sense.examples && sense.examples.length"
+                    >
                       <ul class="list-group">
                         Examples:
                         <li
                           v-for="(example, ind) in sense.examples"
                           :key="ind"
                           class="mx-4"
-                        >{{ example.text }}</li>
+                        >
+                          {{ example.text }}
+                        </li>
                       </ul>
                     </div>
 
-                    <div v-if="sense.subsenses && sense.subsenses.length" class="mt-2 small">
+                    <div
+                      v-if="sense.subsenses && sense.subsenses.length"
+                      class="mt-2 small"
+                    >
                       <ul class="list-group">
                         Sub Definition:
-                        <i v-for="(subsense, ind) in sense.subsenses" :key="ind">
-                          <li class="mx-4" v-for="def in subsense.definitions" :key="def">{{ def }}</li>
+                        <i
+                          v-for="(subsense, ind) in sense.subsenses"
+                          :key="ind"
+                        >
+                          <li
+                            class="mx-4"
+                            v-for="def in subsense.definitions"
+                            :key="def"
+                          >
+                            {{ def }}
+                          </li>
                         </i>
                       </ul>
                     </div>
@@ -80,7 +118,7 @@
 
 <script setup>
 import axios from "axios";
-import { onBeforeMount, reactive } from 'vue'
+import { onBeforeMount, reactive } from "vue";
 import { useRoute } from "vue-router";
 
 import NavbarVue from "../components/Navbar.vue";
@@ -91,7 +129,7 @@ let data = reactive({
   word: null,
   note: null,
   results: [],
-})
+});
 
 onBeforeMount(() => {
   // optional word params in url to search directly.
@@ -100,7 +138,7 @@ onBeforeMount(() => {
     data.word = route.params.word;
     search();
   }
-})
+});
 
 function search() {
   if (!data.word) {

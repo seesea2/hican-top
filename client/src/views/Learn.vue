@@ -8,21 +8,39 @@
     <div class="row justify-content-end">
       <div class="col-auto">
         <div v-if="!data.bLogin" class="input-group">
-          <input v-model.trim="data.user" placeholder="user" class="form-control" v-on:keyup.enter="login" />
+          <input
+            v-model.trim="data.user"
+            placeholder="user"
+            class="form-control"
+            v-on:keyup.enter="login"
+          />
           <div class="input-group-append">
-            <button @click="login" class="col-auto btn btn-primary">Sign in</button>
+            <button @click="login" class="col-auto btn btn-primary">
+              Sign in
+            </button>
           </div>
         </div>
         <div v-if="data.bLogin">
           <span class="small">Learnt:{{ data.learntCount }}</span>
-          <button @click="logout" class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm">Sign out</button>
+          <button
+            @click="logout"
+            class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm"
+          >
+            Sign out
+          </button>
         </div>
       </div>
     </div>
 
     <div class="text-center">
-      <span v-if="data.loading" class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem"
-        aria-hidden="true" center></span>
+      <span
+        v-if="data.loading"
+        class="spinner-border text-primary"
+        role="status"
+        style="width: 5rem; height: 5rem"
+        aria-hidden="true"
+        center
+      ></span>
     </div>
 
     <div center>
@@ -41,17 +59,42 @@
         </div>
         <div class="col-auto align-self-end ml-auto">
           <span class="ms-2">[</span>
-          <a class="btn p-0 btn-sm" target="_blank" :href="
-            'https://dictionary.cambridge.org/dictionary/english/' + word
-          ">Cambridge</a>
-          <a class="btn p-0 ms-1 btn-sm" target="_blank" :href="
-            'https://www.collinsdictionary.com/dictionary/english/' + word
-          ">Collins</a>
-          <a class="btn p-0 ms-1 btn-sm" target="_blank"
-            :href="'https://www.lexico.com/en/definition/' + word">Oxford</a>
-          <a class="btn p-0 ms-1 btn-sm" target="_blank" :href="'https://dict.cn/' + word">Dict</a>
+          <a
+            class="btn p-0 btn-sm"
+            target="_blank"
+            :href="
+              'https://dictionary.cambridge.org/dictionary/english/' + word
+            "
+            >Cambridge</a
+          >
+          <a
+            class="btn p-0 ms-1 btn-sm"
+            target="_blank"
+            :href="
+              'https://www.collinsdictionary.com/dictionary/english/' + word
+            "
+            >Collins</a
+          >
+          <a
+            class="btn p-0 ms-1 btn-sm"
+            target="_blank"
+            :href="'https://www.lexico.com/en/definition/' + word"
+            >Oxford</a
+          >
+          <a
+            class="btn p-0 ms-1 btn-sm"
+            target="_blank"
+            :href="'https://dict.cn/' + word"
+            >Dict</a
+          >
           <span>]</span>
-          <button v-if="data.bLogin" class="btn btn-outline-info border-0 ms-2" @click="hideWord(word)">x</button>
+          <button
+            v-if="data.bLogin"
+            class="btn btn-outline-info border-0 ms-2"
+            @click="hideWord(word)"
+          >
+            x
+          </button>
         </div>
       </div>
       <div class="text-center">
@@ -117,11 +160,11 @@ onBeforeMount(() => {
     return;
   }
   // url same as last login user.
-})
+});
 
 onBeforeMount(() => {
   getWords();
-})
+});
 
 function logout() {
   data.bLogin = false;

@@ -21,7 +21,14 @@ try {
       contactPersons	TEXT,
       status	TEXT, 
       createDatetime TEXT,
-      updateDatetime TEXT
+      updateDatetime TEXT,
+      type TEXT
+    );`);
+    db.exec(`CREATE TABLE IF NOT EXISTS Templates(id	TEXT NOT NULL primary key, 
+      group1 TEXT,
+      group2 TEXT,
+      created TEXT,
+      updated TEXT
     );`);
     db.exec(`CREATE TABLE IF NOT EXISTS Users(id	TEXT NOT NULL primary key, 
       pwd	TEXT,

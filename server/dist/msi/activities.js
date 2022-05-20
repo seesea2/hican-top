@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbActivitiesColumns = exports.emailActivity = exports.DeleteActivitity = exports.UpdateActivitity = exports.InsertActivitity = exports.AllActivitity = void 0;
+exports.dbActivitiesColumns = exports.emailActivity = exports.DeleteActivitity = exports.UpdateActivitity = exports.InsertActivitity = exports.AllActivitity = exports.ActivitityTemplates = void 0;
 const crypto_1 = require("crypto");
 const db_ops_1 = require("../db-ops");
 const email_1 = require("./email");
@@ -19,8 +19,10 @@ const dbActivitiesColumns = [
     "contactPersons",
     "createDatetime",
     "updateDatetime",
+    "type",
 ];
 exports.dbActivitiesColumns = dbActivitiesColumns;
+const dbTemplatesColumns = ["id", "group1", "group2", "created", "updated"];
 function InsertActivitity(data) {
     if (!data || !data.title)
         return;
@@ -29,8 +31,10 @@ function InsertActivitity(data) {
         let id = (0, crypto_1.randomUUID)();
         let values = "'" + id + "'";
         for (let val of dbActivitiesColumns) {
+            if (["createDatetime", "updateDatetime"].includes(val)) {
+                continue;
+            }
             if (data[val]) {
-                console.log(data[val]);
                 data[val] = data[val].replace("'", "''");
                 fields += `,"${val}"`;
                 values += `,'${data[val]}'`;
@@ -44,6 +48,22 @@ function InsertActivitity(data) {
         let stmt = db.prepare(sql);
         stmt.run();
         db.close();
+        if (data["type"] == "Template") {
+            fields = `"id"`;
+            values = "'" + id + "'";
+            fields += `,"group1"`;
+            values += `,'${data["group1"]}'`;
+            fields += `,"group2"`;
+            values += `,'${data["group2"]}'`;
+            fields += `,"created"`;
+            values += ",'" + new Date().toISOString() + "'";
+            sql = `insert into "Templates"(${fields}) values(${values});`;
+            console.log(sql);
+            db = (0, db_ops_1.dbOpen)();
+            stmt = db.prepare(sql);
+            stmt.run();
+            db.close();
+        }
         return id;
     }
     catch (e) {
@@ -58,6 +78,9 @@ function UpdateActivitity(data) {
     try {
         let sql = `update "Activities" set `;
         for (let val of dbActivitiesColumns) {
+            if (val == "updateDatetime") {
+                continue;
+            }
             if (data[val]) {
                 data[val] = data[val].replace("'", "''");
                 sql += `"${val}"='${data[val]}',`;
@@ -68,7 +91,7 @@ function UpdateActivitity(data) {
         console.log("sql: ", sql);
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(sql);
-        console.log(stmt.run());
+        stmt.run();
         db.close();
         return true;
     }
@@ -108,7 +131,7 @@ function SelectActivitity(id) {
 function AllActivitity() {
     try {
         let db = (0, db_ops_1.dbOpen)();
-        let stmt = db.prepare(`select * from Activities order by "startDatetime" desc;`);
+        let stmt = db.prepare(`select * from Activities where id not in (select id from Templates) order by "startDatetime" desc;`);
         let items = stmt.all();
         db.close();
         return items;
@@ -118,6 +141,19 @@ function AllActivitity() {
     }
 }
 exports.AllActivitity = AllActivitity;
+function ActivitityTemplates() {
+    try {
+        let db = (0, db_ops_1.dbOpen)();
+        let stmt = db.prepare(`select a.*,t.group1,t.group2 from Activities a, Templates t where a.id=t.id order by "group1","group2";`);
+        let items = stmt.all();
+        db.close();
+        return items;
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
+exports.ActivitityTemplates = ActivitityTemplates;
 function emailActivity(data) {
     console.log(data);
     (0, email_1.emailActivity)(data);

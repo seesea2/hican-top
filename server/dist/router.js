@@ -79,15 +79,20 @@ apiRouter.get("/msi/activities", (req, res) => {
     let acts = (0, activities_1.AllActivitity)();
     res.status(200).send(acts);
 });
+apiRouter.get("/msi/activities/templates", (req, res) => {
+    let templates = (0, activities_1.ActivitityTemplates)();
+    console.log(templates);
+    res.status(200).send(templates);
+});
 apiRouter.post("/msi/activities", (req, res) => {
-    console.log("req post:", req.body);
-    console.log("req post:", req.params);
+    console.log("req post.body:", req.body);
+    console.log("req post.params:", req.params);
     let id = (0, activities_1.InsertActivitity)(req.body);
     res.status(200).send({ id: id });
 });
 apiRouter.put("/msi/activities", (req, res) => {
-    console.log("req put:", req.body);
-    console.log("req put:", req.params);
+    console.log("req put.body:", req.body);
+    console.log("req put.params:", req.params);
     let id = (0, activities_1.UpdateActivitity)(req.body);
     res.status(200).send({ id: id });
 });

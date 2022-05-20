@@ -20,6 +20,8 @@ const dbActivitiesColumns = [
   "type", // Activity, Issue, Template
 ];
 
+const dbTemplatesColumns = ["id", "group1", "group2", "created", "updated"];
+
 function InsertActivitity(data: any) {
   if (!data || !data.title) return;
 
@@ -29,8 +31,11 @@ function InsertActivitity(data: any) {
     let values = "'" + id + "'";
 
     for (let val of dbActivitiesColumns) {
+      if (["createDatetime", "updateDatetime"].includes(val)) {
+        continue;
+      }
       if (data[val]) {
-        console.log(data[val]);
+        // console.log(data[val]);
         data[val] = data[val].replace("'", "''");
         fields += `,"${val}"`;
         values += `,'${data[val]}'`;
@@ -52,10 +57,10 @@ function InsertActivitity(data: any) {
     if (data["type"] == "Template") {
       fields = `"id"`;
       values = "'" + id + "'";
-      fields += `,"Group1"`;
-      values += `,'${data["Group1"]}'`;
-      fields += `,"Group2"`;
-      values += `,'${data["Group2"]}'`;
+      fields += `,"group1"`;
+      values += `,'${data["group1"]}'`;
+      fields += `,"group2"`;
+      values += `,'${data["group2"]}'`;
       fields += `,"created"`;
       values += ",'" + new Date().toISOString() + "'";
       sql = `insert into "Templates"(${fields}) values(${values});`;
@@ -79,6 +84,9 @@ function UpdateActivitity(data: any) {
   try {
     let sql = `update "Activities" set `;
     for (let val of dbActivitiesColumns) {
+      if (val == "updateDatetime") {
+        continue;
+      }
       if (data[val]) {
         // console.log(data[key]);
         data[val] = data[val].replace("'", "''");
@@ -90,7 +98,7 @@ function UpdateActivitity(data: any) {
     console.log("sql: ", sql);
     let db = dbOpen();
     let stmt = db.prepare(sql);
-    console.log(stmt.run());
+    stmt.run();
     db.close();
     return true;
   } catch (e) {
@@ -144,7 +152,7 @@ function ActivitityTemplates() {
   try {
     let db = dbOpen();
     let stmt = db.prepare(
-      `select a.*,t.* from Activities a, Templates t where a.id=t.id order by "Group1","Group2";`
+      `select a.*,t.group1,t.group2 from Activities a, Templates t where a.id=t.id order by "group1","group2";`
     );
     let items = stmt.all();
     // console.log(items);

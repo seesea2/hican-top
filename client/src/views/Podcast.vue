@@ -22,7 +22,7 @@ import { reactive, onBeforeMount } from "vue";
 document.title = "Podcast";
 
 let data = reactive({
-  channels: []
+  channels: [],
 });
 
 onBeforeMount(() => {
@@ -36,7 +36,6 @@ onBeforeMount(() => {
     .catch((err) => {
       data.channels.length = 0;
       console.log("err", err);
-    })
+    });
 });
-
 </script>

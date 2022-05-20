@@ -1,9 +1,9 @@
-// to overcome Bootstrp Modal limit for Vue 3.
+// to overcome Bootstrap Modal limit for Vue 3.
 
 let curOpenModalId = "";
 
-function goBackEventListern() {
-  console.log("in goBackEventListern");
+function goBackEventLister() {
+  // console.log("in goBackEventLister");
   toggleModal();
 }
 
@@ -62,7 +62,7 @@ function toggleModal(id) {
       curOpenModalId = "";
     }
 
-    window.removeEventListener("popstate", goBackEventListern);
+    window.removeEventListener("popstate", goBackEventLister);
   }
 
   if (doOpen) {
@@ -95,7 +95,7 @@ function toggleModal(id) {
       elm.className += " show";
     }
 
-    window.addEventListener("popstate", goBackEventListern);
+    window.addEventListener("popstate", goBackEventLister);
   }
   // console.log(
   //   "end: ",
