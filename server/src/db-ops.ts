@@ -38,7 +38,17 @@ try {
       contactPersons	TEXT,
       status	TEXT, 
       createDatetime TEXT,
-      updateDatetime TEXT
+      updateDatetime TEXT,
+      type TEXT
+    );`
+  );
+  // Table for Activity Template
+  db.exec(
+    `CREATE TABLE IF NOT EXISTS Templates(id	TEXT NOT NULL primary key, 
+      Group1 TEXT,
+      Group2 TEXT,
+      created TEXT,
+      updated TEXT
     );`
   );
   // Usres Table

@@ -11,6 +11,7 @@ import {
   addWord,
 } from "./learn-english/learn";
 import {
+  ActivitityTemplates,
   AllActivitity,
   InsertActivitity,
   UpdateActivitity,
@@ -116,9 +117,13 @@ apiRouter.get("/msi/activities", (req, res) => {
   // console.log(typeof acts);
   res.status(200).send(acts);
 });
+apiRouter.get("/msi/activities/templates", (req, res) => {
+  let templates = ActivitityTemplates();
+  res.status(200).send(templates);
+});
 apiRouter.post("/msi/activities", (req, res) => {
-  console.log("req post:", req.body);
-  console.log("req post:", req.params);
+  console.log("req post.body:", req.body);
+  console.log("req post.params:", req.params);
   // let data = JSON.parse(req.params);
   // console.log(req.body);
 
@@ -126,8 +131,8 @@ apiRouter.post("/msi/activities", (req, res) => {
   res.status(200).send({ id: id });
 });
 apiRouter.put("/msi/activities", (req, res) => {
-  console.log("req put:", req.body);
-  console.log("req put:", req.params);
+  console.log("req put.body:", req.body);
+  console.log("req put.params:", req.params);
   // let data = JSON.parse(req.params);
   // console.log(req.body);
 

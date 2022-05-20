@@ -1,29 +1,78 @@
 <template>
-  <div
-    class="modal fade"
-    id="editActivityModalToggle"
-    data-bs-backdrop="static"
-    aria-hidden="true"
-    aria-labelledby="editActivityModalToggleLabel"
-    tabindex="-1"
-  >
+  <div class="modal fade" id="editActivityModalToggle" data-bs-backdrop="static" aria-hidden="true"
+    aria-labelledby="editActivityModalToggleLabel" tabindex="-1">
     <div class="modal-dialog modal-fullscreen modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header bg-myblue">
-          <h5
-            v-if="data.curActivity && data.curActivity.id"
-            class="modal-title text-white"
-            id="editActivityModalToggleLabel"
-          >Edit Activity</h5>
-          <h5 v-else class="modal-title text-white" id="editActivityModalToggleLabel">Add Activity</h5>
-          <button
-            type="button"
-            class="btn-close btn-close-white"
-            aria-label="Close"
-            @click="toggleModal()"
-          ></button>
+          <h5 v-if="data.curActivity && data.curActivity.id" class="modal-title text-white"
+            id="editActivityModalToggleLabel">Edit</h5>
+          <h5 v-else class="modal-title text-white" id="editActivityModalToggleLabel">Create
+          </h5>
+          <button type="button" class="btn-close btn-close-white" aria-label="Close" @click="toggleModal()"></button>
         </div>
-        <div class="modal-body" v-if="data.curActivity">
+        <form class="modal-body" v-if="data.curActivity">
+          <div v-if="props.activity['type'] == 'Template'">
+            <div>
+              Group1:
+              <!-- <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Group1" id="Group1_0" value="All" checked>
+                <label class="form-check-label" for="Group1_0">All</label>
+              </div> -->
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" v-model="data.curActivity['Group1']" name="Group1"
+                  id="Group1_1" value="Deployment">
+                <label class="form-check-label" for="Group1_1">Deployment</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" v-model="data.curActivity['Group1']" name="Group1"
+                  id="Group1_2" value="Non-Deployment">
+                <label class="form-check-label" for="Group1_2">Non-Deployment</label>
+              </div>
+            </div>
+
+            <div>
+              Group2:
+              <!-- <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="Group2" id="Group2_0" value="All" checked>
+                <label class="form-check-label" for="Group2_0">All</label>
+              </div> -->
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" v-model="data.curActivity['Group2']" name="Group2"
+                  id="Group2_1" value="ABT">
+                <label class="form-check-label" for="Group2_1">ABT</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" v-model="data.curActivity['Group2']" name="Group2"
+                  id="Group2_2" value="CBT">
+                <label class="form-check-label" for="Group2_2">CBT</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" v-model="data.curActivity['Group2']" name="Group2"
+                  id="Group2_3" value="Bus">
+                <label class="form-check-label" for="Group2_3">Bus</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" v-model="data.curActivity['Group2']" name="Group2"
+                  id="Group2_4" value="Rail">
+                <label class="form-check-label" for="Group2_4">Rail</label>
+              </div>
+            </div>
+          </div>
+
+          <div v-else>
+            <label>Type: </label>
+            <div class="ms-3 form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="type" id="type1" v-model="data.curActivity.type"
+                value="Activity">
+              <label class="form-check-label" for="type1">Activity</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="type" id="type2" v-model="data.curActivity.type"
+                value="Issue">
+              <label class="form-check-label" for="type2">Issue</label>
+            </div>
+          </div>
+
           <div class="form-group mt-3">
             <div class="row">
               <div class="col">
@@ -35,7 +84,7 @@
                 <input class="form-control" v-model.trim="data.curActivity.affectedSystems" />
               </div>
             </div>
-            <div class="row mt-2 py-2">
+            <div v-if="props.activity['type'] != 'Template'" class="row mt-2 py-2">
               <div class="col">
                 <label>Start Datetime:</label>
                 <div class="form-control">
@@ -44,10 +93,7 @@
                     <option v-for="hour in data.hours" :key="hour">{{ hour }}</option>
                   </select>
                   :
-                  <select
-                    class="border-0 bg-white"
-                    v-model.trim="data.startMinute"
-                  >
+                  <select class="border-0 bg-white" v-model.trim="data.startMinute">
                     <option v-for="minute in data.minutes" :key="minute">{{ minute }}</option>
                   </select>
                 </div>
@@ -60,15 +106,8 @@
                     <option v-for="hour in data.hours" :value="hour" :key="hour">{{ hour }}</option>
                   </select>
                   :
-                  <select
-                    class="border-0 bg-white"
-                    v-model.trim="data.endMinute"
-                  >
-                    <option
-                      v-for="minute in data.minutes"
-                      :value="minute"
-                      :key="minute"
-                    >{{ minute }}</option>
+                  <select class="border-0 bg-white" v-model.trim="data.endMinute">
+                    <option v-for="minute in data.minutes" :value="minute" :key="minute">{{ minute }}</option>
                   </select>
                 </div>
               </div>
@@ -109,11 +148,13 @@
               </div>
             </div>
           </div>
+
+        </form>
+
+        <div class="modal-footer">
           <div v-if="data.submitMsg" class="text-center">
             <small class="bg-warning">{{ data.submitMsg }}</small>
           </div>
-        </div>
-        <div class="modal-footer">
           <button class="btn btn-primary" @click="Submit()" :disabled="disableSubmit">Submit</button>
         </div>
       </div>
@@ -138,12 +179,13 @@ let data = reactive({
   startDateStr: dateToLocaleStr(new Date()).split("T")[0],
   startHour: "00",
   startMinute: "00",
+  endDateStr: dateToLocaleStr(new Date()).split("T")[0],
   endHour: "00",
   endMinute: "00",
-  endDateStr: dateToLocaleStr(new Date()).split("T")[0],
   hours: [],
   minutes: [],
   submitMsg: "",
+  showTemplateOptions: false,
 })
 
 for (let i = 0; i < 24; ++i) {
@@ -156,12 +198,12 @@ for (let i = 0; i < 24; ++i) {
 data.minutes = ['00', '15', '30', '45']
 
 watch(props.activity, () => {
-  // console.log('props.activity in watch', props.activity)
+  console.log('props.activity in watch', props.activity)
   initData();
 })
 
 function initData() {
-  // console.log('props.activity in initData', props.activity)
+  console.log('props.activity in initData', props.activity)
   if (props.activity.id) {
     for (let key in props.activity) {
       // console.log('props.activity[key]', props.activity[key])
@@ -170,6 +212,13 @@ function initData() {
   } else {
     for (let key in data.curActivity) {
       data.curActivity[key] = null;
+    }
+    if (props.activity['type'] == 'Template') {
+      data.curActivity['type'] = props.activity['type']
+      data.curActivity['Group1'] = 'Deployment'
+      data.curActivity['Group2'] = 'ABT'
+    } else {
+      data.curActivity['type'] = "Activity"
     }
   }
 
@@ -211,7 +260,7 @@ function initData() {
     data.endMinute = '00'
   }
 
-  // console.log('in edit | data.curActivity:', data.curActivity)
+  console.log('in edit | data.curActivity:', data.curActivity)
 }
 
 function Submit() {
@@ -259,6 +308,7 @@ function Submit() {
   }
   // for new Act, to insert using POST
   else {
+    console.log('submit template:', data.curActivity)
     axios
       .post("/api/msi/activities", data.curActivity)
       .then((resp) => {
@@ -280,4 +330,5 @@ function Submit() {
       });
   }
 }
+
 </script>

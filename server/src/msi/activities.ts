@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Activity, dbOpen } from "../db-ops";
-import { emailActivity as email }  from "./email";
+import { emailActivity as email } from "./email";
 
 const dbActivitiesColumns = [
   "title",
@@ -17,6 +17,7 @@ const dbActivitiesColumns = [
   "contactPersons",
   "createDatetime",
   "updateDatetime",
+  "type", // Activity, Issue, Template
 ];
 
 function InsertActivitity(data: any) {
@@ -47,6 +48,24 @@ function InsertActivitity(data: any) {
     let stmt = db.prepare(sql);
     stmt.run();
     db.close();
+
+    if (data["type"] == "Template") {
+      fields = `"id"`;
+      values = "'" + id + "'";
+      fields += `,"Group1"`;
+      values += `,'${data["Group1"]}'`;
+      fields += `,"Group2"`;
+      values += `,'${data["Group2"]}'`;
+      fields += `,"created"`;
+      values += ",'" + new Date().toISOString() + "'";
+      sql = `insert into "Templates"(${fields}) values(${values});`;
+      console.log(sql);
+      db = dbOpen();
+      stmt = db.prepare(sql);
+      stmt.run();
+      db.close();
+    }
+
     return id;
   } catch (e) {
     console.log(e);
@@ -110,7 +129,22 @@ function AllActivitity() {
   try {
     let db = dbOpen();
     let stmt = db.prepare(
-      `select * from Activities order by "startDatetime" desc;`
+      `select * from Activities where id not in (select id from Templates) order by "startDatetime" desc;`
+    );
+    let items = stmt.all();
+    // console.log(items);
+    // console.log(typeof items);
+    db.close();
+    return items;
+  } catch (e) {
+    console.log(e);
+  }
+}
+function ActivitityTemplates() {
+  try {
+    let db = dbOpen();
+    let stmt = db.prepare(
+      `select a.*,t.* from Activities a, Templates t where a.id=t.id order by "Group1","Group2";`
     );
     let items = stmt.all();
     // console.log(items);
@@ -154,6 +188,7 @@ for (let i = 0; i < 10; ++i) {
 // console.log(JSON.stringify(j));
 
 export {
+  ActivitityTemplates,
   AllActivitity,
   InsertActivitity,
   UpdateActivitity,

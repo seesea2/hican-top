@@ -30,7 +30,7 @@ const routes = [
   {
     path: "/activities",
     name: "Activities",
-    component: () => import("../views/Activities.vue"),
+    component: () => import("../views/ActivitiesTemplates.vue"),
   },
   {
     path: "/act-table",

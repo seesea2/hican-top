@@ -10,11 +10,8 @@
     </div>
   </div>
 
-  <activity-details
-    :activity="data.curActivity"
-    @delete="(id) => catchDelete(id)"
-    @edit="(newAct) => catchEdit(newAct)"
-  ></activity-details>
+  <activity-details :activity="data.curActivity" @delete="(id) => catchDelete(id)"
+    @edit="(newAct) => catchEdit(newAct)"></activity-details>
 
   <!-- <activity-edit :activity="data.curActivity" @edit="(newAct) => catchEdit(newAct)"></activity-edit> -->
 </template>
@@ -60,6 +57,9 @@ let data = reactive({
     dateClick: handleDateClick,
     eventClick: handleEventClick,
     // eventsSet: this.handleEvents,
+    eventColor: 'red',
+    eventBackgroundColor: 'red',
+    textColor: 'red'
   },
 });
 
@@ -122,6 +122,12 @@ function refreshFullCalendar() {
       end: dateToLocaleStr(
         new Date(activity.endDatetime)
       ),
+      // color: 'red',
+      backgroundColor: 'red',
+      eventTextColor: 'red',
+      borderColor: 'red',
+      textColor: 'red',
+      color: 'red'
     });
   }
 
