@@ -278,6 +278,7 @@
           </form>
 
           <div
+            v-if="data.templates.length"
             id="templateOptionsBtn"
             class="btn btn-secondary mt-3"
             @click="toggleTemplateOptions()"

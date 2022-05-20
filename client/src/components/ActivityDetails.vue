@@ -132,6 +132,11 @@
     :activity="data.curActivity"
     @edit="(newAct) => catchEdit(newAct)"
   ></activity-edit>
+
+  <confirm-modal
+    modal="activityDetailsModal"
+    @confirm="(val) => catchConfirm(val)"
+  ></confirm-modal>
 </template>
 
 <script setup>
@@ -141,6 +146,7 @@ import axios from "axios";
 import { watch, defineProps, defineEmits, reactive } from "vue";
 
 import ActivityEdit from "./ActivityEdit.vue";
+import ConfirmModal from "./ConfirmModal.vue";
 import toggleModal from "../common/modal";
 
 let props = defineProps(["activity"]);
@@ -168,21 +174,25 @@ function catchEdit(newAct) {
   emit("edit", newAct);
 }
 
-function deleteActivity() {
-  let rslt = confirm("Sure to delete the record?");
-  if (!rslt) {
-    return;
+function catchConfirm(val) {
+  console.log("catchConfirm val:", val);
+  if (val) {
+    axios
+      .delete("/api/msi/activities/" + props.activity.id)
+      .then(() => {
+        toggleModal();
+        emit("delete", props.activity.id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
+  return;
+}
 
-  axios
-    .delete("/api/msi/activities/" + props.activity.id)
-    .then(() => {
-      toggleModal();
-      emit("delete", props.activity.id);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+function deleteActivity() {
+  toggleModal("confirmModal");
+  return;
 }
 
 function emailActivity() {
