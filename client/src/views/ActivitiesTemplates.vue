@@ -105,7 +105,7 @@ document.title = "Activities";
 
 let data = reactive({
   activities: [],
-  curActivity: {},
+  curActivity: { id: '' },
   group1: 'All',
   group2: 'All',
 });

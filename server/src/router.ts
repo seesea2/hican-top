@@ -119,6 +119,7 @@ apiRouter.get("/msi/activities", (req, res) => {
 });
 apiRouter.get("/msi/activities/templates", (req, res) => {
   let templates = ActivitityTemplates();
+  console.log(templates);
   res.status(200).send(templates);
 });
 apiRouter.post("/msi/activities", (req, res) => {
