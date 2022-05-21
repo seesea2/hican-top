@@ -2,10 +2,10 @@
   <div>
     <router-view />
 
-    <AppFooter></AppFooter>
+    <app-footer></app-footer>
 
     <!-- audio player globally available, e.g. for podcaset -->
-    <AudioPlayer />
+    <audio-player></audio-player>
   </div>
 </template>
 

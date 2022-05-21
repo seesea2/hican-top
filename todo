@@ -1,3 +1,4 @@
 // use gitsqlite3 for cache.
 
-// color of Act & Issue
+// lazy load of events instead all.
+// page for event list

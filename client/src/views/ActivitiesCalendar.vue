@@ -1,12 +1,18 @@
 <template>
   <msi-navbar></msi-navbar>
 
-  <div class="container mt-5">
-    <FullCalendar id="fullCalendar" :options="data.calendarOptions" />
+  <div class="container mt-4">
+    <!-- <full-calendar
+      id="fullCalendar"
+      :options="data.calendarOptions"
+    ></full-calendar> -->
+    <div id="calendar-container" style="height: 95vh; max-height: 100vh">
+      <div id="fullCalendar"></div>
+    </div>
 
     <hr class="border-1 my-3" />
     <div class="text-center">
-      <button class="btn btn-primary" @click="addActivity()">Add</button>
+      <button class="btn btn-primary" @click="addActivity()">Add event</button>
     </div>
   </div>
 
@@ -21,9 +27,11 @@
 
 <script setup>
 import "@fullcalendar/core/vdom"; // solves problem with Vite
-import FullCalendar from "@fullcalendar/vue3";
+// import FullCalendar from "@fullcalendar/vue3";
+import { Calendar } from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import axios from "axios";
 import { onBeforeMount, reactive } from "vue";
@@ -44,24 +52,26 @@ let data = reactive({
   curActivity: {},
   calendarOptions: {
     timeZone: "Asia/Singapore",
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: "dayGridMonth",
+    plugins: [dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin],
     headerToolbar: {
       left: "prev,next today",
       center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay",
+      right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+    },
+    views: {
+      dayGrid: {
+        fixedWeekCount: false,
+      },
     },
     events: [],
-    editable: false,
-    selectable: true,
-    selectMirror: true,
     dayMaxEvents: true,
-    weekends: true,
+    height: "90%",
+    navLinks: true,
+    // weekNumbers: true,
+    nowIndicator: true,
+    // dayMaxEventRows: 3,
     dateClick: handleDateClick,
     eventClick: handleEventClick,
-    // eventsSet: this.handleEvents,
-    // eventColor: 'red',
-    // eventBackgroundColor: 'red',
   },
 });
 
@@ -119,16 +129,18 @@ function refreshFullCalendar() {
       title: activity.title,
       start: dateToLocaleStr(new Date(activity.startDatetime)),
       end: dateToLocaleStr(new Date(activity.endDatetime)),
-      color: activity.type == "Issue" ? "red" : "green",
-      // backgroundColor: 'red',
-      // eventTextColor: 'red',
-      // borderColor: 'red',
-      // textColor: 'red',
-      // color: 'red'
+      backgroundColor: activity.type == "Issue" ? "yellow" : "green",
+      textColor: activity.type == "Issue" ? "black" : "auto",
     });
   }
 
   console.log("refreshFullCalendar, ", data.calendarOptions.events);
+
+  let calendarEl = document.getElementById("fullCalendar");
+  let calendar = new Calendar(calendarEl, data.calendarOptions);
+  // console.log("log calendar:", calendar);
+  // calendar.updateSize();
+  calendar.render();
 }
 
 function catchEdit(newAct) {
@@ -180,3 +192,22 @@ function addActivity() {
   toggleModal("editActivityModal");
 }
 </script>
+
+<style>
+.fc-daygrid-day-number,
+.fc-daygrid-event .fc-event-time,
+.fc-daygrid-event .fc-event-title {
+  color: black;
+}
+.fc-daygrid .fc-col-header-cell-cushion {
+  text-decoration: none;
+}
+/* #calendar-container a, */
+/* #calendar-container a:link, */
+/* #calendar-container a:visited */
+/* #calendar-container a:hover, */
+/* #calendar-container a:active  {
+  text-decoration: none;
+  color: black;
+} */
+</style>

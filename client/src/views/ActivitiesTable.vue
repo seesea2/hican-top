@@ -54,7 +54,9 @@
             :key="activity.id"
             @click="viewActivity(activity)"
           >
-            <td>{{ ind + 1 }}</td>
+            <td :class="activity.type == 'Issue' ? 'bg-warning' : 'bg-success'">
+              &#9956; {{ ind + 1 }}
+            </td>
             <td>{{ activity.title }}</td>
             <td>{{ new Date(activity.startDatetime).toLocaleString() }}</td>
             <td>{{ new Date(activity.endDatetime).toLocaleString() }}</td>
@@ -66,7 +68,7 @@
 
     <hr class="border-1 my-3" />
     <div class="text-center">
-      <button class="btn btn-primary" @click="addActivity()">Add</button>
+      <button class="btn btn-primary" @click="addActivity()">Add event</button>
     </div>
   </div>
 
