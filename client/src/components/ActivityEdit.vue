@@ -468,7 +468,7 @@ let data = reactive({
   group1: "All",
   group2: "All",
 });
-console.log("yc1:", data.group1);
+// console.log("yc1:", data.group1);
 
 for (let i = 0; i < 24; ++i) {
   if (i < 10) {
