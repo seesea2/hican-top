@@ -63,6 +63,36 @@ try {
       status TEXT
     );`
   );
+  // Customer Emails Table
+  db.exec(
+    `CREATE TABLE IF NOT EXISTS Emails(email	TEXT NOT NULL primary key, 
+      name	TEXT,
+      company	TEXT,
+      team	TEXT,
+      role TEXT,
+      created TEXT,
+      updated TEXT,
+      status TEXT
+    );`
+  );
+  // Email Groups Table
+  // db.exec(
+  //   `CREATE TABLE IF NOT EXISTS EmailGroups("group"	TEXT NOT NULL primary key,
+  //     created TEXT,
+  //     updated TEXT,
+  //     status TEXT
+  //   );`
+  // );
+  // Email Groups Relationship Table
+  db.exec(
+    `CREATE TABLE IF NOT EXISTS EmailGroupRelation(email	TEXT NOT NULL, 
+      "group" TEXT NOT NULL,
+      created TEXT
+      updated TEXT,
+      status TEXT,
+      primary key (email, "group")
+    );`
+  );
   // console.log(rslt);
   db.close();
 } catch (e) {

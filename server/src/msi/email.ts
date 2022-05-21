@@ -9,9 +9,19 @@ const kActivityHtml = `
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
   </head>
 
   <body>
+    <div class="text-warning">Hello, warning!</div>
+    <div class="btn btn-primary">Btn Primary</div>
+
     <div style="margin: 32px">
       <h2>Activity Notification!</h2>
       <p>
@@ -55,46 +65,46 @@ async function emailActivity(data?: any) {
   // });
 
   let html = kActivityHtml;
-  let newContent = "<table>";
-  let newContentEnd = "</table>";
-  newContent += "<tr>";
-  newContentEnd = "</tr>" + newContentEnd;
-  newContent += `<b>Start:</b>${new Date(
-    data.activity.startDatetime
-  ).toLocaleString()}<br>`;
-  newContent += `<b>End:</b>${new Date(
-    data.activity.endDatetime
-  ).toLocaleString()}<br>`;
-  newContent += `<b>Affected Systems:</b>:${data.activity.affectedSystems}<br>`;
-  newContent += "<hr />";
-  newContent += "<b>Impact:</b><br>";
-  newContent += data.activity.impact
-    .replace(/\r\n/g, "<br>")
-    .replace(/\n/g, "<br>");
-  newContent += "<br><b>No Impact:</b><br>";
-  newContent += data.activity.noImpact
-    .replace(/\r\n/g, "<br>")
-    .replace(/\n/g, "<br>");
-  newContent += "<br><hr />";
+  // let newContent = "<table>";
+  // let newContentEnd = "</table>";
+  // newContent += "<tr>";
+  // newContentEnd = "</tr>" + newContentEnd;
+  // newContent += `<b>Start:</b>${new Date(
+  //   data.activity.startDatetime
+  // ).toLocaleString()}<br>`;
+  // newContent += `<b>End:</b>${new Date(
+  //   data.activity.endDatetime
+  // ).toLocaleString()}<br>`;
+  // newContent += `<b>Affected Systems:</b>:${data.activity.affectedSystems}<br>`;
+  // newContent += "<hr />";
+  // newContent += "<b>Impact:</b><br>";
+  // newContent += data.activity.impact
+  //   .replace(/\r\n/g, "<br>")
+  //   .replace(/\n/g, "<br>");
+  // newContent += "<br><b>No Impact:</b><br>";
+  // newContent += data.activity.noImpact
+  //   .replace(/\r\n/g, "<br>")
+  //   .replace(/\n/g, "<br>");
+  // newContent += "<br><hr />";
 
-  newContent += "<b>Stakeholders:</b>";
-  newContent += data.activity.stakeholders;
-  newContent += "<br><b>Implementation Teams:</b>";
-  newContent += data.activity.teams;
-  newContent += "<br><b>Contact Persons:</b>";
-  newContent += data.activity.contactPersons;
-  newContent += "<br><hr>";
+  // newContent += "<b>Stakeholders:</b>";
+  // newContent += data.activity.stakeholders;
+  // newContent += "<br><b>Implementation Teams:</b>";
+  // newContent += data.activity.teams;
+  // newContent += "<br><b>Contact Persons:</b>";
+  // newContent += data.activity.contactPersons;
+  // newContent += "<br><hr>";
 
-  newContent += "<b>Risk & Mitigation:</b>";
-  newContent += data.activity.riskAndMitigation
-    .replace(/\r\n/g, "<br>")
-    .replace(/\n/g, "<br>");
-  newContent += "<br><b>Remarks:</b>";
-  newContent += data.activity.remarks
-    .replace(/\r\n/g, "<br>")
-    .replace(/\n/g, "<br>");
+  // newContent += "<b>Risk & Mitigation:</b>";
+  // newContent += data.activity.riskAndMitigation
+  //   .replace(/\r\n/g, "<br>")
+  //   .replace(/\n/g, "<br>");
+  // newContent += "<br><b>Remarks:</b>";
+  // newContent += data.activity.remarks
+  //   .replace(/\r\n/g, "<br>")
+  //   .replace(/\n/g, "<br>");
 
-  html = html.replace("CONTENTS", newContent + newContentEnd);
+  // html = html.replace("CONTENTS", newContent + newContentEnd);
   console.log(html);
 
   let info = await smtpTransport.sendMail({

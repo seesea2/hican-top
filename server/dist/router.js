@@ -7,6 +7,7 @@ const rss_1 = require("./podcast/rss");
 const learn_1 = require("./learn-english/learn");
 const activities_1 = require("./msi/activities");
 const users_1 = require("./msi/users");
+const customers_1 = require("./msi/customers");
 const cron_jobs_1 = require("./cron-jobs");
 const apiRouter = (0, express_1.Router)();
 apiRouter.get("/lta/bus/busArrival/:busStopCode", (req, res) => {
@@ -83,6 +84,28 @@ apiRouter.get("/msi/activities/templates", (req, res) => {
     let templates = (0, activities_1.ActivitityTemplates)();
     console.log(templates);
     res.status(200).send(templates);
+});
+apiRouter.post("/msi/emails", (req, res) => {
+    let ret = (0, customers_1.insertEmail)(req.body);
+    res.status(200).send(ret);
+});
+apiRouter.get("/msi/emails", (req, res) => {
+    let records = (0, customers_1.allEmails)();
+    res.status(200).send(records);
+});
+apiRouter.delete("/msi/emails/:email", (req, res) => {
+    let ret = (0, customers_1.deleteEmail)(req.params.email);
+    res.status(200).send(ret);
+});
+apiRouter.get("/msi/emails/groups", (req, res) => {
+    let records = (0, customers_1.allEmailGroups)();
+    res.status(200).send(records);
+});
+apiRouter.post("/msi/emails/group", (req, res) => {
+    console.log(req.body);
+    let ret = (0, customers_1.insertEmailGroup)(req.body);
+    console.log("create group ret:", ret);
+    res.status(200).send(ret);
 });
 apiRouter.post("/msi/activities", (req, res) => {
     console.log("req post.body:", req.body);

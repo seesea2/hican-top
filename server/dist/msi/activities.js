@@ -176,7 +176,6 @@ function ActivitityTemplates() {
 }
 exports.ActivitityTemplates = ActivitityTemplates;
 function emailActivity(data) {
-    console.log(data);
     (0, email_1.emailActivity)(data);
     return { done: true };
 }

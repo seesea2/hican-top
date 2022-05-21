@@ -190,12 +190,12 @@ function ActivitityTemplates() {
 }
 
 function emailActivity(data: any) {
-  console.log(data);
+  // console.log(data);
   email(data);
   return { done: true };
 }
 
-// for testing
+// yc for testing
 let startDate = new Date();
 startDate.setDate(new Date().getDate() - 5);
 for (let i = 0; i < 10; ++i) {

@@ -1,4 +1,6 @@
 // use gitsqlite3 for cache.
 
+// email receiver management
+// send email
 // lazy load of events instead all.
 // page for event list

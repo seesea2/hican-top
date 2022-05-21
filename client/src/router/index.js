@@ -28,8 +28,8 @@ const routes = [
     component: () => import("../views/Learn.vue"),
   },
   {
-    path: "/activities",
-    name: "Activities",
+    path: "/templates",
+    name: "ActivitiesTemplates",
     component: () => import("../views/ActivitiesTemplates.vue"),
   },
   {
@@ -41,6 +41,11 @@ const routes = [
     path: "/act-cal",
     name: "ActivitieCalendar",
     component: () => import("../views/ActivitiesCalendar.vue"),
+  },
+  {
+    path: "/emails",
+    name: "EmailManagement",
+    component: () => import("../views/EmailManagement.vue"),
   },
   {
     path: "/login",

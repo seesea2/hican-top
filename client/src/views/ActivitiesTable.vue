@@ -46,7 +46,7 @@
           <th scope="col" style="width: 25%">AffectedSystems</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="text-center">
         <template v-for="(activity, ind) in data.activities">
           <tr
             v-if="data.filter == 'All' || activity.type == data.filter"

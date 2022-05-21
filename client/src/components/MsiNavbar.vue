@@ -27,7 +27,7 @@
             class="m-0 p-1 rounded bg-mygray"
           />
         </router-link>
-        <router-link to="/activities" class="mx-1">
+        <router-link to="/templates" class="mx-1">
           <img
             src="../assets/svg/card-heading.svg"
             class="p-1 rounded bg-mygray"
@@ -35,6 +35,18 @@
             data-bs-placement="Templates"
             title="Templates"
           />
+        </router-link>
+        <router-link to="/emails" class="mx-1">
+          <button class="btn btn-small bg-myblue text-white m-0 p-0">
+            Emails
+          </button>
+          <!-- <img
+            src="../assets/svg/card-heading.svg"
+            class="p-1 rounded bg-mygray"
+            data-bs-toggle="tooltip"
+            data-bs-placement="Emails"
+            title="Emails"
+          /> -->
         </router-link>
       </div>
       <div class="col mx-auto">

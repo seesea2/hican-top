@@ -19,6 +19,13 @@ import {
   emailActivity,
 } from "./msi/activities";
 import { ChangePwd, LoginUser, LogoutUser, InsertUser } from "./msi/users";
+import {
+  allEmails,
+  allEmailGroups,
+  insertEmail,
+  insertEmailGroup,
+  deleteEmail,
+} from "./msi/customers";
 
 import ConJobs from "./cron-jobs";
 
@@ -122,6 +129,31 @@ apiRouter.get("/msi/activities/templates", (req, res) => {
   console.log(templates);
   res.status(200).send(templates);
 });
+
+// customer email management
+apiRouter.post("/msi/emails", (req, res) => {
+  let ret = insertEmail(req.body);
+  res.status(200).send(ret);
+});
+apiRouter.get("/msi/emails", (req, res) => {
+  let records = allEmails();
+  res.status(200).send(records);
+});
+apiRouter.delete("/msi/emails/:email", (req, res) => {
+  let ret = deleteEmail(req.params.email);
+  res.status(200).send(ret);
+});
+apiRouter.get("/msi/emails/groups", (req, res) => {
+  let records = allEmailGroups();
+  res.status(200).send(records);
+});
+apiRouter.post("/msi/emails/group", (req, res) => {
+  console.log(req.body);
+  let ret = insertEmailGroup(req.body);
+  console.log("create group ret:", ret);
+  res.status(200).send(ret);
+});
+
 apiRouter.post("/msi/activities", (req, res) => {
   console.log("req post.body:", req.body);
   console.log("req post.params:", req.params);
