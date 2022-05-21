@@ -4,6 +4,38 @@
   <div class="container">
     <h4 class="my-4">Ordered by StartDatetime Decreasing</h4>
 
+    Filter:
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        v-model="data.filter"
+        id="actFilter_0"
+        value="All"
+      />
+      <label class="form-check-label" for="actFilter_0">All</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        v-model="data.filter"
+        id="actFilter_1"
+        value="Activity"
+      />
+      <label class="form-check-label" for="actFilter_1">Activities</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        v-model="data.filter"
+        id="actFilter_2"
+        value="Issue"
+      />
+      <label class="form-check-label" for="actFilter_1">Issues</label>
+    </div>
+
     <table class="table caption-top table-striped table-hover">
       <thead class="text-center">
         <tr>
@@ -15,18 +47,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(activity, ind) in data.activities"
-          class="small"
-          :key="activity.id"
-          @click="viewActivity(activity)"
-        >
-          <td>{{ ind + 1 }}</td>
-          <td>{{ activity.title }}</td>
-          <td>{{ new Date(activity.startDatetime).toLocaleString() }}</td>
-          <td>{{ new Date(activity.endDatetime).toLocaleString() }}</td>
-          <td v-html="activity.affectedSystems"></td>
-        </tr>
+        <template v-for="(activity, ind) in data.activities">
+          <tr
+            v-if="data.filter == 'All' || activity.type == data.filter"
+            class="small"
+            :key="activity.id"
+            @click="viewActivity(activity)"
+          >
+            <td>{{ ind + 1 }}</td>
+            <td>{{ activity.title }}</td>
+            <td>{{ new Date(activity.startDatetime).toLocaleString() }}</td>
+            <td>{{ new Date(activity.endDatetime).toLocaleString() }}</td>
+            <td v-html="activity.affectedSystems"></td>
+          </tr>
+        </template>
       </tbody>
     </table>
 
@@ -59,6 +93,7 @@ document.title = "Activities Table";
 let data = reactive({
   activities: [],
   curActivity: { id: "" },
+  filter: "All",
 });
 
 onBeforeMount(() => {

@@ -2,7 +2,7 @@
   <msi-navbar></msi-navbar>
 
   <div class="container">
-    <h4 class="my-4">Activity Templates</h4>
+    <h4 class="my-4">Templates to create Activity/Issue record</h4>
 
     <div class="mt-3">
       <div>
