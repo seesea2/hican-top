@@ -24,13 +24,15 @@
           ></button>
         </div>
         <div class="modal-body" v-if="props.activity">
-          <div class="card-text small">
-            <b>Start:</b>
-            {{ new Date(props.activity.startDatetime).toLocaleString() }}
-          </div>
-          <div class="card-text small">
-            <b>End:</b>
-            {{ new Date(props.activity.endDatetime).toLocaleString() }}
+          <div v-if="props.activity.type != 'Template'">
+            <div class="card-text small">
+              <b>Start:</b>
+              {{ new Date(props.activity.startDatetime).toLocaleString() }}
+            </div>
+            <div class="card-text small">
+              <b>End:</b>
+              {{ new Date(props.activity.endDatetime).toLocaleString() }}
+            </div>
           </div>
           <div class="card-text mt-1 small">
             <b>Affected Systems:</b>

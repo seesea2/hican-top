@@ -25,7 +25,7 @@ function InsertUser(data: any) {
     let values = `'${new Date().toISOString()}'`;
     for (let val of dbUserColumns) {
       if (data[val]) {
-        data[val] = data[val].replace("'", "''");
+        data[val] = data[val].replace(/'/g, "''");
         fields += `,"${val}"`;
         if (val != "pwd") {
           values += `,'${data[val]}'`;

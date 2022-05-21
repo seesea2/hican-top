@@ -94,7 +94,12 @@ apiRouter.put("/msi/activities", (req, res) => {
     console.log("req put.body:", req.body);
     console.log("req put.params:", req.params);
     let id = (0, activities_1.UpdateActivitity)(req.body);
-    res.status(200).send({ id: id });
+    if (id) {
+        res.status(200).send({ id: id });
+    }
+    else {
+        res.status(500).send({ err: "update failed." });
+    }
 });
 apiRouter.delete("/msi/activities/:id", (req, res) => {
     console.log("req delete:", req.params.id);

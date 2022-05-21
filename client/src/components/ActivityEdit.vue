@@ -278,7 +278,6 @@
           </form>
 
           <div
-            v-if="data.templates.length"
             id="templateOptionsBtn"
             class="btn btn-secondary mt-3"
             @click="toggleTemplateOptions()"
@@ -573,7 +572,7 @@ function Submit() {
   data.curActivity.endDatetime = endDatetime;
   // console.log("endDatetime:", endDatetime);
 
-  // console.log("in 2:", data.curActivity);
+  console.log("submit act:", data.curActivity);
 
   disableSubmit.value = true;
   // for existing Act with ID, to update using PUT
@@ -599,7 +598,7 @@ function Submit() {
   }
   // for new Act, to insert using POST
   else {
-    console.log("submit template:", data.curActivity);
+    // console.log("submit template:", data.curActivity);
     axios
       .post("/api/msi/activities", data.curActivity)
       .then((resp) => {
@@ -620,6 +619,10 @@ function Submit() {
         disableSubmit.value = false;
       });
   }
+  // refresh templates
+  if (data.curActivity.type == "Template") {
+    data.templates.length = 0;
+  }
 }
 
 function getTemplates() {
@@ -636,7 +639,6 @@ function getTemplates() {
       console.log(err);
     });
 }
-getTemplates();
 
 function useTemplate(template) {
   console.log("yc useTemplate:", template);
@@ -655,6 +657,10 @@ function useTemplate(template) {
 function toggleTemplateOptions() {
   data.showTemplateOptions = !data.showTemplateOptions;
   if (data.showTemplateOptions) {
+    if (!data.templates.length) {
+      getTemplates();
+    }
+
     // document.getElementById('template-option-top').scrollIntoView();
     // document.getElementById('template-option-top').scrollTop();
     let elm = document.getElementById("templateOptionsBtn");

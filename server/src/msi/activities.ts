@@ -36,7 +36,7 @@ function InsertActivitity(data: any) {
       }
       if (data[val]) {
         // console.log(data[val]);
-        data[val] = data[val].replace("'", "''");
+        data[val] = data[val].replace(/'/g, "''");
         fields += `,"${val}"`;
         values += `,'${data[val]}'`;
       }
@@ -82,6 +82,7 @@ function UpdateActivitity(data: any) {
   if (!data || !data.id || !data.title) return;
 
   try {
+    // for Activities table
     let sql = `update "Activities" set `;
     for (let val of dbActivitiesColumns) {
       if (val == "updateDatetime") {
@@ -89,7 +90,7 @@ function UpdateActivitity(data: any) {
       }
       if (data[val]) {
         // console.log(data[key]);
-        data[val] = data[val].replace("'", "''");
+        data[val] = data[val].replace(/'/g, "''");
         sql += `"${val}"='${data[val]}',`;
       }
     }
@@ -100,10 +101,32 @@ function UpdateActivitity(data: any) {
     let stmt = db.prepare(sql);
     stmt.run();
     db.close();
+
+    // for Templates table
+    if (data["type"] == "Template") {
+      let sql = `update "Templates" set `;
+      for (let val of dbTemplatesColumns) {
+        if (["id", "updated"].includes(val)) {
+          continue;
+        }
+        if (data[val]) {
+          // console.log(data[key]);
+          data[val] = data[val].replace(/'/g, "''");
+          sql += `"${val}"='${data[val]}',`;
+        }
+      }
+      sql += `"updated"='${new Date().toISOString()}' `;
+      sql += `where "id"='${data.id}';`;
+      console.log("update template sql: ", sql);
+      let db = dbOpen();
+      let stmt = db.prepare(sql);
+      stmt.run();
+      db.close();
+    }
     return true;
   } catch (e) {
     console.log(e);
-    return "";
+    return false;
   }
 }
 
@@ -111,6 +134,8 @@ function DeleteActivitity(id: string) {
   try {
     let db = dbOpen();
     let stmt = db.prepare(`delete from Activities where id='${id}';`);
+    stmt.run();
+    stmt = db.prepare(`delete from Templates where id='${id}';`);
     stmt.run();
     db.close();
     return true;

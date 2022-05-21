@@ -35,7 +35,7 @@ function InsertActivitity(data) {
                 continue;
             }
             if (data[val]) {
-                data[val] = data[val].replace("'", "''");
+                data[val] = data[val].replace(/'/g, "''");
                 fields += `,"${val}"`;
                 values += `,'${data[val]}'`;
             }
@@ -82,7 +82,7 @@ function UpdateActivitity(data) {
                 continue;
             }
             if (data[val]) {
-                data[val] = data[val].replace("'", "''");
+                data[val] = data[val].replace(/'/g, "''");
                 sql += `"${val}"='${data[val]}',`;
             }
         }
@@ -93,11 +93,30 @@ function UpdateActivitity(data) {
         let stmt = db.prepare(sql);
         stmt.run();
         db.close();
+        if (data["type"] == "Template") {
+            let sql = `update "Templates" set `;
+            for (let val of dbTemplatesColumns) {
+                if (["id", "updated"].includes(val)) {
+                    continue;
+                }
+                if (data[val]) {
+                    data[val] = data[val].replace(/'/g, "''");
+                    sql += `"${val}"='${data[val]}',`;
+                }
+            }
+            sql += `"updated"='${new Date().toISOString()}' `;
+            sql += `where "id"='${data.id}';`;
+            console.log("update template sql: ", sql);
+            let db = (0, db_ops_1.dbOpen)();
+            let stmt = db.prepare(sql);
+            stmt.run();
+            db.close();
+        }
         return true;
     }
     catch (e) {
         console.log(e);
-        return "";
+        return false;
     }
 }
 exports.UpdateActivitity = UpdateActivitity;
@@ -105,6 +124,8 @@ function DeleteActivitity(id) {
     try {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`delete from Activities where id='${id}';`);
+        stmt.run();
+        stmt = db.prepare(`delete from Templates where id='${id}';`);
         stmt.run();
         db.close();
         return true;
