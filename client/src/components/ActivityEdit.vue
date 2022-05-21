@@ -453,7 +453,7 @@ let disableSubmit = ref(false);
 // console.log('templates.curTemplate', templates.curTemplate)
 
 let data = reactive({
-  curActivity: {},
+  curActivity: { type: "Activity" },
   startDateStr: dateToLocaleStr(new Date()).split("T")[0],
   startHour: "00",
   startMinute: "00",

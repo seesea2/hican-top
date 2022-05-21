@@ -189,6 +189,7 @@ function addActivity() {
   for (let key in data.curActivity) {
     data.curActivity[key] = null;
   }
+  data.curActivity.type = "Activity";
   toggleModal("editActivityModal");
 }
 </script>
