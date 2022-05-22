@@ -190,7 +190,6 @@ function ActivityTemplates() {
 }
 
 function emailActivity(data: any) {
-  // console.log(data);
   email(data);
   return { done: true };
 }

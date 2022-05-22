@@ -205,12 +205,13 @@ apiRouter.delete("/msi/activities/:id", (req, res) => {
 });
 
 apiRouter.post("/msi/activities/email", (req, res) => {
-  console.log("req email:", req.body);
+  // console.log("req email:", req.body);
   let ret: any = emailActivity(req.body);
+  // yc todo
   if (ret.err || ret.done) {
     res.status(200).send(ret);
   } else {
-    res.status(500).send({ err: "server failed" });
+    res.status(500).send({ err: "Server failed" });
   }
 });
 

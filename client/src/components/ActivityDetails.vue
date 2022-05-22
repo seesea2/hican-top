@@ -156,7 +156,12 @@
           <textarea class="form-control mt-2" @input="catchTextArea"></textarea>
 
           <div class="text-center my-3">
-            <button class="btn btn-success btn-small">Send</button>
+            <div class="my-2">
+              <label class="bg-info px-2">{{ data.emailMsg }}</label>
+            </div>
+            <button class="btn btn-success btn-small" @click="sendEmail()">
+              Send
+            </button>
             <button
               class="btn btn-success btn-small mx-1"
               @click="data.bShowingEmails = false"
@@ -217,6 +222,7 @@ let data = reactive({
   toRecipients: [],
   toGroups: [],
   manualToEmails: "",
+  emailMsg: "",
 });
 
 watch(props.activity, () => {
@@ -275,15 +281,44 @@ function showEmailOptions() {
     .catch((err) => {
       console.log(err);
     });
+}
 
-  // axios
-  //   .post("/api/msi/activities/email", { emails: "", activity: props.activity })
-  //   .then((resp) => {
-  //     console.log(resp.data);
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
+function sendEmail() {
+  let emails = [];
+  for (let item of data.toRecipients) {
+    if (!emails.includes(item.email)) {
+      emails.push(item.email);
+    }
+  }
+  data.manualToEmails = data.manualToEmails.replace(/ /g, "");
+  if (data.manualToEmails) {
+    let splits = data.manualToEmails.split(";");
+    for (let item of splits) {
+      item = item.toLowerCase();
+      if (!emails.includes(item)) {
+        emails.push(item);
+      }
+    }
+  }
+
+  axios
+    .post("/api/msi/activities/email", {
+      emails: emails,
+      activity: props.activity,
+    })
+    .then((resp) => {
+      console.log(resp.data);
+      data.emailMsg = resp.data;
+
+      setTimeout(() => {
+        data.emailMsg = "";
+        data.bShowingEmails = false;
+      }, 2000);
+    })
+    .catch((err) => {
+      console.log(err);
+      data.emailMsg = err;
+    });
 }
 
 function catchCheckboxChange(boxValue) {

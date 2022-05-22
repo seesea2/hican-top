@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.dbActivitiesColumns = exports.emailActivity = exports.DeleteActivitity = exports.UpdateActivitity = exports.InsertActivitity = exports.AllActivitity = exports.ActivitityTemplates = void 0;
+exports.dbActivitiesColumns = exports.emailActivity = exports.DeleteActivity = exports.UpdateActivity = exports.InsertActivity = exports.AllActivity = exports.ActivityTemplates = void 0;
 const crypto_1 = require("crypto");
 const db_ops_1 = require("../db-ops");
 const email_1 = require("./email");
@@ -23,7 +23,7 @@ const dbActivitiesColumns = [
 ];
 exports.dbActivitiesColumns = dbActivitiesColumns;
 const dbTemplatesColumns = ["id", "group1", "group2", "created", "updated"];
-function InsertActivitity(data) {
+function InsertActivity(data) {
     if (!data || !data.title)
         return;
     try {
@@ -71,8 +71,8 @@ function InsertActivitity(data) {
         return "";
     }
 }
-exports.InsertActivitity = InsertActivitity;
-function UpdateActivitity(data) {
+exports.InsertActivity = InsertActivity;
+function UpdateActivity(data) {
     if (!data || !data.id || !data.title)
         return;
     try {
@@ -119,8 +119,8 @@ function UpdateActivitity(data) {
         return false;
     }
 }
-exports.UpdateActivitity = UpdateActivitity;
-function DeleteActivitity(id) {
+exports.UpdateActivity = UpdateActivity;
+function DeleteActivity(id) {
     try {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`delete from Activities where id='${id}';`);
@@ -135,8 +135,8 @@ function DeleteActivitity(id) {
         return false;
     }
 }
-exports.DeleteActivitity = DeleteActivitity;
-function SelectActivitity(id) {
+exports.DeleteActivity = DeleteActivity;
+function SelectActivity(id) {
     try {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`select * from Activities where id='${id}';`);
@@ -149,7 +149,7 @@ function SelectActivitity(id) {
         return e;
     }
 }
-function AllActivitity() {
+function AllActivity() {
     try {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`select * from Activities where id not in (select id from Templates) order by "startDatetime" desc;`);
@@ -161,8 +161,8 @@ function AllActivitity() {
         console.log(e);
     }
 }
-exports.AllActivitity = AllActivitity;
-function ActivitityTemplates() {
+exports.AllActivity = AllActivity;
+function ActivityTemplates() {
     try {
         let db = (0, db_ops_1.dbOpen)();
         let stmt = db.prepare(`select a.*,t.group1,t.group2 from Activities a, Templates t where a.id=t.id order by "group1","group2";`);
@@ -174,7 +174,7 @@ function ActivitityTemplates() {
         console.log(e);
     }
 }
-exports.ActivitityTemplates = ActivitityTemplates;
+exports.ActivityTemplates = ActivityTemplates;
 function emailActivity(data) {
     (0, email_1.emailActivity)(data);
     return { done: true };

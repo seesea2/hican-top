@@ -64,8 +64,8 @@ apiRouter.post("/msi/logout", (req, res) => {
 apiRouter.post("/msi/user", (req, res) => {
     console.log(req.body);
     try {
-        let rslt = (0, users_1.InsertUser)(req.body.user);
-        res.status(200).send(rslt);
+        let ret = (0, users_1.InsertUser)(req.body.user);
+        res.status(200).send(ret);
     }
     catch (err) {
         res.status(500).send(err);
@@ -73,20 +73,20 @@ apiRouter.post("/msi/user", (req, res) => {
 });
 apiRouter.put("/msi/user/pwd", (req, res) => {
     console.log(req.body);
-    let rslt = (0, users_1.ChangePwd)(req.body);
-    res.status(200).send(rslt);
+    let ret = (0, users_1.ChangePwd)(req.body);
+    res.status(200).send(ret);
 });
 apiRouter.get("/msi/activities", (req, res) => {
-    let acts = (0, activities_1.AllActivitity)();
+    let acts = (0, activities_1.AllActivity)();
     res.status(200).send(acts);
 });
 apiRouter.get("/msi/activities/templates", (req, res) => {
-    let templates = (0, activities_1.ActivitityTemplates)();
+    let templates = (0, activities_1.ActivityTemplates)();
     console.log(templates);
     res.status(200).send(templates);
 });
 apiRouter.post("/msi/emails", (req, res) => {
-    let ret = (0, customers_1.insertEmail)(req.body);
+    let ret = (0, customers_1.postEmailAddr)(req.body);
     res.status(200).send(ret);
 });
 apiRouter.get("/msi/emails", (req, res) => {
@@ -97,26 +97,39 @@ apiRouter.delete("/msi/emails/:email", (req, res) => {
     let ret = (0, customers_1.deleteEmail)(req.params.email);
     res.status(200).send(ret);
 });
+apiRouter.delete("/msi/emails/groups/:group", (req, res) => {
+    let ret = (0, customers_1.deleteEmailGroup)(req.params.group);
+    res.status(200).send(ret);
+});
 apiRouter.get("/msi/emails/groups", (req, res) => {
-    let records = (0, customers_1.allEmailGroups)();
+    let records = null;
+    if (req.query && req.query.email) {
+        records = (0, customers_1.groupsOfEmail)(req.query.email);
+    }
+    else if (req.query && req.query.group) {
+        records = (0, customers_1.emailsInGroup)(req.query.group);
+    }
+    else {
+        records = (0, customers_1.allEmailGroups)();
+    }
     res.status(200).send(records);
 });
 apiRouter.post("/msi/emails/group", (req, res) => {
     console.log(req.body);
-    let ret = (0, customers_1.insertEmailGroup)(req.body);
+    let ret = (0, customers_1.postEmailGroup)(req.body);
     console.log("create group ret:", ret);
     res.status(200).send(ret);
 });
 apiRouter.post("/msi/activities", (req, res) => {
     console.log("req post.body:", req.body);
     console.log("req post.params:", req.params);
-    let id = (0, activities_1.InsertActivitity)(req.body);
+    let id = (0, activities_1.InsertActivity)(req.body);
     res.status(200).send({ id: id });
 });
 apiRouter.put("/msi/activities", (req, res) => {
     console.log("req put.body:", req.body);
     console.log("req put.params:", req.params);
-    let id = (0, activities_1.UpdateActivitity)(req.body);
+    let id = (0, activities_1.UpdateActivity)(req.body);
     if (id) {
         res.status(200).send({ id: id });
     }
@@ -126,8 +139,8 @@ apiRouter.put("/msi/activities", (req, res) => {
 });
 apiRouter.delete("/msi/activities/:id", (req, res) => {
     console.log("req delete:", req.params.id);
-    let rslt = (0, activities_1.DeleteActivitity)(req.params.id);
-    if (rslt == true) {
+    let ret = (0, activities_1.DeleteActivity)(req.params.id);
+    if (ret == true) {
         res.status(200).send();
     }
     else {
@@ -135,13 +148,12 @@ apiRouter.delete("/msi/activities/:id", (req, res) => {
     }
 });
 apiRouter.post("/msi/activities/email", (req, res) => {
-    console.log("req email:", req.body);
-    let rslt = (0, activities_1.emailActivity)(req.body);
-    if (rslt.err || rslt.done) {
-        res.status(200).send(rslt);
+    let ret = (0, activities_1.emailActivity)(req.body);
+    if (ret.err || ret.done) {
+        res.status(200).send(ret);
     }
     else {
-        res.status(500).send({ err: "server failed" });
+        res.status(500).send({ err: "Server failed" });
     }
 });
 exports.default = apiRouter;

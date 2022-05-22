@@ -48,12 +48,12 @@ try {
       updated TEXT,
       status TEXT
     );`);
-    db.exec(`CREATE TABLE IF NOT EXISTS EmailGroupRelation(email	TEXT NOT NULL, 
+    db.exec(`CREATE TABLE IF NOT EXISTS EmailGroupRelation("email"	TEXT NOT NULL, 
       "group" TEXT NOT NULL,
-      created TEXT
-      updated TEXT,
-      status TEXT,
-      primary key (email, "group")
+      "created" TEXT,
+      "updated" TEXT,
+      "status" TEXT,
+      primary key ("email", "group")
     );`);
     db.close();
 }
