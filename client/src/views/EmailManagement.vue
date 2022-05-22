@@ -6,7 +6,7 @@
 
     <email-manage></email-manage>
 
-    <hr class="border-1 my-3" />
+    <hr class="border-1 my-5" />
 
     <email-group-manage></email-group-manage>
   </div>

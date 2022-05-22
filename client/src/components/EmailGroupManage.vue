@@ -24,7 +24,7 @@
           <input
             class="form-control col-auto"
             placeholder="group name"
-            v-model.trim="data.group.group"
+            v-model.trim="data.curGroup.group"
             required
           />
           <label for="floatingInput" class="small">Group name</label>
@@ -61,12 +61,15 @@
         </table>
 
         <div class="text-center mt-2">
+          <div v-if="data.msg" class="my-2">
+            <label class="bg-info px-1">{{ data.msg }}</label>
+          </div>
           <button
-            class="btn btn-primary"
-            @click="addEmailGroup()"
+            class="btn btn-success"
+            @click="postEmailGroup()"
             :disable="data.disableSubmit"
           >
-            Create
+            Confirm
           </button>
           <button
             class="btn btn-success mx-1"
@@ -95,7 +98,13 @@
               <td>{{ group.group }}</td>
               <td>
                 <button
-                  class="btn btn-small mx-1"
+                  class="btn btn-light btn-small"
+                  @click="editEmailGroup(group)"
+                >
+                  Edit
+                </button>
+                <button
+                  class="btn btn-light btn-small mx-1"
                   @click="deleteEmailGroup(group)"
                   :disabled="data.disableSubmit"
                 >
@@ -127,9 +136,11 @@ import { reactive } from "vue";
 
 let data = reactive({
   disableSubmit: false,
-  group: {
+  curGroup: {
     group: null,
     emails: [],
+    orgGroup: null,
+    orgEmails: [],
   },
   msg: null,
   allEmails: [],
@@ -144,31 +155,42 @@ let data = reactive({
 //   initData();
 // });
 
-function addEmailGroup() {
+function postEmailGroup() {
   // console.log("in Submit:", data.curActivity);
-  if (!data.group.group) {
+  if (!data.curGroup.group) {
     data.msg = "Please input group name.";
     return;
   }
 
   data.msg = "";
 
-  data.group.emails.length = 0;
+  data.curGroup.emails.length = 0;
   for (let item of data.allEmails) {
-    console.log("data.allEmails before submit", item.email, item.checked);
+    // console.log("data.allEmails before submit", item.email, item.checked);
     if (item.checked) {
-      data.group.emails.push(item.email);
+      data.curGroup.emails.push(item.email);
     }
   }
-  console.log("submit group:", data.group);
+  // console.log("submit group:", data.group);
 
   data.disableSubmit = true;
   axios
-    .post("/api/msi/emails/group", data.group)
+    .post("/api/msi/emails/group", data.curGroup)
     .then((resp) => {
-      console.log(resp.data);
+      // console.log(resp.data);
+      if (resp.data.err) {
+        data.msg = resp.data.err;
+        return;
+      }
+      data.msg = resp.data.msg;
+
+      setTimeout(() => {
+        data.msg = null;
+        showViewGroups();
+      }, 2000);
     })
     .catch((e) => {
+      data.msg = e;
       console.log(e);
     })
     .finally(() => {
@@ -177,13 +199,18 @@ function addEmailGroup() {
 }
 
 function showGroupInputs() {
+  data.curGroup.orgGroup = null;
+  data.curGroup.orgEmails = [];
+  data.curGroup.group = null;
+  data.curGroup.emails = [];
+  data.msg = null;
+
   axios
     .get("/api/msi/emails")
     .then((resp) => {
-      console.log(resp.data);
+      // console.log(resp.data);
       data.allEmails.length = 0;
       data.allEmails = resp.data;
-
       data.showingViewGroups = false;
       data.showingGroupInputs = true;
     })
@@ -196,7 +223,7 @@ function showViewGroups() {
   axios
     .get("/api/msi/emails/groups")
     .then((resp) => {
-      console.log(resp.data);
+      // console.log(resp.data);
       data.allGroups.length = 0;
       data.allGroups = resp.data;
 
@@ -207,13 +234,40 @@ function showViewGroups() {
       console.log(e);
     });
 }
+
+function editEmailGroup(groupObj) {
+  showGroupInputs();
+
+  data.curGroup.orgGroup = groupObj.group;
+  data.curGroup.group = groupObj.group;
+  axios
+    .get("/api/msi/emails/groups/" + groupObj.group)
+    .then((resp) => {
+      // console.log(resp.data);
+      data.curGroup.orgEmails.length = 0;
+      for (let obj of resp.data) {
+        data.curGroup.orgEmails.push(obj.email);
+      }
+
+      // console.log("data.curGroup.orgGroup:", data.curGroup.orgGroup);
+      for (let emailObj of data.allEmails) {
+        if (data.curGroup.orgEmails.includes(emailObj.email)) {
+          emailObj.checked = true;
+        }
+      }
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+}
+
 function deleteEmailGroup(groupObj) {
-  console.log(groupObj);
+  // console.log(groupObj);
   data.disableSubmit = true;
   axios
     .delete("/api/msi/emails/groups/" + groupObj.group)
     .then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       if (resp.data.err) {
         data.msg = resp.data.err;
         data.disableSubmit = false;

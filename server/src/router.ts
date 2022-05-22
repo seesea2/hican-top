@@ -23,9 +23,11 @@ import {
   allEmails,
   allEmailGroups,
   insertEmail,
-  insertEmailGroup,
+  postEmailGroup,
   deleteEmail,
   deleteEmailGroup,
+  emailsInGroup,
+  // updateEmailGroup,
 } from "./msi/customers";
 
 import ConJobs from "./cron-jobs";
@@ -152,9 +154,13 @@ apiRouter.get("/msi/emails/groups", (req, res) => {
   let records = allEmailGroups();
   res.status(200).send(records);
 });
+apiRouter.get("/msi/emails/groups/:group", (req, res) => {
+  let records = emailsInGroup(req.params.group);
+  res.status(200).send(records);
+});
 apiRouter.post("/msi/emails/group", (req, res) => {
   console.log(req.body);
-  let ret = insertEmailGroup(req.body);
+  let ret = postEmailGroup(req.body);
   console.log("create group ret:", ret);
   res.status(200).send(ret);
 });

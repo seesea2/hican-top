@@ -85,12 +85,12 @@ try {
   // );
   // Email Groups Relationship Table
   db.exec(
-    `CREATE TABLE IF NOT EXISTS EmailGroupRelation(email	TEXT NOT NULL, 
+    `CREATE TABLE IF NOT EXISTS EmailGroupRelation("email"	TEXT NOT NULL, 
       "group" TEXT NOT NULL,
-      created TEXT
-      updated TEXT,
-      status TEXT,
-      primary key (email, "group")
+      "created" TEXT,
+      "updated" TEXT,
+      "status" TEXT,
+      primary key ("email", "group")
     );`
   );
   // console.log(rslt);

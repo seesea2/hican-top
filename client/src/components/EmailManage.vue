@@ -20,7 +20,7 @@
 
     <div v-if="data.showingInputs" class="mt-2">
       <div class="form row">
-        <div class="form-floating col-3">
+        <div class="form-floating col-md-3 col-sm-12">
           <input
             class="form-control"
             placeholder="email"
@@ -29,7 +29,7 @@
           />
           <label for="floatingInput" class="small">Email</label>
         </div>
-        <div class="form-floating col-3">
+        <div class="form-floating col-md-3 col-sm-12">
           <input
             class="form-control"
             placeholder="name"
@@ -37,7 +37,7 @@
           />
           <label for="floatingInput" class="small">Name</label>
         </div>
-        <div class="form-floating col-3">
+        <div class="form-floating col-md-3 col-sm-12">
           <input
             class="form-control"
             placeholder="company"
@@ -45,7 +45,7 @@
           />
           <label for="floatingInput" class="small">Company</label>
         </div>
-        <div class="form-floating col-3">
+        <div class="form-floating col-md-3 col-sm-12">
           <input
             class="form-control"
             placeholder="team"
@@ -55,7 +55,7 @@
         </div>
 
         <div class="mt-2">
-          <label class="me-2">Add to groups:</label>
+          <label v-if="data.groups.length" class="me-2">Add to groups:</label>
           <div
             v-for="group in data.groups"
             class="form-check form-check-inline"
@@ -76,11 +76,11 @@
             <label class="bg-info px-1">{{ data.msg }}</label>
           </div>
           <button
-            class="btn btn-primary"
+            class="btn btn-success"
             @click="addEmail()"
             :disabled="data.disableSubmit"
           >
-            Create
+            Confirm
           </button>
           <button
             class="btn btn-success mx-1"
@@ -111,9 +111,9 @@
             <td>{{ email.name }}</td>
             <td>{{ email.team }}</td>
             <td>
-              <button class="btn btn-small">Edit</button>
+              <button class="btn btn-light btn-small">Edit</button>
               <button
-                class="btn btn-small mx-1"
+                class="btn btn-light btn-small mx-1"
                 @click="deleteEmail(email)"
                 :disabled="data.disableSubmit"
               >
@@ -160,7 +160,7 @@ function showInputs() {
     .get("/api/msi/emails/groups")
     .then((resp) => {
       data.groups = resp.data;
-      console.log(resp.groups);
+      // console.log(resp.groups);
       data.showingInputs = true;
       data.showingEmails = false;
     })
@@ -198,12 +198,12 @@ function addEmail() {
     }
   }
 
-  console.log("add email: ", data.curEmail);
+  // console.log("add email: ", data.curEmail);
   data.disableSubmit = true;
   axios
     .post("/api/msi/emails", data.curEmail)
     .then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       if (resp.data.err) {
         data.msg = resp.data.err;
         data.disableSubmit = false;
@@ -228,7 +228,7 @@ function deleteEmail(emailObj) {
   axios
     .delete("/api/msi/emails/" + emailObj.email)
     .then((resp) => {
-      console.log(resp);
+      // console.log(resp);
       if (resp.data.err) {
         data.msg = resp.data.err;
         data.disableSubmit = false;
