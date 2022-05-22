@@ -22,7 +22,7 @@ const dbActivitiesColumns = [
 
 const dbTemplatesColumns = ["id", "group1", "group2", "created", "updated"];
 
-function InsertActivitity(data: any) {
+function InsertActivity(data: any) {
   if (!data || !data.title) return;
 
   try {
@@ -78,7 +78,7 @@ function InsertActivitity(data: any) {
   }
 }
 
-function UpdateActivitity(data: any) {
+function UpdateActivity(data: any) {
   if (!data || !data.id || !data.title) return;
 
   try {
@@ -130,7 +130,7 @@ function UpdateActivitity(data: any) {
   }
 }
 
-function DeleteActivitity(id: string) {
+function DeleteActivity(id: string) {
   try {
     let db = dbOpen();
     let stmt = db.prepare(`delete from Activities where id='${id}';`);
@@ -145,7 +145,7 @@ function DeleteActivitity(id: string) {
   }
 }
 
-function SelectActivitity(id: string) {
+function SelectActivity(id: string) {
   try {
     let db = dbOpen();
     let stmt = db.prepare(`select * from Activities where id='${id}';`);
@@ -158,7 +158,7 @@ function SelectActivitity(id: string) {
   }
 }
 
-function AllActivitity() {
+function AllActivity() {
   try {
     let db = dbOpen();
     let stmt = db.prepare(
@@ -173,7 +173,7 @@ function AllActivitity() {
     console.log(e);
   }
 }
-function ActivitityTemplates() {
+function ActivityTemplates() {
   try {
     let db = dbOpen();
     let stmt = db.prepare(
@@ -206,13 +206,13 @@ for (let i = 0; i < 10; ++i) {
   act1.startDatetime = startDate.toISOString();
   act1.endDatetime = startDate.toISOString();
   startDate.setDate(startDate.getDate() + 1);
-  // InsertActivitity(act1);
+  // InsertActivity(act1);
 }
-// DeleteActivitity("0c081a21-60fd-4f4e-9cba-00c202e6f866");
-// DeleteActivitity("1741edd5-e1f7-4af5-8690-ff389b1dd3db");
-// DeleteActivitity("5f543ef6-b1d8-426e-9936-0c3ec40c5d84");
-// SelectActivitity("4af12771-91e3-4dd7-8e32-c04b61b769d2");
-// let items: Activity[] = AllActivitity();
+// DeleteActivity("0c081a21-60fd-4f4e-9cba-00c202e6f866");
+// DeleteActivity("1741edd5-e1f7-4af5-8690-ff389b1dd3db");
+// DeleteActivity("5f543ef6-b1d8-426e-9936-0c3ec40c5d84");
+// SelectActivity("4af12771-91e3-4dd7-8e32-c04b61b769d2");
+// let items: Activity[] = AllActivity();
 // items.forEach((item) => {
 //   console.log(JSON.stringify(item));
 // });
@@ -221,11 +221,11 @@ for (let i = 0; i < 10; ++i) {
 // console.log(JSON.stringify(j));
 
 export {
-  ActivitityTemplates,
-  AllActivitity,
-  InsertActivitity,
-  UpdateActivitity,
-  DeleteActivitity,
+  ActivityTemplates,
+  AllActivity,
+  InsertActivity,
+  UpdateActivity,
+  DeleteActivity,
   emailActivity,
   dbActivitiesColumns,
 };

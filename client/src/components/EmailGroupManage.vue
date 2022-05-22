@@ -46,7 +46,7 @@
               <td>{{ email.email }}</td>
               <td>{{ email.name }}</td>
               <td>{{ email.team }}</td>
-              <td class="">
+              <td>
                 <div class="form-check">
                   <input
                     class="form-check-input"
@@ -66,7 +66,7 @@
           </div>
           <button
             class="btn btn-success"
-            @click="postEmailGroup()"
+            @click="confirmEmailGroup()"
             :disable="data.disableSubmit"
           >
             Confirm
@@ -155,7 +155,7 @@ let data = reactive({
 //   initData();
 // });
 
-function postEmailGroup() {
+function confirmEmailGroup() {
   // console.log("in Submit:", data.curActivity);
   if (!data.curGroup.group) {
     data.msg = "Please input group name.";
@@ -163,7 +163,6 @@ function postEmailGroup() {
   }
 
   data.msg = "";
-
   data.curGroup.emails.length = 0;
   for (let item of data.allEmails) {
     // console.log("data.allEmails before submit", item.email, item.checked);
@@ -180,11 +179,13 @@ function postEmailGroup() {
       // console.log(resp.data);
       if (resp.data.err) {
         data.msg = resp.data.err;
+        data.disableSubmit = false;
         return;
       }
       data.msg = resp.data.msg;
 
       setTimeout(() => {
+        data.disableSubmit = false;
         data.msg = null;
         showViewGroups();
       }, 2000);
@@ -205,11 +206,11 @@ function showGroupInputs() {
   data.curGroup.emails = [];
   data.msg = null;
 
+  data.allEmails.length = 0;
   axios
     .get("/api/msi/emails")
     .then((resp) => {
       // console.log(resp.data);
-      data.allEmails.length = 0;
       data.allEmails = resp.data;
       data.showingViewGroups = false;
       data.showingGroupInputs = true;
@@ -241,7 +242,7 @@ function editEmailGroup(groupObj) {
   data.curGroup.orgGroup = groupObj.group;
   data.curGroup.group = groupObj.group;
   axios
-    .get("/api/msi/emails/groups/" + groupObj.group)
+    .get("/api/msi/emails/groups?group=" + groupObj.group)
     .then((resp) => {
       // console.log(resp.data);
       data.curGroup.orgEmails.length = 0;
@@ -277,13 +278,14 @@ function deleteEmailGroup(groupObj) {
       data.msg = "Successful.";
       showViewGroups();
       setTimeout(() => {
-        data.disableSubmit = false;
         data.msg = "";
       }, 2000);
     })
     .catch((err) => {
       console.log(err);
       data.msg = err.msg;
+    })
+    .finally(() => {
       data.disableSubmit = false;
     });
 }

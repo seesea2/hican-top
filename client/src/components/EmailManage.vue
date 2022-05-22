@@ -55,9 +55,11 @@
         </div>
 
         <div class="mt-2">
-          <label v-if="data.groups.length" class="me-2">Add to groups:</label>
+          <label v-if="data.allGroups.length" class="me-2">
+            Add to groups:
+          </label>
           <div
-            v-for="group in data.groups"
+            v-for="group in data.allGroups"
             class="form-check form-check-inline"
             :key="group.group"
           >
@@ -77,7 +79,7 @@
           </div>
           <button
             class="btn btn-success"
-            @click="addEmail()"
+            @click="confirmEmail()"
             :disabled="data.disableSubmit"
           >
             Confirm
@@ -100,6 +102,7 @@
             <th>#</th>
             <th>Email</th>
             <th>Name</th>
+            <th>Company</th>
             <th>Team</th>
             <th>Ops</th>
           </tr>
@@ -109,9 +112,12 @@
             <td>{{ ind + 1 }}</td>
             <td>{{ email.email }}</td>
             <td>{{ email.name }}</td>
+            <td>{{ email.company }}</td>
             <td>{{ email.team }}</td>
             <td>
-              <button class="btn btn-light btn-small">Edit</button>
+              <button class="btn btn-light btn-small" @click="editEmail(email)">
+                Edit
+              </button>
               <button
                 class="btn btn-light btn-small mx-1"
                 @click="deleteEmail(email)"
@@ -143,11 +149,9 @@
 import axios from "axios";
 import { reactive } from "vue";
 
-// let emit = defineEmits(["edit"]);
-
 let data = reactive({
   curEmail: {},
-  groups: [],
+  allGroups: [],
   showingInputs: false,
   allEmails: [],
   showingEmails: false,
@@ -156,13 +160,19 @@ let data = reactive({
 });
 
 function showInputs() {
+  data.curEmail.orgEmail = null;
+  data.curEmail.orgGroups = [];
+  data.curEmail.email = null;
+  data.curEmail.groups = [];
+  data.msg = null;
+
+  data.allGroups.length = 0;
   axios
     .get("/api/msi/emails/groups")
     .then((resp) => {
-      data.groups = resp.data;
-      // console.log(resp.groups);
-      data.showingInputs = true;
+      data.allGroups = resp.data;
       data.showingEmails = false;
+      data.showingInputs = true;
     })
     .catch((e) => {
       console.log(e);
@@ -170,6 +180,7 @@ function showInputs() {
 }
 
 function showEmails() {
+  data.msg = null;
   axios
     .get("/api/msi/emails")
     .then((resp) => {
@@ -183,15 +194,16 @@ function showEmails() {
     });
 }
 
-function addEmail() {
-  console.log(data.curEmail);
+function confirmEmail() {
+  // console.log(data.curEmail);
   if (!data.curEmail.email) {
     data.msg = "Please input email.";
     return;
   }
 
-  data.curEmail.groups = [];
-  for (let group of data.groups) {
+  data.msg = "";
+  data.curEmail.groups.length = 0;
+  for (let group of data.allGroups) {
     // console.log("group before submit:", group);
     if (group.checked) {
       data.curEmail.groups.push(group.group);
@@ -209,17 +221,50 @@ function addEmail() {
         data.disableSubmit = false;
         return;
       }
+      data.msg = resp.data.msg;
 
-      data.msg = "Successful.";
       setTimeout(() => {
         data.disableSubmit = false;
-        data.showingInputs = false;
+        data.msg = null;
+        showEmails();
       }, 2000);
     })
     .catch((err) => {
       console.log(err);
-      data.msg = err.msg;
+      data.msg = err;
+    })
+    .finally(() => {
       data.disableSubmit = false;
+    });
+}
+
+function editEmail(emailObj) {
+  showInputs();
+
+  data.curEmail.orgEmail = emailObj.email;
+  data.curEmail.email = emailObj.email;
+  data.curEmail.name = emailObj.name;
+  data.curEmail.company = emailObj.company;
+  data.curEmail.team = emailObj.team;
+  data.curEmail.role = emailObj.role;
+
+  axios
+    .get("/api/msi/emails/groups?email=" + emailObj.email)
+    .then((resp) => {
+      // console.log(resp.data);
+      data.curEmail.orgGroups.length = 0;
+      for (let obj of resp.data) {
+        data.curEmail.orgGroups.push(obj.group);
+      }
+
+      for (let groupObj of data.allGroups) {
+        if (data.curEmail.orgGroups.includes(groupObj.group)) {
+          groupObj.checked = true;
+        }
+      }
+    })
+    .catch((e) => {
+      console.log(e);
     });
 }
 
@@ -238,14 +283,14 @@ function deleteEmail(emailObj) {
       data.msg = "Successful.";
       showEmails();
       setTimeout(() => {
-        data.disableSubmit = false;
-        // data.showingEmails = false;
         data.msg = "";
       }, 2000);
     })
     .catch((err) => {
       console.log(err);
       data.msg = err.msg;
+    })
+    .finally(() => {
       data.disableSubmit = false;
     });
 }

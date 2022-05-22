@@ -82,7 +82,9 @@
               props.activity.contactPersons
             }}</span>
           </div>
+
           <hr />
+
           <div class="card-text mt-1 small">
             <b>Risk & Mitigation:</b>
             <div
@@ -117,14 +119,68 @@
           </button>
           <button
             v-if="props.activity.type != 'Template'"
-            class="btn btn-info btn-sm ms-2"
-            @click="emailActivity()"
+            class="btn btn-success btn-sm mx-1"
+            @click="showEmailOptions()"
           >
             Email
           </button>
-          <button class="btn btn-primary btn-sm ms-2" @click="editActivity()">
+          <button class="btn btn-success btn-sm mx-1" @click="editActivity()">
             Edit
           </button>
+          <button class="btn btn-success btn-sm mx-1" @click="toggleModal()">
+            Close
+          </button>
+        </div>
+
+        <div v-if="data.bShowingEmails" class="container">
+          <div>Select recipients or Input (separator ";").</div>
+          <div class="row">
+            <div
+              v-for="group in data.allGroups"
+              :key="group.group"
+              class="col-sm-12 col-md-3"
+            >
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input mx-1"
+                  type="checkbox"
+                  value=""
+                  :groupName="group.group"
+                  @input="catchCheckboxChange"
+                />
+                <label>{{ group.group }}</label>
+              </div>
+            </div>
+          </div>
+
+          <textarea class="form-control mt-2" @input="catchTextArea"></textarea>
+
+          <div class="text-center my-3">
+            <button class="btn btn-success btn-small">Send</button>
+            <button
+              class="btn btn-success btn-small mx-1"
+              @click="data.bShowingEmails = false"
+            >
+              Close
+            </button>
+          </div>
+
+          <div v-if="data.toRecipients.length || data.manualToEmails">
+            <hr class="my-3" />
+            <div>
+              to:
+              <p class="ms-2">
+                <label
+                  v-for="recipient in data.toRecipients"
+                  class="mx-1"
+                  :key="recipient.email"
+                >
+                  {{ recipient.email }};
+                </label>
+                <label class="mx-1">{{ data.manualToEmails }}</label>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -154,7 +210,14 @@ import toggleModal from "../common/modal";
 let props = defineProps(["activity"]);
 // console.log('in view details:', props.activity)
 let emit = defineEmits(["delete", "edit"]);
-let data = reactive({ curActivity: { id: "" } });
+let data = reactive({
+  curActivity: { id: "" },
+  bShowingEmails: false,
+  allGroups: [],
+  toRecipients: [],
+  toGroups: [],
+  manualToEmails: "",
+});
 
 watch(props.activity, () => {
   // console.log('activityDetails', props.activity)
@@ -197,14 +260,76 @@ function deleteActivity() {
   return;
 }
 
-function emailActivity() {
+function showEmailOptions() {
+  data.bShowingEmails = true;
+  data.manualToEmails = "";
+  data.toRecipients.length = 0;
+  data.toGroups.length = 0;
+
+  data.allGroups.length = 0;
   axios
-    .post("/api/msi/activities/email", { emails: "", activity: props.activity })
+    .get("/api/msi/emails/groups")
     .then((resp) => {
-      console.log(resp.data);
+      data.allGroups = resp.data;
     })
     .catch((err) => {
       console.log(err);
     });
+
+  // axios
+  //   .post("/api/msi/activities/email", { emails: "", activity: props.activity })
+  //   .then((resp) => {
+  //     console.log(resp.data);
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+}
+
+function catchCheckboxChange(boxValue) {
+  let groupName = boxValue.target.attributes.groupName.value;
+  let checked = boxValue.target.checked;
+
+  console.log(groupName, checked);
+
+  if (checked) {
+    data.toGroups.push(groupName);
+    axios
+      .get("/api/msi/emails/groups?group=" + groupName)
+      .then((resp) => {
+        for (let item of resp.data) {
+          data.toRecipients.push({ email: item.email, group: groupName });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    data.toGroups = data.toGroups.filter((item) => item != groupName);
+    data.toRecipients = data.toRecipients.filter(
+      (item) => item.group != groupName
+    );
+    console.log("nil");
+  }
+}
+
+function catchTextArea(val) {
+  if (!val.target.value) {
+    return;
+  }
+
+  console.log("catchTextArea:", val.target.value);
+  // modify format of emails, e.g.
+  // remove multiple spaces, change space and ',' to ';'
+  // insert space after ';'
+  data.manualToEmails = val.target.value.trim();
+  data.manualToEmails = data.manualToEmails.replace(/\s+/g, " ");
+  data.manualToEmails = data.manualToEmails.replace(/; /g, ";");
+  data.manualToEmails = data.manualToEmails.replace(/, /g, ",");
+  data.manualToEmails = data.manualToEmails.replace(/ ,/g, " ");
+  data.manualToEmails = data.manualToEmails.replace(/ /g, ";");
+  data.manualToEmails = data.manualToEmails.replace(/,/g, ";");
+  data.manualToEmails = data.manualToEmails.replace(/;/g, "; ");
+  data.manualToEmails = data.manualToEmails.trim();
 }
 </script>

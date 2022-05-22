@@ -11,58 +11,110 @@ const dbEmailsColumns = [
   "status",
 ];
 
-function insertEmail(data: any) {
+function postEmailAddr(data: any) {
   if (!data || !data.email || !data.email.includes("@")) {
     return { err: "Invalid email." };
   }
 
   try {
     data.email = data.email.toLowerCase();
-    // check if existing
+    if (data.company) {
+      data.company = data.company.toUpperCase();
+    }
     let db = dbOpen();
-    let stmt = db.prepare(
-      `select * from Emails where "email"='${data.email}';`
-    );
-    let record = stmt.get();
-    if (record && record.email) {
-      db.close();
-      return { err: "Email existed." };
-    }
 
-    let fields = "";
-    let values = "";
-    for (let val of dbEmailsColumns) {
-      if (["created", "updated"].includes(val)) {
-        continue;
-      }
-      if (data[val]) {
-        fields += `"${val}",`;
-        values += `'${data[val]}',`;
+    // check if existing
+    if (data.orgEmail != data.email) {
+      let stmt = db.prepare(
+        `select * from Emails where "email"='${data.email}';`
+      );
+      let record = stmt.get();
+      if (record && record.email) {
+        db.close();
+        return { err: "Issue: Email existed." };
       }
     }
 
-    fields += `"created"`;
     let dateTimeStr = new Date().toISOString();
-    values += `'${dateTimeStr}'`;
+    // update existing email address in db:Emails
+    if (data.orgEmail) {
+      let setInfo = ``;
+      for (let val of dbEmailsColumns) {
+        if (["created", "updated"].includes(val)) {
+          continue;
+        }
+        if (data[val]) {
+          setInfo += `"${val}"='${data[val]}',`;
+        }
+      }
+      setInfo += `"updated"='${dateTimeStr}'`;
+      let sql = `update "Emails" 
+        set ${setInfo} where "email"='${data.orgEmail}';`;
+      console.log(sql);
+      let stmt = db.prepare(sql);
+      let ret = stmt.run();
+      console.log(ret);
+    }
 
-    let sql = `insert into "Emails"(${fields}) values(${values});`;
-    console.log("sql: ", sql);
-    stmt = db.prepare(sql);
-    record = stmt.run();
-    console.log("insert result record:", record);
-    db.close();
+    // update existing records in db:EmailGroupRelation
+    if (data.orgEmail) {
+      let sql = `update "EmailGroupRelation" set "email"='${data.email}', "updated"='${dateTimeStr}' where "email"='${data.orgEmail}';`;
+      console.log(sql);
+      let stmt = db.prepare(sql);
+      let ret = stmt.run();
+      console.log(ret);
+    }
 
-    if (data.groups) {
-      db = dbOpen();
-      for (let group of data.groups) {
-        let sql = `insert into "EmailGroupRelation"("email","group","created") values('${data.email}', '${group}', '${dateTimeStr}' );`;
+    // insert new email address into db:Emails
+    if (!data.orgEmail) {
+      let fields = "";
+      let values = "";
+      for (let val of dbEmailsColumns) {
+        if (["created", "updated"].includes(val)) {
+          continue;
+        }
+        if (data[val]) {
+          fields += `"${val}",`;
+          values += `'${data[val]}',`;
+        }
+      }
+
+      fields += `"created"`;
+      values += `'${dateTimeStr}'`;
+
+      let sql = `insert into "Emails"(${fields}) values(${values});`;
+      console.log("sql: ", sql);
+      let stmt = db.prepare(sql);
+      let record = stmt.run();
+      console.log("insert record result:", record);
+    }
+
+    // insert new email into group
+    for (let group of data.groups) {
+      if (data.orgGroups && !data.orgGroups.includes(group)) {
+        let sql = `insert into "EmailGroupRelation"('email','group','created') values('${data.email}', '${group}', '${dateTimeStr}');`;
         console.log("insert EmailGroupRelation sql:", sql);
         let stmt = db.prepare(sql);
-        console.log(stmt.run());
+        let ret = stmt.run();
+        console.log(ret);
       }
     }
 
-    return record;
+    // remove orgEmail from orgGroup
+    for (let orgGroup of data.orgGroups) {
+      if (data.groups && !data.groups.includes(orgGroup)) {
+        let sql = `delete from "EmailGroupRelation" where "email"='${data.email}' and "group"='${orgGroup}';`;
+        console.log("delete from EmailGroupRelation sql:", sql);
+        let stmt = db.prepare(sql);
+        let ret = stmt.run();
+        console.log(ret);
+      }
+    }
+
+    db.close();
+
+    return { msg: "Successful." };
+    // return record;
   } catch (e) {
     console.log(e);
     return e;
@@ -77,12 +129,13 @@ function postEmailGroup(data: any) {
   try {
     let db = dbOpen();
 
+    // check if existing
     if (data.orgGroup != data.group) {
       let stmt = db.prepare(
-        `select * from "EmailGroupRelation" where "group"='${data.group}'`
+        `select * from "EmailGroupRelation" where "group"='${data.group}';`
       );
       let record = stmt.get();
-      if (record && record.email) {
+      if (record && record.group) {
         db.close();
         return { err: "Issue: Group name existed." };
       }
@@ -194,7 +247,7 @@ function allEmailGroups() {
   }
 }
 
-function emailsInGroup(group: string) {
+function emailsInGroup(group: any) {
   try {
     let db = dbOpen();
     let stmt = db.prepare(
@@ -209,12 +262,28 @@ function emailsInGroup(group: string) {
   }
 }
 
+function groupsOfEmail(email: any) {
+  try {
+    let db = dbOpen();
+    let stmt = db.prepare(
+      `select distinct "group" from EmailGroupRelation where "email"='${email}';`
+    );
+    let records = stmt.all();
+    db.close();
+    return records;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+}
+
 export {
-  insertEmail,
+  postEmailAddr,
   allEmails,
   allEmailGroups,
   postEmailGroup,
   deleteEmail,
   deleteEmailGroup,
   emailsInGroup,
+  groupsOfEmail,
 };

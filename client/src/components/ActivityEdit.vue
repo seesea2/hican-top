@@ -417,15 +417,18 @@
         </div>
 
         <div class="modal-footer">
-          <div v-if="data.submitMsg" class="text-center">
-            <small class="bg-warning">{{ data.submitMsg }}</small>
+          <div v-if="data.submitMsg" class="text-center mx-3">
+            <label class="bg-warning px-2">{{ data.submitMsg }}</label>
           </div>
           <button
-            class="btn btn-primary"
+            class="btn btn-success"
             @click="Submit()"
             :disabled="disableSubmit"
           >
             Submit
+          </button>
+          <button class="btn btn-success mx-1" @click="toggleModal()">
+            Close
           </button>
         </div>
       </div>

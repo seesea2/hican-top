@@ -7,7 +7,7 @@
           class="mx-1"
           data-bs-toggle="tooltip"
           data-bs-placement="Calendar"
-          title="Calendar View"
+          title="Events Calendar View"
         >
           <img
             src="../assets/svg/calendar-event.svg"
@@ -20,7 +20,7 @@
           class="mx-1"
           data-bs-toggle="tooltip"
           data-bs-placement="Table"
-          title="Table View"
+          title="Events Table View"
         >
           <img
             src="../assets/svg/table.svg"
@@ -33,21 +33,23 @@
             class="p-1 rounded bg-mygray"
             data-bs-toggle="tooltip"
             data-bs-placement="Templates"
-            title="Templates"
+            title="Activity & Issue Templates"
           />
         </router-link>
         <router-link to="/emails" class="mx-1">
-          <button class="btn btn-small bg-myblue text-white m-0 p-0">
-            Emails
-          </button>
-          <!-- <img
-            src="../assets/svg/card-heading.svg"
+          <img
+            src="../assets/svg/envelope.svg"
             class="p-1 rounded bg-mygray"
             data-bs-toggle="tooltip"
             data-bs-placement="Emails"
-            title="Emails"
-          /> -->
+            title="Email Management"
+          />
         </router-link>
+        <!-- <router-link to="/emails" class="mx-1">
+          <button class="btn btn-small bg-myblue text-white m-0 p-0">
+            Emails
+          </button>
+        </router-link> -->
       </div>
       <div class="col mx-auto">
         <div class="btn-group rounded bg-mygray">
