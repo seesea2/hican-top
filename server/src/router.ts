@@ -25,6 +25,7 @@ import {
   insertEmail,
   insertEmailGroup,
   deleteEmail,
+  deleteEmailGroup,
 } from "./msi/customers";
 
 import ConJobs from "./cron-jobs";
@@ -141,6 +142,10 @@ apiRouter.get("/msi/emails", (req, res) => {
 });
 apiRouter.delete("/msi/emails/:email", (req, res) => {
   let ret = deleteEmail(req.params.email);
+  res.status(200).send(ret);
+});
+apiRouter.delete("/msi/emails/groups/:group", (req, res) => {
+  let ret = deleteEmailGroup(req.params.group);
   res.status(200).send(ret);
 });
 apiRouter.get("/msi/emails/groups", (req, res) => {

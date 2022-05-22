@@ -120,6 +120,23 @@ function deleteEmail(email: string) {
     return e;
   }
 }
+function deleteEmailGroup(group: string) {
+  console.log("deleteEmailGroup:", group);
+  try {
+    let db = dbOpen();
+    console.log(`delete from EmailGroupRelation where "group"='${group}';`);
+    let stmt = db.prepare(
+      `delete from EmailGroupRelation where "group"='${group}';`
+    );
+    let ret = stmt.run();
+    console.log(ret);
+    db.close();
+    return ret;
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+}
 function allEmails() {
   try {
     let db = dbOpen();
@@ -151,4 +168,5 @@ export {
   allEmailGroups,
   insertEmailGroup,
   deleteEmail,
+  deleteEmailGroup,
 };

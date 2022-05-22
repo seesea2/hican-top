@@ -156,18 +156,24 @@ let data = reactive({
 });
 
 function showInputs() {
-  axios.get("/api/msi/emails/groups").then((resp) => {
-    data.groups = resp.data;
-    console.log(resp.groups);
-    data.showingInputs = true;
-    data.showingEmails = false;
-  });
+  axios
+    .get("/api/msi/emails/groups")
+    .then((resp) => {
+      data.groups = resp.data;
+      console.log(resp.groups);
+      data.showingInputs = true;
+      data.showingEmails = false;
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 }
 
 function showEmails() {
   axios
     .get("/api/msi/emails")
     .then((resp) => {
+      data.allEmails.length = 0;
       data.allEmails = resp.data;
       data.showingInputs = false;
       data.showingEmails = true;
