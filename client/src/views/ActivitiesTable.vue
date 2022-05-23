@@ -116,13 +116,13 @@ function catchEdit(newAct) {
   if (data.curActivity.id) {
     for (let i in data.activities) {
       if (data.activities[i].id == newAct.id) {
-        console.log("changed act:", newAct);
+        // console.log("changed act:", newAct);
         data.activities[i] = newAct;
         break;
       }
     }
   } else {
-    console.log("add act:", newAct);
+    // console.log("add act:", newAct);
     let newCopy = {};
     for (let key in newAct) {
       newCopy[key] = newAct[key];
@@ -132,7 +132,7 @@ function catchEdit(newAct) {
       return new Date(b.startDatetime) - new Date(a.startDatetime);
     });
   }
-  console.log("log catchEdit data.activities:", data.activities);
+  // console.log("log catchEdit data.activities:", data.activities);
 }
 
 function Refresh() {
@@ -157,7 +157,7 @@ function addActivity() {
     data.curActivity[key] = null;
   }
   data.curActivity.type = "Activity";
-  console.log("actTable -- data.curActivity:", data.curActivity);
+  // console.log("actTable -- data.curActivity:", data.curActivity);
   toggleModal("editActivityModal");
 }
 

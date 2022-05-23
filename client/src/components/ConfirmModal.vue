@@ -46,7 +46,7 @@ let props = defineProps(["modal"]);
 let emit = defineEmits(["confirm"]);
 
 function confirmation(selection) {
-  console.log("emit confirm");
+  // console.log("emit confirm");
   emit("confirm", selection);
   toggleModal(props.modal);
 }

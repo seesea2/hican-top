@@ -134,7 +134,7 @@ function refreshFullCalendar() {
     });
   }
 
-  console.log("refreshFullCalendar, ", data.calendarOptions.events);
+  // console.log("refreshFullCalendar, ", data.calendarOptions.events);
 
   let calendarEl = document.getElementById("fullCalendar");
   let calendar = new Calendar(calendarEl, data.calendarOptions);
@@ -144,7 +144,7 @@ function refreshFullCalendar() {
 }
 
 function catchEdit(newAct) {
-  console.log("catchEdit", data.curActivity.id);
+  // console.log("catchEdit", data.curActivity.id);
   if (data.curActivity.id) {
     for (let i in data.activities) {
       if (data.activities[i].id == newAct.id) {
@@ -163,7 +163,7 @@ function catchEdit(newAct) {
       return new Date(b.startDatetime) - new Date(a.startDatetime);
     });
   }
-  console.log("catchedit, ", data.activities);
+  // console.log("catchedit, ", data.activities);
   refreshFullCalendar();
 }
 

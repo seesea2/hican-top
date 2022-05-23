@@ -483,7 +483,7 @@ for (let i = 0; i < 24; ++i) {
 data.minutes = ["00", "15", "30", "45"];
 
 watch(props.activity, () => {
-  console.log("props.activity in watch", props.activity);
+  // console.log("props.activity in watch", props.activity);
   initData();
 });
 
@@ -550,7 +550,7 @@ function initData() {
     data.endMinute = "00";
   }
 
-  console.log("in edit | data.curActivity:", data.curActivity);
+  // console.log("in edit | data.curActivity:", data.curActivity);
 }
 
 function Submit() {
@@ -572,7 +572,7 @@ function Submit() {
   data.curActivity.endDatetime = endDatetime;
   // console.log("endDatetime:", endDatetime);
 
-  console.log("submit act:", data.curActivity);
+  // console.log("submit act:", data.curActivity);
 
   disableSubmit.value = true;
   // for existing Act with ID, to update using PUT
@@ -633,7 +633,7 @@ function getTemplates() {
       for (let item of resp.data) {
         data.templates.push(item);
       }
-      console.log(data.templates);
+      // console.log(data.templates);
     })
     .catch((err) => {
       console.log(err);
@@ -641,14 +641,14 @@ function getTemplates() {
 }
 
 function useTemplate(template) {
-  console.log("yc useTemplate:", template);
+  // console.log("yc useTemplate:", template);
   for (let key in template) {
     if (["id", "type", "group1", "group2"].includes(key)) {
       continue;
     }
     data.curActivity[key] = template[key];
   }
-  console.log("log useTemplate data.curActivity", data.curActivity);
+  // console.log("log useTemplate data.curActivity", data.curActivity);
   data.showTemplateOptions = false;
   document.getElementById("activity-form").scrollIntoView();
   // document.getElementById('create-type').scrollIntoView();
@@ -664,7 +664,7 @@ function toggleTemplateOptions() {
     // document.getElementById('template-option-top').scrollIntoView();
     // document.getElementById('template-option-top').scrollTop();
     let elm = document.getElementById("templateOptionsBtn");
-    console.log(elm);
+    // console.log(elm);
     elm.scrollIntoView();
     // window.scrollTo(0, elm.getBoundingClientRect().y)
     // window.scrollTo(0, elm.offsetTop)

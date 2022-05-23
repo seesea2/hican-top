@@ -19,7 +19,7 @@ function readWords(file: string) {
         });
     }
   } catch (e) {
-    console.log("Exception in readWords()");
+    console.log("Exception in readWords()", e);
   }
   return words;
 }

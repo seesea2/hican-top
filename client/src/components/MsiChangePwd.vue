@@ -115,7 +115,7 @@ function ChangePassword() {
       newPwd: newPwd1.value,
     })
     .then((resp) => {
-      console.log(resp.data);
+      // console.log(resp.data);
       if (resp.data.err) {
         changePwdMsg.value = resp.data.err;
         disableSubmit.value = false;

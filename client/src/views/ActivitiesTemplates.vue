@@ -177,7 +177,7 @@ let data = reactive({
   group1: "All",
   group2: "All",
 });
-console.log("yc2:", data.group1);
+// console.log("yc2:", data.group1);
 
 onBeforeMount(() => {
   if (!loginId()) {
@@ -235,7 +235,7 @@ function addActivity() {
     data.curActivity[key] = null;
   }
   data.curActivity["type"] = "Template";
-  console.log("addActivity:", data.curActivity);
+  // console.log("addActivity:", data.curActivity);
   toggleModal("editActivityModal");
 }
 

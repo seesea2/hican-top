@@ -49,11 +49,10 @@ async function emailActivity(data?: any) {
     });
 
     // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // console.log("Message sent: %s", info.messageId);
-    console.log("info", info);
+    // console.log("info", info);
     // return info.envelope;
     let ret = { msg: "Accepted: " + info.accepted.toString() };
-    console.log(ret);
+    // console.log(ret);
     return ret;
   } catch (e) {
     console.log(e);

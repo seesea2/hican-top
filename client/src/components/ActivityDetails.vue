@@ -251,7 +251,7 @@ function catchEdit(newAct) {
 }
 
 function catchConfirm(val) {
-  console.log("catchConfirm val:", val);
+  // console.log("catchConfirm val:", val);
   if (val) {
     axios
       .delete("/api/msi/activities/" + props.activity.id)
@@ -338,7 +338,7 @@ function catchCheckboxChange(boxValue) {
   let groupName = boxValue.target.attributes.groupName.value;
   let checked = boxValue.target.checked;
 
-  console.log(groupName, checked);
+  // console.log(groupName, checked);
 
   if (checked) {
     data.toGroups.push(groupName);
@@ -357,7 +357,6 @@ function catchCheckboxChange(boxValue) {
     data.toRecipients = data.toRecipients.filter(
       (item) => item.group != groupName
     );
-    console.log("nil");
   }
 }
 
