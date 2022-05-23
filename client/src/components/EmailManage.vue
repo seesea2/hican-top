@@ -232,8 +232,6 @@ function confirmEmail() {
     .catch((err) => {
       console.log(err);
       data.msg = err;
-    })
-    .finally(() => {
       data.disableSubmit = false;
     });
 }
@@ -281,6 +279,7 @@ function deleteEmail(emailObj) {
       }
 
       data.msg = "Successful.";
+      data.disableSubmit = false;
       showEmails();
       setTimeout(() => {
         data.msg = "";
@@ -289,8 +288,6 @@ function deleteEmail(emailObj) {
     .catch((err) => {
       console.log(err);
       data.msg = err.msg;
-    })
-    .finally(() => {
       data.disableSubmit = false;
     });
 }

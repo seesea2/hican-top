@@ -78,7 +78,7 @@ async function OxfordApiWord(word: string) {
       "?fields=definitions%2Cpronunciations%2Cexamples&strictMatch=false";
     let resp = await Axios(url, config);
     const entries: OxfordEntries = resp.data;
-    console.log(entries);
+    // console.log(entries);
     writeFileSync(
       join(assetsDir, "/oxford/json/" + word + ".json"),
       JSON.stringify(entries)
@@ -96,7 +96,7 @@ async function OxfordApiLemmas(word: string) {
       "https://od-api.oxforddictionaries.com/api/v2/lemmas/en-gb/" + word;
     const resp = await Axios(url, config);
     const lemmas: OxfordLemmas = resp.data;
-    console.log(lemmas);
+    // console.log(lemmas);
     writeFileSync(
       join(assetsDir, "/oxford/json/lemmas-" + word + ".json"),
       JSON.stringify(lemmas)

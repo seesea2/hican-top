@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { Activity, dbOpen } from "../db-ops";
-import { emailActivity as email } from "./email";
+import { emailActivity as sendEmail } from "./email";
 
 const dbActivitiesColumns = [
   "title",
@@ -189,9 +189,10 @@ function ActivityTemplates() {
   }
 }
 
-function emailActivity(data: any) {
-  email(data);
-  return { done: true };
+async function emailActivity(data: any) {
+  let ret = await sendEmail(data);
+  // console.log("ret:", ret);
+  return ret;
 }
 
 // yc for testing

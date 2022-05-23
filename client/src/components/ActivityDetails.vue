@@ -52,7 +52,7 @@
             ></div>
           </div>
           <div class="card-text mt-1 small">
-            <b>NoImpact:</b>
+            <b>No Impact:</b>
             <div
               v-if="props.activity.noImpact"
               v-html="
@@ -159,7 +159,11 @@
             <div class="my-2">
               <label class="bg-info px-2">{{ data.emailMsg }}</label>
             </div>
-            <button class="btn btn-success btn-small" @click="sendEmail()">
+            <button
+              class="btn btn-success btn-small"
+              @click="sendEmail()"
+              :disabled="data.disableBtn"
+            >
               Send
             </button>
             <button
@@ -223,6 +227,7 @@ let data = reactive({
   toGroups: [],
   manualToEmails: "",
   emailMsg: "",
+  disableBtn: false,
 });
 
 watch(props.activity, () => {
@@ -301,23 +306,31 @@ function sendEmail() {
     }
   }
 
+  if (!emails.length) {
+    data.emailMsg = "No recipient.";
+    return;
+  }
+
+  data.disableBtn = true;
   axios
     .post("/api/msi/activities/email", {
       emails: emails,
       activity: props.activity,
     })
     .then((resp) => {
-      console.log(resp.data);
-      data.emailMsg = resp.data;
+      if (!resp.data.msg) {
+        data.emailMsg = resp.data;
+        return;
+      }
 
-      setTimeout(() => {
-        data.emailMsg = "";
-        data.bShowingEmails = false;
-      }, 2000);
+      data.emailMsg = resp.data.msg;
     })
     .catch((err) => {
       console.log(err);
       data.emailMsg = err;
+    })
+    .finally(() => {
+      data.disableBtn = false;
     });
 }
 
@@ -353,7 +366,7 @@ function catchTextArea(val) {
     return;
   }
 
-  console.log("catchTextArea:", val.target.value);
+  // console.log("catchTextArea:", val.target.value);
   // modify format of emails, e.g.
   // remove multiple spaces, change space and ',' to ';'
   // insert space after ';'

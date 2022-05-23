@@ -15,7 +15,7 @@ const dbUserColumns = [
 let allLoginUsers: any = [];
 
 function InsertUser(data: any) {
-  console.log("InsertUser", data);
+  // console.log("InsertUser", data);
   if (!data || !data.id || !data.pwd) {
     return { err: "ID & Password are required!" };
   }
@@ -102,11 +102,11 @@ function LoginUser(data: any) {
 
     let hash = createHash("sha1").update(data.pwd).digest("hex");
     let sql = `select * from Users where id='${data.id}' and pwd='${hash}';`;
-    console.log(sql);
+    // console.log(sql);
     let db = dbOpen();
     let stmt = db.prepare(sql);
     let record = stmt.get();
-    console.log("login record: ", record);
+    // console.log("login record: ", record);
     db.close();
     if (record) {
       allLoginUsers.push(record);
@@ -122,7 +122,7 @@ function LoginUser(data: any) {
 
 function LogoutUser(data: any) {
   try {
-    console.log(allLoginUsers);
+    // console.log(allLoginUsers);
     for (let i in allLoginUsers) {
       if (allLoginUsers[i].id == data.id) {
         allLoginUsers.splice(i, 1);

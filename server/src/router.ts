@@ -100,7 +100,7 @@ apiRouter.post("/msi/login", (req, res) => {
   }
 });
 apiRouter.post("/msi/logout", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   let record = LogoutUser(req.body);
   if (record) {
     res.status(200).send();
@@ -109,7 +109,7 @@ apiRouter.post("/msi/logout", (req, res) => {
   }
 });
 apiRouter.post("/msi/user", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     let ret = InsertUser(req.body.user);
     res.status(200).send(ret);
@@ -118,7 +118,7 @@ apiRouter.post("/msi/user", (req, res) => {
   }
 });
 apiRouter.put("/msi/user/pwd", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   let ret = ChangePwd(req.body);
   res.status(200).send(ret);
 });
@@ -129,7 +129,7 @@ apiRouter.get("/msi/activities", (req, res) => {
 });
 apiRouter.get("/msi/activities/templates", (req, res) => {
   let templates = ActivityTemplates();
-  console.log(templates);
+  // console.log(templates);
   res.status(200).send(templates);
 });
 
@@ -166,15 +166,15 @@ apiRouter.get("/msi/emails/groups", (req, res) => {
 });
 
 apiRouter.post("/msi/emails/group", (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   let ret = postEmailGroup(req.body);
-  console.log("create group ret:", ret);
+  // console.log("create group ret:", ret);
   res.status(200).send(ret);
 });
 
 apiRouter.post("/msi/activities", (req, res) => {
-  console.log("req post.body:", req.body);
-  console.log("req post.params:", req.params);
+  // console.log("req post.body:", req.body);
+  // console.log("req post.params:", req.params);
   // let data = JSON.parse(req.params);
   // console.log(req.body);
 
@@ -182,8 +182,8 @@ apiRouter.post("/msi/activities", (req, res) => {
   res.status(200).send({ id: id });
 });
 apiRouter.put("/msi/activities", (req, res) => {
-  console.log("req put.body:", req.body);
-  console.log("req put.params:", req.params);
+  // console.log("req put.body:", req.body);
+  // console.log("req put.params:", req.params);
   // let data = JSON.parse(req.params);
   // console.log(req.body);
 
@@ -204,15 +204,10 @@ apiRouter.delete("/msi/activities/:id", (req, res) => {
   }
 });
 
-apiRouter.post("/msi/activities/email", (req, res) => {
+apiRouter.post("/msi/activities/email", async (req, res) => {
   // console.log("req email:", req.body);
-  let ret: any = emailActivity(req.body);
-  // yc todo
-  if (ret.err || ret.done) {
-    res.status(200).send(ret);
-  } else {
-    res.status(500).send({ err: "Server failed" });
-  }
+  let ret: any = await emailActivity(req.body);
+  res.status(200).send(ret);
 });
 
 // apiRouter.get("/msi/activities/:options", (req, res) => {

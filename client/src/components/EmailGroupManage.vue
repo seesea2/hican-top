@@ -193,8 +193,6 @@ function confirmEmailGroup() {
     .catch((e) => {
       data.msg = e;
       console.log(e);
-    })
-    .finally(() => {
       data.disableSubmit = false;
     });
 }
@@ -276,6 +274,7 @@ function deleteEmailGroup(groupObj) {
       }
 
       data.msg = "Successful.";
+      data.disableSubmit = false;
       showViewGroups();
       setTimeout(() => {
         data.msg = "";
@@ -284,8 +283,6 @@ function deleteEmailGroup(groupObj) {
     .catch((err) => {
       console.log(err);
       data.msg = err.msg;
-    })
-    .finally(() => {
       data.disableSubmit = false;
     });
 }

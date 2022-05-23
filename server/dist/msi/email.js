@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emailActivity = void 0;
 const nodemailer = require("nodemailer");
+const html_json_1 = require("./html-json");
 const kHtmlHeader = "<head>" +
     '<meta charset="utf-8" />' +
     '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' +
@@ -18,189 +19,238 @@ const kHtmlHeader = "<head>" +
     "</head>";
 function emailActivity(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        let html = buildHtml(data.activity);
-        console.log("buildHtml data:", data);
-        console.log("buildHtml:", html);
-        let smtpTransport = nodemailer.createTransport({
-            host: "smtp-mail.outlook.com",
-            port: 587,
-            requireTLS: true,
-            auth: {
-                user: "yuanchao@outlook.sg",
-                pass: "pingmeHC83@@&&",
-            },
-            logger: true,
-        });
-        let info = yield smtpTransport.sendMail({
-            from: "yuanchao@outlook.sg",
-            to: "seesea2@gmail.com",
-            subject: "Activity Notification",
-            text: "Activity Notification.",
-            html: html,
-        });
+        try {
+            let html = buildHtml(data.activity);
+            let smtpTransport = nodemailer.createTransport({
+                host: "smtp-mail.outlook.com",
+                port: 587,
+                requireTLS: true,
+                auth: {
+                    user: "yuanchao@outlook.sg",
+                    pass: "pingmeHC83@@&&",
+                },
+                logger: false,
+            });
+            let info = yield smtpTransport.sendMail({
+                from: "yuanchao@outlook.sg",
+                to: data.emails.toString(),
+                subject: "MSI Activity Notification",
+                text: "MSI Activity Notification.",
+                html: html,
+            });
+            console.log("info", info);
+            let ret = { msg: "Accepted: " + info.accepted.toString() };
+            console.log(ret);
+            return ret;
+        }
+        catch (e) {
+            console.log(e);
+            return { err: "Server failure." };
+        }
     });
 }
 exports.emailActivity = emailActivity;
-function htmlJsonToString(elmJson) {
-    let childrenStr = "";
-    for (let child of elmJson.children) {
-        childrenStr += htmlJsonToString(child);
+function buildJsonForActivity(activity) {
+    let tableJson = (0, html_json_1.createHtmlJson)("table");
+    try {
+        tableJson.styles.push("width: 100%;border-collapse: collapse;border-style:solid");
+        tableJson.properties.push(`border="1px"`);
+        const styleStr = "border: 1px solid;margin: 2px 2px 2px 2px; padding:2px 2px 2px 2px";
+        let elmThead = (0, html_json_1.createHtmlJson)("thead");
+        elmThead.styles.push(styleStr);
+        tableJson.children.push(elmThead);
+        let elmTheadTr = (0, html_json_1.createHtmlJson)("tr");
+        elmTheadTr.styles.push(styleStr);
+        elmThead.children.push(elmTheadTr);
+        let elmTheadTrTh = (0, html_json_1.createHtmlJson)("th");
+        elmTheadTr.children.push(elmTheadTrTh);
+        elmTheadTrTh.innerText = "Item";
+        elmTheadTrTh.styles.push(styleStr);
+        elmTheadTrTh = (0, html_json_1.createHtmlJson)("th");
+        elmTheadTr.children.push(elmTheadTrTh);
+        elmTheadTrTh.innerText = "Description";
+        elmTheadTrTh.styles.push(styleStr);
+        let elmTbody = (0, html_json_1.createHtmlJson)("tbody");
+        tableJson.children.push(elmTbody);
+        elmTbody.styles.push(styleStr);
+        if (activity["title"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Title";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["title"];
+        }
+        if (activity["startDatetime"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Date time";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = new Date(activity["startDatetime"]).toLocaleString();
+            elmTbodyTrTd.innerText += " - ";
+            elmTbodyTrTd.innerText += new Date(activity["endDatetime"]).toLocaleString();
+            elmTbodyTrTd.styles.push(styleStr);
+        }
+        if (activity["affectedSystems"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Affected Systems";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = activity["affectedSystems"];
+            elmTbodyTrTd.styles.push(styleStr);
+        }
+        if (activity["impact"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Impact";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["impact"];
+        }
+        if (activity["noImpact"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "No Impact";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["noImpact"];
+        }
+        if (activity["stakeholders"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Stakeholders";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["stakeholders"];
+        }
+        if (activity["teams"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Implementation Teams";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["teams"];
+        }
+        if (activity["contactPersons"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Contact Persons";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["contactPersons"];
+        }
+        if (activity["riskAndMitigation"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Risk & Mitigation";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["riskAndMitigation"];
+        }
+        if (activity["remarks"]) {
+            let elmTbodyTr = (0, html_json_1.createHtmlJson)("tr");
+            elmTbodyTr.styles.push(styleStr);
+            elmTbody.children.push(elmTbodyTr);
+            let elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.innerText = "Remarks";
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.styles.push("font-weight: bold");
+            elmTbodyTrTd = (0, html_json_1.createHtmlJson)("td");
+            elmTbodyTr.children.push(elmTbodyTrTd);
+            elmTbodyTrTd.styles.push(styleStr);
+            elmTbodyTrTd.innerText = activity["remarks"];
+        }
     }
-    let propertiesStr = "";
-    for (let property of elmJson.properties) {
-        propertiesStr += property + " ";
+    catch (e) {
+        console.log(e);
     }
-    let htmlStr = "";
-    if (propertiesStr) {
-        htmlStr = "<" + elmJson.tag + " " + propertiesStr + ">";
-    }
-    else {
-        htmlStr = "<" + elmJson.tag + ">";
-    }
-    htmlStr += " " + elmJson.innerText + " " + childrenStr;
-    htmlStr += "</" + elmJson.tag + ">";
-    return htmlStr;
-}
-function createHtmlElement(tag) {
-    let elm = { tag: tag, properties: [], innerText: "", children: [] };
-    return elm;
+    return tableJson;
 }
 function buildHtml(activity) {
-    const property = `style="width:100%;margin:0;font-family:Helvetica,Arial,sans-serif;"`;
-    let bodyJson = createHtmlElement("body");
-    bodyJson.properties.push(property);
-    let elm = createHtmlElement("b");
-    elm.innerText = "Dear Stakeholders,";
-    bodyJson.children.push(elm);
-    elm = createHtmlElement("p");
-    elm.innerText = "Please be informed that an activity has been planned.";
-    bodyJson.children.push(elm);
-    elm = createHtmlElement("p");
-    elm.innerText = "Kindly refer to the below schedule and impact details:";
-    bodyJson.children.push(elm);
-    let table = createHtmlElement("table");
-    bodyJson.children.push(table);
-    let elmThead = createHtmlElement("thead");
-    table.children.push(elmThead);
-    let elmTheadTr = createHtmlElement("tr");
-    elmThead.children.push(elmTheadTr);
-    let elmTheadTrTh = createHtmlElement("th");
-    elmTheadTr.children.push(elmTheadTrTh);
-    elmTheadTrTh.innerText = "Item";
-    elmTheadTrTh = createHtmlElement("th");
-    elmTheadTr.children.push(elmTheadTrTh);
-    elmTheadTrTh.innerText = "Description";
-    let elmTbody = createHtmlElement("thead");
-    table.children.push(elmTbody);
-    if (activity["title"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Title";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["title"];
+    let bodyJson = (0, html_json_1.createHtmlJson)("body");
+    try {
+        let elm = (0, html_json_1.createHtmlJson)("b");
+        elm.innerText = "Dear Stakeholders,";
+        bodyJson.children.push(elm);
+        elm = (0, html_json_1.createHtmlJson)("p");
+        elm.innerText =
+            "Please be informed that activity '" +
+                activity.title +
+                "' has been planned.";
+        bodyJson.children.push(elm);
+        elm = (0, html_json_1.createHtmlJson)("p");
+        elm.innerText = "Kindly refer to the below schedule and impact details:";
+        bodyJson.children.push(elm);
+        let activityJson = buildJsonForActivity(activity);
+        bodyJson.children.push(activityJson);
+        elm = (0, html_json_1.createHtmlJson)("p");
+        elm.innerText = "Please let us know if any queries.";
+        bodyJson.children.push(elm);
+        elm = (0, html_json_1.createHtmlJson)("p");
+        elm.innerText = "Thanks.";
+        bodyJson.children.push(elm);
+        elm = (0, html_json_1.createHtmlJson)("p");
+        elm.innerText = "MSI Team";
+        bodyJson.children.push(elm);
     }
-    if (activity["affectedSystems"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Affected Systems";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["affectedSystems"];
+    catch (e) {
+        console.log(e);
     }
-    if (activity["impact"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Impact";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["impact"];
-    }
-    if (activity["noImpact"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "No Impact";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["noImpact"];
-    }
-    if (activity["stakeholders"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Stakeholders";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["stakeholders"];
-    }
-    if (activity["teams"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Implementation Teams";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["teams"];
-    }
-    if (activity["contactPersons"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Contact Persons";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["contactPersons"];
-    }
-    if (activity["riskAndMitigation"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Risk & Mitigation";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["riskAndMitigation"];
-    }
-    if (activity["remarks"]) {
-        let elmTbodyTr = createHtmlElement("tr");
-        elmTbody.children.push(elmTbodyTr);
-        let elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = "Remarks";
-        elmTbodyTrTd.properties.push('style="font-weight: bold"');
-        elmTbodyTrTd = createHtmlElement("td");
-        elmTbodyTr.children.push(elmTbodyTrTd);
-        elmTbodyTrTd.innerText = activity["remarks"];
-    }
-    elm = createHtmlElement("p");
-    elm.innerText = "Please let me know if any queries.";
-    bodyJson.children.push(elm);
-    elm = createHtmlElement("p");
-    elm.innerText = "Thanks.<br><br><hr>";
-    bodyJson.children.push(elm);
-    let styleJson = createHtmlElement("style");
-    styleJson.innerText =
-        "table {width: 100%;border-collapse: collapse;} table, th, td {border: 1px solid;}";
-    bodyJson.children.push(styleJson);
-    let html = "<html>" + kHtmlHeader + htmlJsonToString(bodyJson) + "</html>";
+    let html = "<html>" + kHtmlHeader + (0, html_json_1.htmlJsonToString)(bodyJson) + "</html>";
     return html;
 }

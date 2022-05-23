@@ -78,7 +78,6 @@ function OxfordApiWord(word) {
                 "?fields=definitions%2Cpronunciations%2Cexamples&strictMatch=false";
             let resp = yield (0, axios_1.default)(url, config);
             const entries = resp.data;
-            console.log(entries);
             (0, fs_1.writeFileSync)((0, path_1.join)(dir_1.assetsDir, "/oxford/json/" + word + ".json"), JSON.stringify(entries));
             return entries;
         }
@@ -94,7 +93,6 @@ function OxfordApiLemmas(word) {
             const url = "https://od-api.oxforddictionaries.com/api/v2/lemmas/en-gb/" + word;
             const resp = yield (0, axios_1.default)(url, config);
             const lemmas = resp.data;
-            console.log(lemmas);
             (0, fs_1.writeFileSync)((0, path_1.join)(dir_1.assetsDir, "/oxford/json/lemmas-" + word + ".json"), JSON.stringify(lemmas));
             return lemmas;
         }
