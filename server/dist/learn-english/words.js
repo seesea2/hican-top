@@ -20,7 +20,7 @@ function readWords(file) {
         }
     }
     catch (e) {
-        console.log("Exception in readWords()");
+        console.log("Exception in readWords()", e);
     }
     return words;
 }

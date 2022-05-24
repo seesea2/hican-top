@@ -17,30 +17,35 @@ const kHtmlHeader = "<head>" +
     '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' +
     '<meta name="viewport" content="width=device-width,initial-scale=1.0" />' +
     "</head>";
+const gmail = {
+    service: "Gmail",
+    requireTLS: true,
+    auth: {
+        user: Buffer.from("c2Vlc2VhMkBnbWFpbC5jb20=", "base64").toString("ascii"),
+        pass: Buffer.from("cGluZ21lSEM4Mw==", "base64").toString("ascii"),
+    },
+};
+const outlook = {
+    host: "smtp-mail.outlook.com",
+    requireTLS: true,
+    auth: {
+        user: Buffer.from("eXVhbmNoYW9Ab3V0bG9vay5zZw==", "base64").toString("ascii"),
+        pass: Buffer.from("cGluZ21lSEM4M0BAJiY=", "base64").toString("ascii"),
+    },
+};
 function emailActivity(data) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let html = buildHtml(data.activity);
-            let smtpTransport = nodemailer.createTransport({
-                host: "smtp-mail.outlook.com",
-                port: 587,
-                requireTLS: true,
-                auth: {
-                    user: "yuanchao@outlook.sg",
-                    pass: "pingmeHC83@@&&",
-                },
-                logger: false,
-            });
+            let smtpTransport = nodemailer.createTransport(gmail);
             let info = yield smtpTransport.sendMail({
-                from: "yuanchao@outlook.sg",
+                from: "seesea2@gmail.com",
                 to: data.emails.toString(),
                 subject: "MSI Activity Notification",
                 text: "MSI Activity Notification.",
                 html: html,
             });
-            console.log("info", info);
             let ret = { msg: "Accepted: " + info.accepted.toString() };
-            console.log(ret);
             return ret;
         }
         catch (e) {

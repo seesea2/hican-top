@@ -99,10 +99,12 @@ apiRouter.get("/msi/emails", (req, res) => {
     res.status(200).send(records);
 });
 apiRouter.delete("/msi/emails/:email", (req, res) => {
+    console.log("req delete:", req.params.email);
     let ret = (0, customers_1.deleteEmail)(req.params.email);
     res.status(200).send(ret);
 });
 apiRouter.delete("/msi/emails/groups/:group", (req, res) => {
+    console.log("req delete:", req.params.group);
     let ret = (0, customers_1.deleteEmailGroup)(req.params.group);
     res.status(200).send(ret);
 });

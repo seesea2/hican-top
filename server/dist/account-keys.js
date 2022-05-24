@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.oxford_app_key = exports.oxford_app_id = exports.ltaAccountKey = void 0;
-exports.ltaAccountKey = '6sVzf9zXRaCgkJUdjxIw2A==';
-exports.oxford_app_id = '0314e9e2';
-exports.oxford_app_key = '5a6c2589474a2f83ccd69f397bfec7a2';
+exports.ltaAccountKey = Buffer.from("NnNWemY5elhSYUNna0pVZGp4SXcyQT09", "base64").toString("ascii");
+exports.oxford_app_id = Buffer.from("MDMxNGU5ZTI=", "base64").toString("ascii");
+exports.oxford_app_key = Buffer.from("NWE2YzI1ODk0NzRhMmY4M2NjZDY5ZjM5N2JmZWM3YTI=", "base64").toString("ascii");

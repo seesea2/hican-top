@@ -1,5 +1,6 @@
 import * as nodemailer from "nodemailer";
 import { writeFileSync } from "fs";
+
 import { HtmlJson, createHtmlJson, htmlJsonToString } from "./html-json";
 
 const kHtmlHeader =
@@ -9,39 +10,38 @@ const kHtmlHeader =
   '<meta name="viewport" content="width=device-width,initial-scale=1.0" />' +
   "</head>";
 
-async function emailActivity(data?: any) {
+const gmail = {
+  service: "Gmail",
+  requireTLS: true,
+  auth: {
+    user: Buffer.from("c2Vlc2VhMkBnbWFpbC5jb20=", "base64").toString("ascii"),
+    pass: Buffer.from("cGluZ21lSEM4Mw==", "base64").toString("ascii"),
+  },
+};
+const outlook = {
+  host: "smtp-mail.outlook.com",
+  requireTLS: true,
+  auth: {
+    user: Buffer.from("eXVhbmNoYW9Ab3V0bG9vay5zZw==", "base64").toString(
+      "ascii"
+    ),
+    pass: Buffer.from("cGluZ21lSEM4M0BAJiY=", "base64").toString("ascii"),
+  },
+};
+
+async function emailActivity(data: any) {
   try {
     let html = buildHtml(data.activity);
     // writeFileSync("./testHtmlStr.html", html);
     // console.log("buildHtml data:", data);
     // console.log("buildHtml:", html);
-
     // return;
 
-    let smtpTransport = nodemailer.createTransport({
-      host: "smtp-mail.outlook.com",
-      // port: 465,
-      port: 587,
-      // secure: false,
-      requireTLS: true,
-      auth: {
-        user: "yuanchao@outlook.sg",
-        pass: "pingmeHC83@@&&",
-        // user: "yuan_chao_li@msi-global.com.sg",
-        // pass: "Password66^^",
-      },
-      logger: false,
-    });
-    // smtpTransport = nodemailer.createTransport({
-    //   service: "Gmail",
-    //   auth: {
-    //     user: "seesea2@gmail.com",
-    //     pass: "pingmeHC83",
-    //   },
-    // });
-
+    let smtpTransport = nodemailer.createTransport(gmail);
+    // let smtpTransport = nodemailer.createTransport(outlook);
     let info = await smtpTransport.sendMail({
-      from: "yuanchao@outlook.sg",
+      // from: "yuanchao@outlook.sg",
+      from: "seesea2@gmail.com",
       to: data.emails.toString(),
       subject: "MSI Activity Notification", // Subject line
       text: "MSI Activity Notification.", // plain text content

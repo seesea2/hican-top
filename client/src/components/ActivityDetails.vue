@@ -276,6 +276,7 @@ function showEmailOptions() {
   data.manualToEmails = "";
   data.toRecipients.length = 0;
   data.toGroups.length = 0;
+  data.msg = "";
 
   data.allGroups.length = 0;
   axios
@@ -362,10 +363,10 @@ function catchCheckboxChange(boxValue) {
 
 function catchTextArea(val) {
   if (!val.target.value) {
+    data.manualToEmails = "";
     return;
   }
 
-  // console.log("catchTextArea:", val.target.value);
   // modify format of emails, e.g.
   // remove multiple spaces, change space and ',' to ';'
   // insert space after ';'

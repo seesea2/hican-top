@@ -1,4 +1,13 @@
-export const ltaAccountKey: string = '6sVzf9zXRaCgkJUdjxIw2A==';
+export const ltaAccountKey: string = Buffer.from(
+  "NnNWemY5elhSYUNna0pVZGp4SXcyQT09",
+  "base64"
+).toString("ascii");
 
-export const oxford_app_id: string = '0314e9e2';
-export const oxford_app_key: string = '5a6c2589474a2f83ccd69f397bfec7a2';
+export const oxford_app_id: string = Buffer.from(
+  "MDMxNGU5ZTI=",
+  "base64"
+).toString("ascii");
+export const oxford_app_key: string = Buffer.from(
+  "NWE2YzI1ODk0NzRhMmY4M2NjZDY5ZjM5N2JmZWM3YTI=",
+  "base64"
+).toString("ascii");

@@ -30,18 +30,15 @@ function CheckWord(word, res) {
             return res.status(400).send({ message: "Invalid word." });
         }
         word = word.trim().toLowerCase();
-        console.log("CheckOxfordEntries", word);
         try {
             const wordFile = (0, path_1.join)(dir_1.assetsDir, "/oxford/json/" + word + ".json");
             if ((0, fs_1.existsSync)(wordFile)) {
                 let rawData = (0, fs_1.readFileSync)(wordFile, "utf8");
                 let fileData = JSON.parse(rawData);
-                console.log("word is from cache");
                 return res.status(200).send(fileData);
             }
             const rslt = yield OxfordApiWord(word);
             if (rslt) {
-                console.log("word is from API");
                 return res.status(200).send(rslt);
             }
             let lemmas = undefined;
@@ -49,11 +46,9 @@ function CheckWord(word, res) {
             if ((0, fs_1.existsSync)(file)) {
                 const rawData = (0, fs_1.readFileSync)(file, "utf8");
                 lemmas = JSON.parse(rawData);
-                console.log("lemmas are from cache");
             }
             else {
                 lemmas = yield OxfordApiLemmas(word);
-                console.log("lemmas are from API");
             }
             const word_origin = lemmas.results[0].lexicalEntries[0].inflectionOf[0].text;
             if (word_origin && word_origin != word) {
