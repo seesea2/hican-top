@@ -405,7 +405,7 @@
                     <td>{{ template.stakeholders }}</td>
                     <td>{{ template.impact }}</td>
                     <td>
-                      <div class="btn btn-small" @click="useTemplate(template)">
+                      <div class="btn btn-sm" @click="useTemplate(template)">
                         &#9917;
                       </div>
                     </td>

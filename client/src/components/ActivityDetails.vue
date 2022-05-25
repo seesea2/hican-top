@@ -160,14 +160,14 @@
               <label class="bg-info px-2">{{ data.emailMsg }}</label>
             </div>
             <button
-              class="btn btn-success btn-small"
+              class="btn btn-success btn-sm"
               @click="sendEmail()"
               :disabled="data.disableBtn"
             >
               Send
             </button>
             <button
-              class="btn btn-success btn-small mx-1"
+              class="btn btn-success btn-sm mx-1"
               @click="data.bShowingEmails = false"
             >
               Close

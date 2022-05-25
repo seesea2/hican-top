@@ -115,11 +115,11 @@
             <td>{{ email.company }}</td>
             <td>{{ email.team }}</td>
             <td>
-              <button class="btn btn-light btn-small" @click="editEmail(email)">
+              <button class="btn btn-light btn-sm" @click="editEmail(email)">
                 Edit
               </button>
               <button
-                class="btn btn-light btn-small mx-1"
+                class="btn btn-light btn-sm mx-1"
                 @click="deleteEmail(email)"
                 :disabled="data.disableSubmit"
               >

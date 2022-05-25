@@ -98,13 +98,13 @@
               <td>{{ group.group }}</td>
               <td>
                 <button
-                  class="btn btn-light btn-small"
+                  class="btn btn-light btn-sm"
                   @click="editEmailGroup(group)"
                 >
                   Edit
                 </button>
                 <button
-                  class="btn btn-light btn-small mx-1"
+                  class="btn btn-light btn-sm mx-1"
                   @click="deleteEmailGroup(group)"
                   :disabled="data.disableSubmit"
                 >
