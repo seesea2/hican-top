@@ -4,14 +4,14 @@
     <div>
       <button
         v-if="!data.showingInputs"
-        class="btn btn-primary"
+        class="btn btn-primary btn-sm"
         @click="showInputs()"
       >
         New Email
       </button>
       <button
         v-if="!data.showingEmails"
-        class="btn btn-primary mx-1"
+        class="btn btn-primary btn-sm mx-1"
         @click="showEmails()"
       >
         View Emails
@@ -78,14 +78,14 @@
             <label class="bg-info px-1">{{ data.msg }}</label>
           </div>
           <button
-            class="btn btn-success"
+            class="btn btn-success btn-sm"
             @click="confirmEmail()"
             :disabled="data.disableSubmit"
           >
             Confirm
           </button>
           <button
-            class="btn btn-success mx-1"
+            class="btn btn-success btn-sm mx-1"
             @click="data.showingInputs = false"
           >
             Cancel
@@ -135,7 +135,7 @@
           <label class="bg-info px-1">{{ data.msg }}</label>
         </div>
         <button
-          class="btn btn-success mx-1"
+          class="btn btn-success btn-sm mx-1"
           @click="data.showingEmails = false"
         >
           Close

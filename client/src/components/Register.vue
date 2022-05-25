@@ -66,14 +66,14 @@
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-secondary btn-sm"
             @click="toggleModal()"
           >
             Close
           </button>
           <button
             @click="register()"
-            class="btn btn-primary"
+            class="btn btn-primary btn-sm"
             :disabled="disableSubmit"
           >
             Submit

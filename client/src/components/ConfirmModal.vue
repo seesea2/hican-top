@@ -24,10 +24,10 @@
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-warning" @click="confirmation(true)">
+          <button class="btn btn-warning btn-sm" @click="confirmation(true)">
             Yes
           </button>
-          <button class="btn btn-success" @click="confirmation(false)">
+          <button class="btn btn-success btn-sm" @click="confirmation(false)">
             No
           </button>
         </div>

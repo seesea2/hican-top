@@ -279,7 +279,7 @@
 
           <div
             id="templateOptionsBtn"
-            class="btn btn-secondary mt-3"
+            class="btn btn-secondary btn-sm mt-3"
             @click="toggleTemplateOptions()"
           >
             Template Options
@@ -421,13 +421,13 @@
             <label class="bg-warning px-2">{{ data.submitMsg }}</label>
           </div>
           <button
-            class="btn btn-success"
+            class="btn btn-success btn-sm"
             @click="Submit()"
             :disabled="disableSubmit"
           >
             Submit
           </button>
-          <button class="btn btn-success mx-1" @click="toggleModal()">
+          <button class="btn btn-success btn-sm mx-1" @click="toggleModal()">
             Close
           </button>
         </div>

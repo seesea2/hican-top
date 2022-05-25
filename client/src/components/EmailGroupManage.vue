@@ -3,14 +3,14 @@
     <div>
       <button
         v-if="!data.showingGroupInputs"
-        class="btn btn-primary"
+        class="btn btn-primary btn-sm"
         @click="showGroupInputs()"
       >
         New Email Group
       </button>
       <button
         v-if="!data.showingViewGroups"
-        class="btn btn-primary mx-1"
+        class="btn btn-primary btn-sm mx-1"
         @click="showViewGroups()"
       >
         View Email Groups
@@ -65,14 +65,14 @@
             <label class="bg-info px-1">{{ data.msg }}</label>
           </div>
           <button
-            class="btn btn-success"
+            class="btn btn-success btn-sm"
             @click="confirmEmailGroup()"
             :disable="data.disableSubmit"
           >
             Confirm
           </button>
           <button
-            class="btn btn-success mx-1"
+            class="btn btn-success btn-sm mx-1"
             @click="data.showingGroupInputs = false"
           >
             Cancel
@@ -117,7 +117,7 @@
 
         <div class="text-center mt-2">
           <button
-            class="btn btn-success"
+            class="btn btn-success btn-sm"
             @click="data.showingViewGroups = false"
           >
             Close

@@ -7,7 +7,7 @@
       <div class="col align-self-center">
         <h2 class="text-center">Please sign in</h2>
         <div
-          class="form mx-auto px-5 pt-4 pb-3 bg-mygray"
+          class="form mx-auto px-5 pt-4 pb-3 bg-mygray border border-secondary"
           style="max-width: 20rem"
         >
           <label class="form-label small">ID:</label>
