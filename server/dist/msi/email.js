@@ -17,6 +17,14 @@ const kHtmlHeader = "<head>" +
     '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' +
     '<meta name="viewport" content="width=device-width,initial-scale=1.0" />' +
     "</head>";
+const gmail = {
+    service: "Gmail",
+    requireTLS: true,
+    auth: {
+        user: Buffer.from("c2Vlc2VhMkBnbWFpbC5jb20=", "base64").toString("ascii"),
+        pass: Buffer.from("cGluZ21lSEM4Mw==", "base64").toString("ascii"),
+    },
+};
 const msiGlobal = {
     host: "mail.msi-global.com.sg",
     requireTLS: true,
@@ -30,9 +38,9 @@ function emailActivity(data) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let html = buildHtml(data.activity);
-            let smtpTransport = nodemailer.createTransport(msiGlobal);
+            let smtpTransport = nodemailer.createTransport(gmail);
             let info = yield smtpTransport.sendMail({
-                from: "yuan_chao_li@msi-global.com.sg",
+                from: "seesea2@gmail.com",
                 to: data.emails.toString(),
                 subject: "MSI Activity Notification",
                 text: "MSI Activity Notification.",
