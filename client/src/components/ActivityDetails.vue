@@ -276,7 +276,7 @@ function showEmailOptions() {
   data.manualToEmails = "";
   data.toRecipients.length = 0;
   data.toGroups.length = 0;
-  data.msg = "";
+  data.emailMsg = "";
 
   data.allGroups.length = 0;
   axios

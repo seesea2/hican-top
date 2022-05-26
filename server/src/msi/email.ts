@@ -1,3 +1,4 @@
+// import * as nodemailer from "nodemailer";
 import * as nodemailer from "nodemailer";
 import { writeFileSync } from "fs";
 
@@ -10,23 +11,22 @@ const kHtmlHeader =
   '<meta name="viewport" content="width=device-width,initial-scale=1.0" />' +
   "</head>";
 
-const gmail = {
-  service: "Gmail",
+// const gmail = {
+//   service: "Gmail",
+//   requireTLS: true,
+//   auth: {
+//     user: Buffer.from("c2Vlc2VhMkBnbWFpbC5jb20=", "base64").toString("ascii"),
+//     pass: Buffer.from("cGluZ21lSEM4Mw==", "base64").toString("ascii"),
+//   },
+// };
+const msiGlobal = {
+  host: "mail.msi-global.com.sg",
   requireTLS: true,
   auth: {
-    user: Buffer.from("c2Vlc2VhMkBnbWFpbC5jb20=", "base64").toString("ascii"),
-    pass: Buffer.from("cGluZ21lSEM4Mw==", "base64").toString("ascii"),
+    user: "yuan_chao_li@msi-global.com.sg",
+    pass: Buffer.from("UGFzc3dvcmQ2Nl5e", "base64").toString("ascii"),
   },
-};
-const outlook = {
-  host: "smtp-mail.outlook.com",
-  requireTLS: true,
-  auth: {
-    user: Buffer.from("eXVhbmNoYW9Ab3V0bG9vay5zZw==", "base64").toString(
-      "ascii"
-    ),
-    pass: Buffer.from("cGluZ21lSEM4M0BAJiY=", "base64").toString("ascii"),
-  },
+  tls: { rejectUnauthorized: false },
 };
 
 async function emailActivity(data: any) {
@@ -37,11 +37,9 @@ async function emailActivity(data: any) {
     // console.log("buildHtml:", html);
     // return;
 
-    let smtpTransport = nodemailer.createTransport(gmail);
-    // let smtpTransport = nodemailer.createTransport(outlook);
+    let smtpTransport = nodemailer.createTransport(msiGlobal);
     let info = await smtpTransport.sendMail({
-      // from: "yuanchao@outlook.sg",
-      from: "seesea2@gmail.com",
+      from: "yuan_chao_li@msi-global.com.sg",
       to: data.emails.toString(),
       subject: "MSI Activity Notification", // Subject line
       text: "MSI Activity Notification.", // plain text content

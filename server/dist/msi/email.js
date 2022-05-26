@@ -17,29 +17,22 @@ const kHtmlHeader = "<head>" +
     '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' +
     '<meta name="viewport" content="width=device-width,initial-scale=1.0" />' +
     "</head>";
-const gmail = {
-    service: "Gmail",
+const msiGlobal = {
+    host: "mail.msi-global.com.sg",
     requireTLS: true,
     auth: {
-        user: Buffer.from("c2Vlc2VhMkBnbWFpbC5jb20=", "base64").toString("ascii"),
-        pass: Buffer.from("cGluZ21lSEM4Mw==", "base64").toString("ascii"),
+        user: "yuan_chao_li@msi-global.com.sg",
+        pass: Buffer.from("UGFzc3dvcmQ2Nl5e", "base64").toString("ascii"),
     },
-};
-const outlook = {
-    host: "smtp-mail.outlook.com",
-    requireTLS: true,
-    auth: {
-        user: Buffer.from("eXVhbmNoYW9Ab3V0bG9vay5zZw==", "base64").toString("ascii"),
-        pass: Buffer.from("cGluZ21lSEM4M0BAJiY=", "base64").toString("ascii"),
-    },
+    tls: { rejectUnauthorized: false },
 };
 function emailActivity(data) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             let html = buildHtml(data.activity);
-            let smtpTransport = nodemailer.createTransport(gmail);
+            let smtpTransport = nodemailer.createTransport(msiGlobal);
             let info = yield smtpTransport.sendMail({
-                from: "seesea2@gmail.com",
+                from: "yuan_chao_li@msi-global.com.sg",
                 to: data.emails.toString(),
                 subject: "MSI Activity Notification",
                 text: "MSI Activity Notification.",
