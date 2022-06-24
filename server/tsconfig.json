@@ -3,7 +3,10 @@
   "compilerOptions": {
     "baseUrl": "./",
     "declaration": false,
-    "lib": ["es2018", "dom"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "module": "commonjs",
     "noImplicitAny": true,
     "removeComments": true,
@@ -12,8 +15,16 @@
     "outDir": "./dist",
     "sourceMap": false,
     "target": "es6",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
+  "typescript.format.enable": true
 }

@@ -2,7 +2,9 @@
   "env": {
     "DEBUG": "development"
   },
-  "watch": ["src"],
+  "watch": [
+    "src"
+  ],
   "ext": ".ts",
   "exec": "ts-node ./src/server.ts"
 }

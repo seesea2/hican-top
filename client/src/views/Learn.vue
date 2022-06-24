@@ -8,12 +8,7 @@
     <div class="row justify-content-end">
       <div class="col-auto">
         <div v-if="!data.bLogin" class="input-group">
-          <input
-            v-model.trim="data.user"
-            placeholder="user"
-            class="form-control"
-            v-on:keyup.enter="login"
-          />
+          <input v-model.trim="data.user" placeholder="user" class="form-control" v-on:keyup.enter="login" />
           <div class="input-group-append">
             <button @click="login" class="col-auto btn btn-primary">
               Sign in
@@ -22,10 +17,7 @@
         </div>
         <div v-if="data.bLogin">
           <span class="small">Learnt:{{ data.learntCount }}</span>
-          <button
-            @click="logout"
-            class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm"
-          >
+          <button @click="logout" class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm">
             Sign out
           </button>
         </div>
@@ -33,14 +25,8 @@
     </div>
 
     <div class="text-center">
-      <span
-        v-if="data.loading"
-        class="spinner-border text-primary"
-        role="status"
-        style="width: 5rem; height: 5rem"
-        aria-hidden="true"
-        center
-      ></span>
+      <span v-if="data.loading" class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem"
+        aria-hidden="true" center></span>
     </div>
 
     <div center>
@@ -54,45 +40,21 @@
       <div class="row" v-for="(word, ind) in data.words" :key="word">
         <div class="col-auto">
           {{ ind + 1 }}:
-          <!-- <a target="_blank" :href="'/dictionary/' + word">{{ word }}</a> -->
           {{ word }}
         </div>
         <div class="col-auto align-self-end ml-auto">
           <span class="ms-2">[</span>
-          <a
-            class="btn p-0 btn-sm"
-            target="_blank"
-            :href="
-              'https://dictionary.cambridge.org/dictionary/english/' + word
-            "
-            >Cambridge</a
-          >
-          <a
-            class="btn p-0 ms-1 btn-sm"
-            target="_blank"
-            :href="
-              'https://www.collinsdictionary.com/dictionary/english/' + word
-            "
-            >Collins</a
-          >
-          <a
-            class="btn p-0 ms-1 btn-sm"
-            target="_blank"
-            :href="'https://www.lexico.com/en/definition/' + word"
-            >Oxford</a
-          >
-          <a
-            class="btn p-0 ms-1 btn-sm"
-            target="_blank"
-            :href="'https://dict.cn/' + word"
-            >Dict</a
-          >
+          <a class="btn p-0 btn-sm" target="_blank" :href="
+            'https://dictionary.cambridge.org/dictionary/english/' + word
+          ">Cambridge</a>
+          <a class="btn p-0 ms-1 btn-sm" target="_blank" :href="
+            'https://www.collinsdictionary.com/dictionary/english/' + word
+          ">Collins</a>
+          <a class="btn p-0 ms-1 btn-sm" target="_blank"
+            :href="'https://www.lexico.com/en/definition/' + word">Oxford</a>
+          <a class="btn p-0 ms-1 btn-sm" target="_blank" :href="'https://dict.cn/' + word">Dict</a>
           <span>]</span>
-          <button
-            v-if="data.bLogin"
-            class="btn btn-outline-info border-0 ms-2"
-            @click="hideWord(word)"
-          >
+          <button v-if="data.bLogin" class="btn btn-outline-info border-0 ms-2" @click="hideWord(word)">
             x
           </button>
         </div>

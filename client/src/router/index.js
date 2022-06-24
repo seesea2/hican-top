@@ -1,22 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
-import BusArrival from "../views/BusArrival.vue";
 
 const routes = [
   {
     path: "/",
     name: "Root",
-    component: BusArrival,
+    component: () => import("../views/BusArrival.vue"),
   },
   {
     path: "/busArrivalTime/:inputCode",
     name: "BusArrivalTime",
     component: () => import("../views/BusArrivalTime.vue"),
   },
-  // {
-  //   path: "/dictionary/:word?",
-  //   name: "Dictionary",
-  //   component: () => import("../views/Dictionary.vue"),
-  // },
   {
     path: "/podcast",
     name: "Podcast",
@@ -27,36 +21,11 @@ const routes = [
     name: "Learn",
     component: () => import("../views/Learn.vue"),
   },
-  {
-    path: "/templates",
-    name: "ActivitiesTemplates",
-    component: () => import("../views/ActivitiesTemplates.vue"),
-  },
-  {
-    path: "/act-table",
-    name: "ActivitiesTable",
-    component: () => import("../views/ActivitiesTable.vue"),
-  },
-  {
-    path: "/act-cal",
-    name: "ActivitieCalendar",
-    component: () => import("../views/ActivitiesCalendar.vue"),
-  },
-  {
-    path: "/emails",
-    name: "EmailManagement",
-    component: () => import("../views/EmailManagement.vue"),
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/Login.vue"),
-  },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes: routes,
 });
 
 export default router;
