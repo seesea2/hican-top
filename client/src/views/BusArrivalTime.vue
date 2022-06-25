@@ -10,7 +10,7 @@
           style="width: 10rem; height: 10rem"
           role="status"
         >
-          <span class="sr-only">Loading...</span>
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
       <div v-else-if="data.loadingNote">{{ data.loadingNote }}</div>
@@ -63,12 +63,12 @@
     </table>
 
     <div class="btn-group mt-3">
-      <button v-if="!data.loadingNote" @click="refresh" class="btn btn-primary">
+      <button v-if="!data.loadingNote" @click="refresh()" class="btn btn-primary">
         Refresh
       </button>
       <button
         v-if="!data.loadingNote && !data.bookmark"
-        @click="addBookmark"
+        @click="addBookmark()"
         class="btn btn-primary"
       >
         BookmarkBusStop

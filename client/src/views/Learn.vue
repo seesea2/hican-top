@@ -10,14 +10,14 @@
         <div v-if="!data.bLogin" class="input-group">
           <input v-model.trim="data.user" placeholder="user" class="form-control" v-on:keyup.enter="login" />
           <div class="input-group-append">
-            <button @click="login" class="col-auto btn btn-primary">
+            <button @click="login()" class="col-auto btn btn-primary">
               Sign in
             </button>
           </div>
         </div>
         <div v-if="data.bLogin">
           <span class="small">Learnt:{{ data.learntCount }}</span>
-          <button @click="logout" class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm">
+          <button @click="logout()" class="col-auto p-1 ms-2 btn btn-outline-primary btn-sm">
             Sign out
           </button>
         </div>
@@ -26,7 +26,9 @@
 
     <div class="text-center">
       <span v-if="data.loading" class="spinner-border text-primary" role="status" style="width: 5rem; height: 5rem"
-        aria-hidden="true" center></span>
+        aria-hidden="true" center>
+        <span class="visually-hidden">Loading...</span>
+      </span>
     </div>
 
     <div center>
@@ -60,7 +62,7 @@
         </div>
       </div>
       <div class="text-center">
-        <button class="btn btn-primary my-2" @click="getWords">Refresh</button>
+        <button class="btn btn-primary my-2" @click="getWords()">Refresh</button>
       </div>
     </div>
   </div>

@@ -8,12 +8,8 @@
       <div class="row justify-content-center mx-0 mt-4">
         <div class="col-12 col-md-6 col-lg-4">
           <div class="input-group">
-            <input
-              v-model.trim="data.inputCode"
-              placeholder="Bus stop code"
-              class="form-control"
-              v-on:keyup.enter="getBusArrival()"
-            />
+            <input v-model.trim="data.inputCode" placeholder="Bus stop code" class="form-control"
+              v-on:keyup.enter="getBusArrival()" />
             <div class="input-group-append">
               <button class="btn btn-primary" @click="getBusArrival()">
                 Get
@@ -24,10 +20,7 @@
         </div>
       </div>
 
-      <div
-        v-if="data.bookmarkBusStops && data.bookmarkBusStops.length"
-        class="mt-4"
-      >
+      <div v-if="data.bookmarkBusStops && data.bookmarkBusStops.length" class="mt-4">
         <h3>Bus Stop Bookmark</h3>
         <table class="table table-sm mt-2">
           <thead class="thead-dark">
@@ -38,24 +31,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="bookmark in data.bookmarkBusStops"
-              :key="bookmark.BusStopCode"
-            >
+            <tr v-for="bookmark in data.bookmarkBusStops" :key="bookmark.BusStopCode">
               <td>
                 <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">{{
-                  bookmark.BusStopCode
+                    bookmark.BusStopCode
                 }}</a>
               </td>
               <td>
-                <a @click="getBusArrival(bookmark.BusStopCode)" class="btn"
-                  >{{ bookmark.Description }}@{{ bookmark.RoadName }}</a
-                >
+                <a @click="getBusArrival(bookmark.BusStopCode)" class="btn">{{ bookmark.Description }}@{{
+                    bookmark.RoadName
+                }}</a>
               </td>
               <td>
-                <a @click="removeBookmark(bookmark.BusStopCode)" class="btn"
-                  >X</a
-                >
+                <a @click="removeBookmark(bookmark.BusStopCode)" class="btn">X</a>
               </td>
             </tr>
           </tbody>
@@ -63,14 +51,12 @@
       </div>
 
       <div class="mt-4">
-        <button @click="toggleNearbyBusStops" class="btn btn-primary">
+        <button @click="toggleNearbyBusStops()" class="btn btn-primary">
           Toggle Nearby Bus Stops
-          <span
-            v-if="data.lodingNearbyBusStops"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
+          <span v-if="data.loadingNearbyBusStops" class="spinner-border spinner-border-sm" role="status"
+            aria-hidden="true">
+            <span class="visually-hidden">Loading...</span>
+          </span>
         </button>
         <div>{{ data.getNearbyNote }}</div>
       </div>
@@ -82,24 +68,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="nearbyBusStop in data.nearbyBusStops"
-            :key="nearbyBusStop.busStop.BusStopCode"
-          >
+          <tr v-for="nearbyBusStop in data.nearbyBusStops" :key="nearbyBusStop.busStop.BusStopCode">
             <td>
-              <a
-                @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
-                class="btn"
-                >{{ nearbyBusStop.busStop.BusStopCode }}</a
-              >
+              <a @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)" class="btn">{{
+                  nearbyBusStop.busStop.BusStopCode
+              }}</a>
             </td>
             <td>
-              <a
-                @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)"
-                class="btn"
-              >
+              <a @click="getBusArrival(nearbyBusStop.busStop.BusStopCode)" class="btn">
                 {{ nearbyBusStop.busStop.Description }}@{{
-                  nearbyBusStop.busStop.RoadName
+                    nearbyBusStop.busStop.RoadName
                 }}
               </a>
             </td>
@@ -124,7 +102,7 @@ document.title = "Bus Arrival";
 let data = reactive({
   inputCode: null,
   inputNote: null,
-  lodingNearbyBusStops: false,
+  loadingNearbyBusStops: false,
   showNearbyBusStops: false,
   nearbyBusStops: null,
   getNearbyNote: null,
@@ -146,6 +124,11 @@ function getBusArrival(inputCode) {
   }
 
   data.inputNote = null;
+  data.showNearbyBusStops = false;
+  if (data.watchId) {
+    navigator.geolocation.clearWatch(data.watchId);
+    data.watchId = null;
+  }
   router.push({
     name: "BusArrivalTime",
     params: { inputCode: data.inputCode.trim() },
@@ -172,7 +155,7 @@ function toggleNearbyBusStops() {
     return;
   }
 
-  data.lodingNearbyBusStops = true;
+  data.loadingNearbyBusStops = true;
   if (navigator && navigator.geolocation) {
     // navigator.geolocation.getCurrentPosition(
     data.watchId = navigator.geolocation.watchPosition(
@@ -194,12 +177,16 @@ function toggleNearbyBusStops() {
             .catch((err) => {
               console.log(err);
             })
-            .then((data.lodingNearbyBusStops = false));
+            .then((data.loadingNearbyBusStops = false));
         }
       },
       (error) => {
-        data.lodingNearbyBusStops = false;
+        data.loadingNearbyBusStops = false;
         data.showNearbyBusStops = false;
+        if (data.watchId) {
+          navigator.geolocation.clearWatch(data.watchId);
+          data.watchId = null;
+        }
 
         switch (error.code) {
           case error.PERMISSION_DENIED:
