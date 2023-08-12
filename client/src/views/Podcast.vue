@@ -32,7 +32,7 @@ onBeforeMount(() => {
 <template>
   <NavbarVue></NavbarVue>
 
-  <div class="container py-2">
+  <div class="container pt-3 pb-5">
     <div class="text-center">
       <h2>Podcasts</h2>
     </div>

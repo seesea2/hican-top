@@ -126,7 +126,7 @@ function hideWord(word: string) {
 <template>
   <NavbarVue></NavbarVue>
 
-  <div class="container pt-2 pb-5">
+  <div class="container pt-3 pb-5">
     <div class="text-center">
       <h2>Learn Words</h2>
     </div>

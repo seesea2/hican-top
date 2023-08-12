@@ -3,6 +3,7 @@ import axios from "axios";
 import { ref, type Ref } from "vue";
 import { useRoute } from "vue-router";
 
+import NavbarVue from "@/components/Navbar.vue";
 import { get, add, BusStop } from "../common/busBookmarks.js";
 
 class BusArrival {
@@ -112,7 +113,9 @@ function addBookmark() {
 
 
 <template>
-  <div class="container text-center py-3">
+  <NavbarVue></NavbarVue>
+
+  <div class="container text-center pt-3 pb-5">
     <div>
       <h3 v-if="busStop">{{ busStop.Description }}</h3>
       <h5>Bus Stop: {{ data.inputCode }}</h5>

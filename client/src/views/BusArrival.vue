@@ -127,7 +127,7 @@ function toggleNearbyBusStops() {
 <template>
   <NavbarVue></NavbarVue>
 
-  <div class="container py-3">
+  <div class="container pt-3 pb-5">
     <div class="text-center">
       <h2>Bus Arrival Time</h2>
       <h6>Get bus arrival time by bus stop code.</h6>
