@@ -5,10 +5,10 @@ import { useRoute } from "vue-router";
 
 import { get, add, BusStop } from "../common/busBookmarks.js";
 
-interface BusArrival {
-  "odata.metadata": string;
-  BusStopCode: string;
-  Services: Service[];
+class BusArrival {
+  "odata.metadata": string = '';
+  BusStopCode: string = '';
+  Services: Service[] = [];
 }
 
 interface Service {
@@ -42,12 +42,14 @@ let data = ref({
   // bookmark: null,
 });
 
-let busArrival: Ref<BusArrival>;
-let busStop: Ref<BusStop>;
-let bookmark: Ref<BusStop>;
+let busArrival: Ref<BusArrival> = ref(new BusArrival);
+let busStop: Ref<BusStop> = ref(new BusStop);
+let bookmark: Ref<BusStop> = ref(new BusStop)
 
 const route = useRoute();
-data.value.inputCode = route.params.inputCode[0];
+if (typeof route.params.inputCode == 'string') {
+  data.value.inputCode = route.params.inputCode;
+}
 refresh();
 
 function refresh() {
@@ -123,7 +125,7 @@ function addBookmark() {
       <div v-else-if="data.loadingNote">{{ data.loadingNote }}</div>
     </div>
 
-    <table v-if="busArrival" class="table mt-3">
+    <table v-if="busArrival.BusStopCode" class="table mt-3">
       <thead class="thead-dark">
         <tr>
           <th scope="col">#</th>
