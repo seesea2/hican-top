@@ -1,10 +1,11 @@
 <template>
   <div id="nav" class="p-3">
-    <router-link to="/">BusArrival</router-link>&#9775;
+    <router-link to="/busArrival">BusArrival</router-link>&#9775;
     <router-link to="/podcast">Podcast</router-link>&#9775;
-    <router-link to="/learn">LearnWords</router-link>
+    <router-link to="/learn">Vocabulary</router-link>
   </div>
 </template>
+
 
 <style scoped>
 #nav a {

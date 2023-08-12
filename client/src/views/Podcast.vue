@@ -1,3 +1,34 @@
+<script setup lang="ts">
+import ChannelVue from "../components/Channel.vue";
+import NavbarVue from "../components/Navbar.vue";
+
+import axios from "axios";
+import { onBeforeMount, ref } from "vue";
+import { type Channel } from "@/common/podcast";
+
+
+document.title = "Podcast";
+
+let data = ref<{ channels: Channel[] }>({
+  channels: [],
+});
+
+onBeforeMount(() => {
+  axios
+    .get("/api/podcast")
+    .then((resp) => {
+      for (let item of resp.data) {
+        data.value.channels.push(item);
+      }
+    })
+    .catch((err) => {
+      data.value.channels.length = 0;
+      console.log("err", err);
+    });
+});
+</script>
+
+
 <template>
   <NavbarVue></NavbarVue>
 
@@ -12,30 +43,3 @@
   </div>
 </template>
 
-<script setup>
-import ChannelVue from "../components/Channel.vue";
-import NavbarVue from "../components/Navbar.vue";
-
-import axios from "axios";
-import { reactive, onBeforeMount } from "vue";
-
-document.title = "Podcast";
-
-let data = reactive({
-  channels: [],
-});
-
-onBeforeMount(() => {
-  axios
-    .get("/api/podcast")
-    .then((resp) => {
-      for (let item of resp.data) {
-        data.channels.push(item);
-      }
-    })
-    .catch((err) => {
-      data.channels.length = 0;
-      console.log("err", err);
-    });
-});
-</script>

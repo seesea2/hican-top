@@ -15,7 +15,7 @@ const podcastRss = [
   "https://rss.acast.com/theeconomistallaudio",
   "https://podcasts.files.bbci.co.uk/p02nq0gn.rss",
   "https://podcastfeeds.nbcnews.com/l7jK75d0",
-  "http://dailyboost.motivationtomove.com/rss",
+  "https://feeds.megaphone.fm/dailyboost",
   "https://softwareengineeringdaily.com/category/podcast/feed",
   "https://feeds.publicradio.org/public_feeds/in-the-dark/itunes/rss",
   "https://www.theguardian.com/news/series/todayinfocus/podcast.xml",
@@ -67,6 +67,8 @@ function AllChannels() {
     }
   } catch (err) {
     console.log("Err in AllChannels()");
+    // console.log(err);
+    RefreshServerPodcast();
   }
   return channels;
 }

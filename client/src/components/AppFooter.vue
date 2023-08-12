@@ -1,20 +1,6 @@
-<template>
-  <footer class="text-center fixed-bottom bg-mygray small py-1">
-    <!-- <footer class="container-fluid text-center py-4"> -->
-    <span
-      @click="toTop()"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      title="Scroll to top"
-    >
-      We
-      <span style="font-size: 150%; color: red">&#10084;</span>
-      SG
-    </span>
-  </footer>
-</template>
+<script setup lang="ts">
+import AudioPlayer from './AudioPlayer.vue';
 
-<script setup>
 function toTop() {
   try {
     document.body.scrollTop = 0;
@@ -26,7 +12,24 @@ function toTop() {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
+<template>
+  <div class="container-fluid fixed-bottom bg-mygray small py-0">
+    <div class="row">
+      <footer class="text-center col">
+        <span @click="toTop()" data-bs-toggle="tooltip" data-bs-placement="top" title="Scroll to top">
+          We
+          <span style="font-size: 150%; color: red">&#10084;</span>
+          SG
+        </span>
+      </footer>
+
+      <AudioPlayer class="col-auto" />
+    </div>
+  </div>
+</template>
+
+
 <style scoped>
 span:hover {
   cursor: pointer;

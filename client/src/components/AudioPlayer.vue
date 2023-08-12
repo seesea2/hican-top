@@ -1,44 +1,41 @@
-<template>
-  <div
-    id="audioarea"
-    style="position: fixed; bottom: 3rem; right: 1rem"
-    class="w-100 d-none"
-  >
-    <div class="container-fluid">
-      <div class="row no-gutters justify-content-end">
-        <audio
-          id="audioplayer"
-          controls
-          class="col-9 col-sm-auto p-0 m-0"
-        ></audio>
-        <button @click="close()" class="col-auto btn rounded-0 m-0 text-white">
-          X
-        </button>
-      </div>
-    </div>
-  </div>
-</template>
+<script setup lang="ts">
+import { watch } from 'vue';
+import { useAudioPlayerStore } from '@/stores/audioPlayer';
 
-<script setup>
+const audioPlayerStore = useAudioPlayerStore()
+
+watch(() => audioPlayerStore.src, () => {
+  if (!audioPlayerStore.src) return
+
+  let audioPlayer = <HTMLVideoElement>document.getElementById("audioplayer");
+  if (!audioPlayer) return;
+
+  audioPlayer.load();
+  audioPlayer.play();
+})
+
 function close() {
   try {
-    let audioarea = document.getElementById("audioarea");
-    audioarea.setAttribute("class", "d-none");
-    let audioplayer = document.getElementById("audioplayer");
-    audioplayer.pause();
+    let audioplayer = <HTMLVideoElement>document.getElementById("audioplayer");
+    if (audioplayer) {
+      audioplayer.pause();
+    }
+    audioPlayerStore.reset()
   } catch (err) {
     console.log("failure", err);
   }
 }
 </script>
 
-<style scoped>
-audio,
-button {
-  background-color: black;
-  color: black;
-}
-button span:hover {
-  color: deepskyblue;
-}
-</style>
+
+<template>
+  <div v-show="audioPlayerStore.bShow">
+    <audio id="audioplayer" controls class="d-none">
+      <source :src="audioPlayerStore.src" :type="audioPlayerStore.type">
+    </audio>
+    <button @click="close()" class="btn btn-outline-primary btn-sm">
+      close podcast
+    </button>
+  </div>
+</template>
+
