@@ -60,6 +60,7 @@ function removeBookmark(busStopCode: string) {
 function toggleNearbyBusStops() {
   if (data.value.showNearbyBusStops) {
     data.value.showNearbyBusStops = false;
+    data.value.getNearbyNote = '';
     if (data.value.watchId) {
       navigator.geolocation.clearWatch(data.value.watchId);
       data.value.watchId = 0;
