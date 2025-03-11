@@ -1,13 +1,16 @@
-import { ltaAccountKey } from '../account-keys';
+import { ltaAccountKey } from "../account-keys";
 
 const busArrivalUrl =
-  'http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2';
-const busStopsUrl = 'http://datamall2.mytransport.sg/ltaodataservice/BusStops';
+  // 'http://datamall2.mytransport.sg/ltaodataservice/BusArrivalv2';
+  "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival";
+const busStopsUrl =
+  // 'http://datamall2.mytransport.sg/ltaodataservice/BusStops';
+  "https://datamall2.mytransport.sg/ltaodataservice/BusStops";
 
 const headerConfig = {
   headers: {
-    AccountKey: ltaAccountKey
-  }
+    AccountKey: ltaAccountKey,
+  },
 };
 
 export { busArrivalUrl, busStopsUrl, headerConfig };
