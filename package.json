@@ -1,0 +1,15 @@
+{
+  "name": "azure server starter",
+  "version": "1.0.0",
+  "license": "ISC",
+  "scripts": {
+    "start": "node server/dist/server.js",
+  },
+  "author": "yc",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "cron": "^2.4.0",
+    "express": "^4.17.1",
+    "xml2js": "^0.6.2"
+  }
+}
